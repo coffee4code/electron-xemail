@@ -3,16 +3,16 @@ var $ = require('jquery'),
 
 angular
     .module('app.controller',[])
-    .controller('appCtrl',[function(){
-
+    .controller('appCtrl',['$scope',function($scope){
+        $scope.data = {
+            filePath: ''
+        }
     }])
     .controller('homeCtrl',['$scope',function($scope){
-        $scope.name = 'ssss';
         $scope.onFileChange = onFileChange;
 
         function onFileChange(event) {
-            $scope.name = event.target.files[0].name;
-            console.info($scope.name)
+            $scope.data.filePath = event.target.files[0].path;
         }
     }]);
 
