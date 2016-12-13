@@ -1,35 +1,36 @@
 {
-  "name": "xmee",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron .",
-    "build:win64": "electron-packager ./ xmee --platform=win32 --arch=x64 --icon=./icon.png --overwrite --out ./dist --version=1.0.0 --app-version=1.0.0",
-    "build:linux": "electron-packager ./ xmee --platform=linux --arch=x64 --icon=./icon.png --overwrite --out ./dist --version=1.0.0 --app-version=1.0.0"
-  },
-  "repository": "https://github.com/electron/electron-quick-start",
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
-  ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
-  "devDependencies": {
-    "electron": "^1.4.1",
-    "electron-packager": "^8.4.0"
-  },
-  "dependencies": {
-    "angular": "^1.5.8",
-    "angular-ui-router": "^0.3.2",
-    "install": "^0.8.2",
-    "jquery": "^3.1.1",
-    "nedb": "^1.8.0",
-    "nodemailer": "^2.7.0",
-    "npm": "^4.0.3",
-    "xlsx": "^0.8.0"
-  }
+    "name": "xmee",
+    "version": "1.0.0",
+    "description": "A minimal Electron application",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "build:win64": "electron-packager ./ xmee --platform=win32 --arch=x64 --icon=./icon.png --overwrite --out ./dist --version=1.4.12 --app-version=1.0.0",
+        "build:linux": "electron-packager ./ xmee --platform=linux --arch=x64 --icon=./icon.png --overwrite --out ./dist --version=1.4.12 --app-version=1.0.0",
+        "test": "./dist/xmee-linux-x64/xmee"
+    },
+    "repository": "git@github.com:smallyin/electron-xemail.git",
+    "keywords": [
+        "Electron",
+        "quick",
+        "start",
+        "tutorial",
+        "demo"
+    ],
+    "author": "GitHub",
+    "license": "CC0-1.0",
+    "devDependencies": {
+        "electron": "^1.4.1",
+        "electron-packager": "^8.4.0"
+    },
+    "dependencies": {
+        "angular": "^1.5.8",
+        "angular-ui-router": "^0.3.2",
+        "install": "^0.8.2",
+        "jquery": "^3.1.1",
+        "nedb": "^1.8.0",
+        "nodemailer": "^2.7.0",
+        "npm": "^4.0.3",
+        "xlsx": "^0.8.0"
+    }
 }
