@@ -1,5 +1,11 @@
-var angular = require('angular'),
-    app = angular.module('app', ['app.router', 'app.controller','app.service']);
+var $ = require('jquery'),
+    angular = require('angular'),
+    app = angular.module('app', [
+        'app.router',
+        'app.directive',
+        'app.controller',
+        'app.service'
+        ]);
 
 app.run(['$rootScope', '$state', function ($rootScope, $state) {
     $rootScope.$on('$stateChangeStart', function (event, toState) {

@@ -1,12 +1,18 @@
-var angular = require('angular');
+var $ = require('jquery'),
+    angular = require('angular');
 
 angular
     .module('app.controller',[])
-    .controller('appCtrl',function(){
-    console.info('appCtrl')
-})
-    .controller('homeCtrl',function(){
-    console.info('homeCtrl')
+    .controller('appCtrl',[function(){
 
-});
+    }])
+    .controller('homeCtrl',['$scope',function($scope){
+        $scope.name = 'ssss';
+        $scope.onFileChange = onFileChange;
+
+        function onFileChange(event) {
+            $scope.name = event.target.files[0].name;
+            console.info($scope.name)
+        }
+    }]);
 
