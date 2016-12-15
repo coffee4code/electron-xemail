@@ -9,7 +9,7 @@ body {
 }
 
 .min-content {
-  min-height: 656px;
+  min-height: 536px;
 }
 
 .drop-container {
@@ -24,7 +24,7 @@ body {
 .drop-container .drop-area {
   height: 100%;
   border: 1px dotted #ececec;
-  padding: 125px;
+  padding: 110px;
 }
 
 .drop-container .drop-area.drop-active {
