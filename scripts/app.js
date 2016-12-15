@@ -1,5 +1,4 @@
-var $ = require('jquery'),
-    angular = require('angular'),
+var angular = require('angular'),
     angularAnamiate = require('angular-animate'),
     angularAria = require('angular-aria'),
     angularMaterial = require('angular-material'),

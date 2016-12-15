@@ -1,5 +1,4 @@
-var $ = require('jquery'),
-    angular = require('angular'),
+var angular = require('angular'),
     remote = require('electron').remote;
 
 angular

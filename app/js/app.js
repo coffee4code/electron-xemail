@@ -1,5 +1,4 @@
-var $ = require('jquery'),
-    angular = require('angular'),
+var angular = require('angular'),
     remote = require('electron').remote;
 
 angular
@@ -69,8 +68,7 @@ angular
     }])
 ;
 
-;var $ = require('jquery'),
-    angular = require('angular');
+;var angular = require('angular');
 
 angular
     .module('app.directive',[])
@@ -167,8 +165,7 @@ angular
             }
         };
     }]);
-;var $ = require('jquery'),
-    angular = require('angular'),
+;var angular = require('angular'),
     ngRouter = require('angular-ui-router');
 
 angular
@@ -233,12 +230,10 @@ angular
         }
     ]);
 
-;var $ = require('jquery'),
-    angular = require('angular');
+;var angular = require('angular');
 angular
     .module('app.service',[]);
-;var $ = require('jquery'),
-    angular = require('angular');
+;var angular = require('angular');
 
 angular
     .module('app.filter',[])
@@ -249,8 +244,7 @@ angular
             return limit.indexOf(suffix) > -1
         }
     }])
-;;var $ = require('jquery'),
-    angular = require('angular'),
+;;var angular = require('angular'),
     angularAnamiate = require('angular-animate'),
     angularAria = require('angular-aria'),
     angularMaterial = require('angular-material'),
