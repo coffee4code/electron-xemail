@@ -1,0 +1,44 @@
+<md-toolbar class="md-menu-toolbar">
+    <div layout="row">
+        <md-toolbar-filler layout layout-align="center center">
+            <md-icon md-svg-src="icons/ic_menu_black_24px.svg"></md-icon>
+        </md-toolbar-filler>
+        <div>
+            <h2 class="md-toolbar-tools">
+                工资条小助手
+            </h2>
+            <md-menu-bar>
+                <md-menu>
+                    <button ng-click="$mdOpenMenu()">
+                        文件
+                    </button>
+                    <md-menu-content>
+                        <md-menu-item>
+                            <md-button ng-click="onOpen();">
+                                打开
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-divider></md-menu-divider>
+                        <md-menu-item>
+                            <md-button ng-click="onExit();">
+                                退出
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                <md-menu>
+                    <button ng-click="$mdOpenMenu()">
+                        选项
+                    </button>
+                    <md-menu-content>
+                        <md-menu-item>
+                            <md-button ng-click="onSetting();">
+                                设置
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </md-menu-bar>
+        </div>
+    </div>
+</md-toolbar>

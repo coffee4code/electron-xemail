@@ -20,14 +20,18 @@ app.on('activate', function () {
 
 
 function createWindow () {
-    mainWin = new BrowserWindow({width: 800, height: 600});
-
+    mainWin = new BrowserWindow({
+        width: 1024,
+        height: 768,
+        frame: false,
+        resizable: false
+    });
+    mainWin.setMenu(null);
     mainWin.loadURL(url.format({
         pathname: path.join(__dirname, 'app','index.html'),
         protocol: 'file:',
         slashes: true
     }));
-
     mainWin.webContents.openDevTools();
 
     mainWin.on('closed', function () {

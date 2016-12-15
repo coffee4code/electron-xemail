@@ -1,6 +1,12 @@
 var $ = require('jquery'),
     angular = require('angular'),
+    angularAnamiate = require('angular-animate'),
+    angularAria = require('angular-aria'),
+    angularMaterial = require('angular-material'),
     app = angular.module('app', [
+        angularAnamiate,
+        angularAria,
+        angularMaterial,
         'app.router',
         'app.directive',
         'app.controller',

@@ -1,37 +1,88 @@
 var $ = require('jquery'),
-    angular = require('angular');
+    angular = require('angular'),
+    remote = require('electron').remote;
 
 angular
     .module('app.controller',[])
     .controller('appCtrl',['$scope',function($scope){
+        console.info('appCtrl');
         $scope.data = {
             filePath: ''
         }
     }])
-    .controller('homeCtrl',['$scope',function($scope){
+    .controller('menuCtrl',['$scope', '$state',function($scope, $state){
+        $scope.onOpen = onOpen;
+        $scope.onExit = onExit;
+        $scope.onSetting = onSetting;
+
+        function onOpen() {
+            $state.go('app.open');
+        }
+        function onExit() {
+            var window = remote.getCurrentWindow();
+            window.close();
+        }
+        function onSetting() {
+            $state.go('app.setting');
+        }
+
+    }])
+    .controller('contentCtrl',['$scope',function($scope){
+        console.info('bodyCtrl')
+    }])
+    .controller('openCtrl',['$scope', '$state',function($scope, $state){
+        console.info('openCtrl');
         $scope.onFileChange = onFileChange;
 
         function onFileChange(event) {
             $scope.data.filePath = event.target.files[0].path;
         }
-    }]);
+    }])
+    .controller('settingCtrl',['$scope',function($scope){
+        console.info('settingCtrl')
+    }])
+;
 
 ;var $ = require('jquery'),
     angular = require('angular');
 
 angular
     .module('app.directive',[])
-    .directive('myOnChange', [function() {
+    .directive('myContent', [function(){
         return {
-            restrict: 'A',
+            restrict:'EAC',
+            link:function (scope, element, attrs) {
+                $(element).css({
+                    'min-height': (768-96)+'px'
+                });
+            }
+        }
+    }])
+    .directive('myFilePicker', [function() {
+        return {
+            restrict: 'EA',
             scope: {
-                myOnChange:'='
+                filePath: '=',
+                myOnChange: '='
             },
+            template:'' +
+                '<div>' +
+                '   <input type="text" readonly ng-value="filePath" />' +
+                '   <button id="file-button">添加文件</button>' +
+                '   <input id="file-input" type="file" my-on-change="onFileChange" style="display: none;" >' +
+                '</div>',
+            replace:true,
             link: function (scope, element, attrs) {
-                element.bind('change', function(event){
+                var $element = $(element),
+                    $input = $element.find('#file-input'),
+                    $button = $element.find('#file-button');
+                $input.bind('change', function(event){
                     scope.$apply(function(){
                         scope.myOnChange(event);
                     });
+                });
+                $button.bind('click', function(event){
+                    $input.trigger('click');
                 });
             }
         };
@@ -49,19 +100,39 @@ angular
         function ($stateProvider, $urlRouterProvider, $locationProvider) {
             $locationProvider.hashPrefix('!');
 
-            $urlRouterProvider.otherwise('/home');
+            $urlRouterProvider.otherwise('/open');
 
             $stateProvider
-            .state('home', {
-                url: '/home',
+            .state('app', {
+                url: '',
+                abstract: true,
+                views: {
+                    menu: {
+                        templateUrl:'tmpls/menu.html',
+                        controller: 'menuCtrl'
+                    },
+                    content: {
+                        templateUrl:'tmpls/content.html',
+                        controller: 'contentCtrl'
+                    }
+                }
+            })
+            .state('app.open', {
+                url: '/open',
                 views: {
                     main: {
-                        templateUrl:'tmpls/home.html',
-                        controller: 'homeCtrl'
+                        templateUrl:'tmpls/open.html',
+                        controller: 'openCtrl'
                     }
-                },
-                data: {
-                    role: 'user'
+                }
+            })
+            .state('app.setting', {
+                url: '/setting',
+                views: {
+                    main: {
+                        templateUrl:'tmpls/setting.html',
+                        controller: 'settingCtrl'
+                    }
                 }
             })
         }
@@ -73,7 +144,13 @@ angular
     .module('app.service',[]);
 ;var $ = require('jquery'),
     angular = require('angular'),
+    angularAnamiate = require('angular-animate'),
+    angularAria = require('angular-aria'),
+    angularMaterial = require('angular-material'),
     app = angular.module('app', [
+        angularAnamiate,
+        angularAria,
+        angularMaterial,
         'app.router',
         'app.directive',
         'app.controller',

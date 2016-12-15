@@ -11,19 +11,39 @@ angular
         function ($stateProvider, $urlRouterProvider, $locationProvider) {
             $locationProvider.hashPrefix('!');
 
-            $urlRouterProvider.otherwise('/home');
+            $urlRouterProvider.otherwise('/open');
 
             $stateProvider
-            .state('home', {
-                url: '/home',
+            .state('app', {
+                url: '',
+                abstract: true,
+                views: {
+                    menu: {
+                        templateUrl:'tmpls/menu.html',
+                        controller: 'menuCtrl'
+                    },
+                    content: {
+                        templateUrl:'tmpls/content.html',
+                        controller: 'contentCtrl'
+                    }
+                }
+            })
+            .state('app.open', {
+                url: '/open',
                 views: {
                     main: {
-                        templateUrl:'tmpls/home.html',
-                        controller: 'homeCtrl'
+                        templateUrl:'tmpls/open.html',
+                        controller: 'openCtrl'
                     }
-                },
-                data: {
-                    role: 'user'
+                }
+            })
+            .state('app.setting', {
+                url: '/setting',
+                views: {
+                    main: {
+                        templateUrl:'tmpls/setting.html',
+                        controller: 'settingCtrl'
+                    }
                 }
             })
         }
