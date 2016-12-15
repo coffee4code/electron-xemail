@@ -32,6 +32,7 @@ module.exports = function (grunt) {
                     "scripts/app.directive.js",
                     "scripts/app.router.js",
                     "scripts/app.service.js",
+                    "scripts/app.filter.js",
                     "scripts/app.js"
                 ],
                 dest: 'app/js/app.js'

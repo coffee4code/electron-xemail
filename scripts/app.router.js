@@ -37,6 +37,21 @@ angular
                     }
                 }
             })
+            .state('app.list', {
+                url: '/list?path',
+                views: {
+                    main: {
+                        templateUrl:'tmpls/list.html',
+                        controller: 'listCtrl',
+                        params: ['path'],
+                        resolve:{
+                            path: ['$stateParams',function($stateParams){
+                                return $stateParams.path;
+                            }]
+                        },
+                    },
+                }
+            })
             .state('app.setting', {
                 url: '/setting',
                 views: {

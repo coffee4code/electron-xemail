@@ -1,0 +1,18 @@
+.drop-container {
+	padding: 50px;
+	text-align: center;
+
+	.drop-center {
+		min-height: 250px;
+	}
+
+	.drop-area {
+		height: 100%;
+		border: 1px dotted #ececec;
+		padding: 125px;
+	}
+
+	.drop-area.drop-active {
+		border: 1px dotted $primary-color;
+	}
+}

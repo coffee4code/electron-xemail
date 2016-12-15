@@ -1,5 +1,8 @@
-<md-content class="page-container">
-    <md-card class="page">
-        <my-file-picker my-on-change="onFileChange" file-path="data.filePath"></my-file-picker>
-    </md-card>
-</md-content>
+<div class="drop-container">
+    <div class="drop-center">
+        <my-file-picker my-on-change="onFileChange" file-type="current.fileType"></my-file-picker>
+    </div>
+</div>
+<div layout="row" layout-align="center center">
+    <md-button ng-click="onStart();" class="md-raised md-primary" ng-disabled="current.status<=0">确定</md-button>
+</div>
