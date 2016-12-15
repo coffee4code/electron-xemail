@@ -5,8 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build:win64": "electron-packager ./ xmee --platform=win32 --arch=x64 --icon=./icon.png --overwrite --out ./dist --version=1.4.12 --app-version=1.0.0",
-    "build:linux": "electron-packager ./ xmee --platform=linux --arch=x64 --icon=./icon.png --overwrite --out ./dist --version=1.4.12 --app-version=1.0.0",
+    "build:win64": "electron-packager ./ xmee --platform=win32 --arch=x64 --overwrite --out=./dist",
+    "build:linux": "electron-packager ./ xmee --platform=linux --arch=x64 --overwrite --out=./dist",
     "test": "./dist/xmee-linux-x64/xmee"
   },
   "repository": "git@github.com:smallyin/electron-xemail.git",
