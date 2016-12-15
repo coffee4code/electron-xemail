@@ -3,8 +3,18 @@
   "version": "1.0.0",
   "description": "A minimal Electron application",
   "main": "main.js",
+  "build": {
+    "appId": "com.yin.xmee",
+    "files": [
+      "app/**/*",
+      "node_modules/**/*",
+      "package.json",
+      "main.js"
+    ]
+  },
   "scripts": {
     "start": "electron .",
+    "release": "build",
     "build:win64": ".\\bash\\build-win32.bat",
     "build:linux": "electron-packager ./ xmee --platform=linux --arch=x64 --overwrite --out=./dist",
     "test": "./dist/xmee-linux-x64/xmee"
@@ -22,6 +32,7 @@
   "devDependencies": {
     "electron": "^1.4.1",
     "electron-packager": "^8.4.0",
+    "electron-builder": "^10.8.1",
     "grunt": "~1.0.1",
     "grunt-banner": "~0.6.0",
     "grunt-browser-sync": "~2.2.0",
