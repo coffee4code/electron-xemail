@@ -52,7 +52,7 @@ angular
             },
             template:'' +
             '<div>' +
-            '   <div class="drop-area" id="file-drop-area" draggable="true" my-drop-zone on-file-drop="onFileDrop">' +
+            '   <div class="drop-area" id="file-drop-area" my-drop-zone on-file-drop="onFileDrop">' +
             '      <div class="drop-area-icon">' +
             '          <ng-md-icon icon="cloud_download" size="100" style="fill:#e91e63;"></ng-md-icon>' +
             '      </div>' +

@@ -29,7 +29,7 @@ angular
     .controller('contentCtrl',['$scope',function($scope){
 
     }])
-    .controller('openCtrl',['$scope', '$state', '$filter',function($scope, $state, $filter){
+    .controller('openCtrl',['$scope', '$state', '$filter', '$mdToast',function($scope, $state, $filter, $mdToast){
         $scope.current = {
             status : 0,
             fileType: ['xls','xlsx'],
@@ -39,11 +39,21 @@ angular
         $scope.onStart = onStart;
 
         function onFileChange(file) {
-            var isValid = $filter('filetype')(file.path, $scope.current.fileType.join(','));
-            if(isValid) {
-                $scope.current.status = 1;
-                $scope.current.file = file;
+            var isValid = false;
+            if(file && file.path) {
+                isValid = $filter('filetype')(file.path, $scope.current.fileType.join(','));
             }
+            if(!isValid) {
+                $scope.current.status = -1;
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent('不支持的文件类型!')
+                        .position('bottom center')
+                );
+                return false;
+            }
+            $scope.current.status = 1;
+            $scope.current.file = file;
         }
         function onStart() {
             if($scope.current.file) {
@@ -113,7 +123,7 @@ angular
             },
             template:'' +
             '<div>' +
-            '   <div class="drop-area" id="file-drop-area" draggable="true" my-drop-zone on-file-drop="onFileDrop">' +
+            '   <div class="drop-area" id="file-drop-area" my-drop-zone on-file-drop="onFileDrop">' +
             '      <div class="drop-area-icon">' +
             '          <ng-md-icon icon="cloud_download" size="100" style="fill:#e91e63;"></ng-md-icon>' +
             '      </div>' +
