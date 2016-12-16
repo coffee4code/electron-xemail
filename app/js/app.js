@@ -94,7 +94,16 @@ angular
         $scope.path = path;
     }])
     .controller('settingCtrl',['$scope', 'settingService',function($scope, settingService){
-
+        // var a1 = settingService.getItem('smtp_host');
+        // console.info(a1);
+        // settingService.setItem('smtp_host','smtp.163.com');
+        // var a2 = settingService.getItem('smtp_host');
+        // console.info(a2);
+        // settingService.setItemBatch({'smtp_host':'smtp.yin.com','smtp_port':'123'});
+        // var v = settingService.getItemBatch(['smtp_host','smtp_port']);
+        // var all = settingService.getAll();
+        // console.info(v);
+        // console.info(all);
     }])
 ;
 
@@ -304,7 +313,7 @@ angular
         }
 
         function setItem(key, value) {
-            return databaseService.updateByString(dbName,'UPDATE '+dbName+' SET itemValue="'+value+'" WHERE itemKey="'+key+'";');
+            return databaseService.executeByString(dbName,'UPDATE '+dbName+' SET itemValue="'+value+'" WHERE itemKey="'+key+'";');
         }
 
         function getItemBatch(keys) {
@@ -314,7 +323,7 @@ angular
             }
             sqls = sqls.join(' ');
             sqls = 'SELECT * FROM '+dbName+' WHERE '+ sqls;
-            var query = databaseService.updateByString(dbName,sqls);
+            var query = databaseService.executeByString(dbName,sqls);
             var data = _getValues(query);
             return data;
         }
@@ -325,7 +334,7 @@ angular
                 sqls.push('UPDATE '+dbName+' SET itemValue="'+data[key]+'" WHERE itemKey="'+key+'"');
             }
             sqls = sqls.join(';');
-            return databaseService.updateByString(dbName,sqls);
+            return databaseService.executeByString(dbName,sqls);
         }
 
         function _getValues(query) {
@@ -389,7 +398,7 @@ angular
 
         return {
             queryByString: queryByString,
-            updateByString: updateByString,
+            executeByString: executeByString,
             queryTableData: queryTableData,
             createWithData: createWithData,
         };
@@ -418,7 +427,7 @@ angular
             return data;
         }
 
-        function updateByString(database, sql) {
+        function executeByString(database, sql) {
             var data = null;
             _open(database);
             if(DB && DB[database]){

@@ -12,7 +12,7 @@ angular
 
         return {
             queryByString: queryByString,
-            updateByString: updateByString,
+            executeByString: executeByString,
             queryTableData: queryTableData,
             createWithData: createWithData,
         };
@@ -41,7 +41,7 @@ angular
             return data;
         }
 
-        function updateByString(database, sql) {
+        function executeByString(database, sql) {
             var data = null;
             _open(database);
             if(DB && DB[database]){

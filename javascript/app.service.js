@@ -42,7 +42,7 @@ angular
         }
 
         function setItem(key, value) {
-            return databaseService.updateByString(dbName,'UPDATE '+dbName+' SET itemValue="'+value+'" WHERE itemKey="'+key+'";');
+            return databaseService.executeByString(dbName,'UPDATE '+dbName+' SET itemValue="'+value+'" WHERE itemKey="'+key+'";');
         }
 
         function getItemBatch(keys) {
@@ -52,7 +52,7 @@ angular
             }
             sqls = sqls.join(' ');
             sqls = 'SELECT * FROM '+dbName+' WHERE '+ sqls;
-            var query = databaseService.updateByString(dbName,sqls);
+            var query = databaseService.executeByString(dbName,sqls);
             var data = _getValues(query);
             return data;
         }
@@ -63,7 +63,7 @@ angular
                 sqls.push('UPDATE '+dbName+' SET itemValue="'+data[key]+'" WHERE itemKey="'+key+'"');
             }
             sqls = sqls.join(';');
-            return databaseService.updateByString(dbName,sqls);
+            return databaseService.executeByString(dbName,sqls);
         }
 
         function _getValues(query) {

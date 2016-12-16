@@ -94,7 +94,16 @@ angular
         $scope.path = path;
     }])
     .controller('settingCtrl',['$scope', 'settingService',function($scope, settingService){
-
+        // var a1 = settingService.getItem('smtp_host');
+        // console.info(a1);
+        // settingService.setItem('smtp_host','smtp.163.com');
+        // var a2 = settingService.getItem('smtp_host');
+        // console.info(a2);
+        // settingService.setItemBatch({'smtp_host':'smtp.yin.com','smtp_port':'123'});
+        // var v = settingService.getItemBatch(['smtp_host','smtp_port']);
+        // var all = settingService.getAll();
+        // console.info(v);
+        // console.info(all);
     }])
 ;
 
