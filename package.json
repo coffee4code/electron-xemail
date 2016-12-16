@@ -1,7 +1,7 @@
 {
-  "name": "xmee",
+  "name": "SalaryNoteHelper",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "读取xls文件发送工资条邮件",
   "main": "main.js",
   "build": {
     "appId": "com.yin.xmee",
@@ -21,12 +21,11 @@
   "repository": "git@github.com:smallyin/electron-xemail.git",
   "keywords": [
     "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "工资条",
+    "邮件",
+    "Yin Gang"
   ],
-  "author": "GitHub",
+  "author": "殷刚",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^1.4.1",

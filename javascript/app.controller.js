@@ -27,12 +27,11 @@ angular
                 .ariaLabel('退出程序')
                 .targetEvent(event)
                 .ok('确定退出')
-                .cancel('最小化');
+                .cancel('取消');
 
             $mdDialog.show(confirm).then(function() {
                 $scope.window.close();
             }, function() {
-                $scope.window.minimize();
                 return false;
             });
         }
