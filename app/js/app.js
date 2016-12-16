@@ -7,6 +7,7 @@ angular
 
     }])
     .controller('menuCtrl',['$scope', '$state', '$mdDialog',function($scope, $state, $mdDialog){
+        $scope.window = remote.getCurrentWindow();
         $scope.onOpen = onOpen;
         $scope.onExit = onExit;
         $scope.onDevTool = onDevTool;
@@ -19,16 +20,26 @@ angular
             $state.go('app.open');
         }
         function onExit() {
-            var window = remote.getCurrentWindow();
-            window.close();
+            var confirm = $mdDialog.confirm()
+                .title('退出程序?')
+                .textContent('退出应用程序或最小化到托盘.')
+                .ariaLabel('退出程序')
+                .targetEvent(event)
+                .ok('确定退出')
+                .cancel('最小化');
+
+            $mdDialog.show(confirm).then(function() {
+                $scope.window.close();
+            }, function() {
+                $scope.window.minimize();
+                return false;
+            });
         }
         function onMinimize() {
-            var window = remote.getCurrentWindow();
-            window.minimize();
+            $scope.window.minimize();
         }
         function onDevTool() {
-            var window = remote.getCurrentWindow();
-            window.webContents.openDevTools();
+            $scope.window.webContents.openDevTools();
         }
         function onSetting() {
             $state.go('app.setting');
