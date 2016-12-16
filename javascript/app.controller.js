@@ -93,8 +93,8 @@ angular
     .controller('listCtrl',['$scope', '$state', 'path',function($scope, $state, path){
         $scope.path = path;
     }])
-    .controller('settingCtrl',['$scope',function($scope){
-        console.info('settingCtrl')
+    .controller('settingCtrl',['$scope', 'settingService',function($scope, settingService){
+
     }])
 ;
 

@@ -11,15 +11,19 @@ var angular = require('angular'),
         'app.router',
         'app.directive',
         'app.controller',
+        'app.database',
+        'app.config',
         'app.service',
         'app.filter',
         ]);
 
-app.run(['$rootScope', '$state', '$mdColors',function ($rootScope, $state,$mdColors) {
+app.run(['$rootScope', '$state', '$mdColors', 'settingService',function ($rootScope, $state,$mdColors, settingService) {
+
     $rootScope.mdPrimaryColor = $mdColors.getThemeColor('pink');
 
-    $rootScope.$on('$stateChangeStart', function (event, toState) {
-    });
+    settingService.init();
+
+
 }])
     .config(['$mdThemingProvider',function($mdThemingProvider) {
         $mdThemingProvider.theme('default')

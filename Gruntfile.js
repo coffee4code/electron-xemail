@@ -32,6 +32,8 @@ module.exports = function (grunt) {
                     "javascript/app.directive.js",
                     "javascript/app.router.js",
                     "javascript/app.service.js",
+                    "javascript/app.config.js",
+                    "javascript/app.database.js",
                     "javascript/app.filter.js",
                     "javascript/app.js"
                 ],
