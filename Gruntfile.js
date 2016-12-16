@@ -28,12 +28,12 @@ module.exports = function (grunt) {
             },
             core: {
                 src: [
-                    "scripts/app.controller.js",
-                    "scripts/app.directive.js",
-                    "scripts/app.router.js",
-                    "scripts/app.service.js",
-                    "scripts/app.filter.js",
-                    "scripts/app.js"
+                    "javascript/app.controller.js",
+                    "javascript/app.directive.js",
+                    "javascript/app.router.js",
+                    "javascript/app.service.js",
+                    "javascript/app.filter.js",
+                    "javascript/app.js"
                 ],
                 dest: 'app/js/app.js'
             }
@@ -61,7 +61,7 @@ module.exports = function (grunt) {
                 }
             },
             watchJsCore: {
-                files: ['scripts/*.js'],
+                files: ['javascript/*.js'],
                 tasks: ['jsCoreCompile'],
                 options: {
                     interrupt: false,

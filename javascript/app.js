@@ -16,14 +16,14 @@ var angular = require('angular'),
         ]);
 
 app.run(['$rootScope', '$state', '$mdColors',function ($rootScope, $state,$mdColors) {
-    $rootScope.mdPrimaryColor = $mdColors.getThemeColor('grey');
+    $rootScope.mdPrimaryColor = $mdColors.getThemeColor('pink');
 
     $rootScope.$on('$stateChangeStart', function (event, toState) {
     });
 }])
     .config(['$mdThemingProvider',function($mdThemingProvider) {
         $mdThemingProvider.theme('default')
-            .primaryPalette('grey')
+            .primaryPalette('pink')
             .accentPalette('orange');
     }]);
 app.bootstrap = function () {
