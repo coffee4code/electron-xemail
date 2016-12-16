@@ -31,7 +31,7 @@ angular
                 url: '/open',
                 views: {
                     main: {
-                        templateUrl:'tmpls/open.html',
+                        templateUrl:'tmpls/pages/open.html',
                         controller: 'openCtrl'
                     }
                 }
@@ -40,7 +40,7 @@ angular
                 url: '/list?path',
                 views: {
                     main: {
-                        templateUrl:'tmpls/list.html',
+                        templateUrl:'tmpls/pages/list.html',
                         controller: 'listCtrl',
                         params: ['path'],
                         resolve:{
@@ -55,7 +55,7 @@ angular
                 url: '/setting',
                 views: {
                     main: {
-                        templateUrl:'tmpls/setting.html',
+                        templateUrl:'tmpls/pages/setting.html',
                         controller: 'settingCtrl'
                     }
                 }
