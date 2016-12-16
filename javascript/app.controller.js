@@ -39,7 +39,7 @@ angular
             $scope.window.minimize();
         }
         function onDevTool() {
-            $scope.window.webContents.openDevTools();
+            $scope.window.webContents.openDevTools({mode: 'detach'});
         }
         function onSetting() {
             $state.go('app.setting');

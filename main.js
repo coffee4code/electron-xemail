@@ -32,7 +32,9 @@ function createWindow () {
         protocol: 'file:',
         slashes: true
     }));
-    mainWin.webContents.openDevTools();
+
+    //https://github.com/kevinsawicki/tray-example
+    mainWin.webContents.openDevTools({mode: 'detach'});
 
     mainWin.on('closed', function () {
         mainWin = null
