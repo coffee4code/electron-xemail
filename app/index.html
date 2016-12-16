@@ -6,9 +6,9 @@
     <link rel="stylesheet" href="../node_modules/angular-material/angular-material.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-    <div ui-view="menu"></div>
-    <div ui-view="content"></div>
+<body layout="column">
+    <div layout="row" ui-view="menu"></div>
+    <div layout="column" flex ui-view="content"></div>
 </body>
 <script type="text/javascript">
 	if (typeof module === 'object') {

@@ -1,8 +1,10 @@
-<div class="drop-container">
-    <div class="drop-center">
-        <my-file-picker my-on-change="onFileChange" file-type="current.fileType"></my-file-picker>
+<div layout="row" flex style="height: 85%;">
+    <div class="drop-container" layout="column" flex layout-column>
+        <div class="drop-center" layout="column" flex layout-column>
+            <my-file-picker layout="column" flex layout-column my-on-change="onFileChange" file-type="current.fileType"></my-file-picker>
+        </div>
     </div>
 </div>
-<div layout="row" layout-align="center center">
+<div layout="row" layout-align="center center" style="height: 15%;">
     <md-button ng-click="onStart();" class="md-raised md-primary" ng-disabled="current.status<=0">确定</md-button>
 </div>

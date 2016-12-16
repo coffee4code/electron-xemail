@@ -8,12 +8,8 @@ body {
   overflow: hidden;
 }
 
-.min-content {
-  min-height: 536px;
-}
-
 .drop-container {
-  padding: 50px;
+  padding: 50px 50px 0 50px;
   text-align: center;
 }
 

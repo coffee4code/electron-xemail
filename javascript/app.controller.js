@@ -10,6 +10,7 @@ angular
         $scope.window = remote.getCurrentWindow();
         $scope.onOpen = onOpen;
         $scope.onExit = onExit;
+        $scope.onMaximum = onMaximum;
         $scope.onDevTool = onDevTool;
         $scope.onMinimize = onMinimize;
         $scope.onSetting = onSetting;
@@ -34,6 +35,9 @@ angular
                 $scope.window.minimize();
                 return false;
             });
+        }
+        function onMaximum() {
+            $scope.window.maximize();
         }
         function onMinimize() {
             $scope.window.minimize();

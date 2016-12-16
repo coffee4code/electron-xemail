@@ -1,5 +1,7 @@
-<md-content class="page-container">
-    <md-card class="page" my-content>
-        <div ui-view="main"></div>
-    </md-card>
-</md-content>
+<div layout="row" flex>
+    <md-content class="page-container" layout="column" flex layout-column>
+        <md-card flex class="page">
+            <div ui-view="main" flex></div>
+        </md-card>
+    </md-content>
+</div>

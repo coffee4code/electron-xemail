@@ -21,10 +21,9 @@ app.on('activate', function () {
 
 function createWindow () {
     mainWin = new BrowserWindow({
-        width: 900,
-        height: 650,
-        frame: false,
-        resizable: false
+        minWidth: 900,
+        minHeight: 650,
+        frame: false
     });
     mainWin.setMenu(null);
     mainWin.loadURL(url.format({

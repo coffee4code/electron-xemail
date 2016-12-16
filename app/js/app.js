@@ -10,6 +10,7 @@ angular
         $scope.window = remote.getCurrentWindow();
         $scope.onOpen = onOpen;
         $scope.onExit = onExit;
+        $scope.onMaximum = onMaximum;
         $scope.onDevTool = onDevTool;
         $scope.onMinimize = onMinimize;
         $scope.onSetting = onSetting;
@@ -34,6 +35,9 @@ angular
                 $scope.window.minimize();
                 return false;
             });
+        }
+        function onMaximum() {
+            $scope.window.maximize();
         }
         function onMinimize() {
             $scope.window.minimize();
@@ -132,15 +136,7 @@ angular
 
 angular
     .module('app.directive',[])
-    .directive('myContent', [function(){
-        return {
-            restrict:'EAC',
-            link:function (scope, element, attrs) {
-                $(element).addClass('min-content')
-            }
-        }
-    }])
-    .directive("myDropZone", function() {
+    .directive("myDropZone", [function() {
         return {
             restrict : "A",
             scope: {
@@ -171,7 +167,7 @@ angular
                 });
             }
         }
-    })
+    }])
     .directive('myFilePicker', [function() {
         return {
             restrict: 'EA',
@@ -181,12 +177,12 @@ angular
             },
             template:'' +
             '<div>' +
-            '   <div class="drop-area" id="file-drop-area" my-drop-zone on-file-drop="onFileDrop">' +
-            '      <div class="drop-area-icon">' +
+            '   <div class="drop-area" id="file-drop-area"  layout="column" flex layout-column layout-align="center center" my-drop-zone on-file-drop="onFileDrop">' +
+            '      <div class="drop-area-icon" layout="column" flex layout-column layout-align="center bottom">' +
             '          <ng-md-icon icon="cloud_download" size="100" style="fill:{{$root.mdPrimaryColor}};"></ng-md-icon>' +
             '      </div>' +
-            '      <div class="drop-area-tip" ng-if="!!current.filePath" ng-bind="current.filePath"></div>' +
-            '      <div class="drop-area-tip" ng-if="!current.filePath">点击选择xls文件或将文件拖放到这里</div>' +
+            '      <div class="drop-area-tip" layout="column" flex layout-column ng-if="!!current.filePath" ng-bind="current.filePath"></div>' +
+            '      <div class="drop-area-tip" layout="column" flex layout-column ng-if="!current.filePath">点击选择xls文件或将文件拖放到这里</div>' +
             '   </div>' +
             '   <input id="file-input" type="file" my-on-change="onFileChange" style="display: none;">' +
             '</div>',
