@@ -14,6 +14,7 @@
   },
   "scripts": {
     "start": "electron .",
+    "pack": "build --dir",
     "release": "build",
     "test": "./dist/linux-unpacked/xmee"
   },
