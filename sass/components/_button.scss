@@ -1,4 +1,9 @@
 .md-button.md-icon-button.md-icon-button-mini {
 	margin: 0;
 	padding: 0;
+	opacity: .35;
+
+	&:hover {
+		opacity: 1;
+	}
 }
