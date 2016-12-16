@@ -22,8 +22,8 @@ angular
         }
         function onExit() {
             var confirm = $mdDialog.confirm()
-                .title('退出程序?')
-                .textContent('退出应用程序或最小化到托盘.')
+                .title('关闭')
+                .textContent('确定退出应用程序？')
                 .ariaLabel('退出程序')
                 .targetEvent(event)
                 .ok('确定退出')
