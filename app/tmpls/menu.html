@@ -60,12 +60,21 @@
         <span flex></span>
         <div>
             <md-button class="md-icon-button md-icon-button-mini" ng-click="onMinimize();">
+                <md-tooltip>
+                    最小化窗口
+                </md-tooltip>
                 <ng-md-icon icon="remove" style="fill:{{mdPrimaryColor}}"></ng-md-icon>
             </md-button>
-            <md-button class="md-icon-button md-icon-button-mini" disabled ng-click="onMinimize();">
+            <md-button class="md-icon-button md-icon-button-mini">
+                <md-tooltip>
+                    还原窗口
+                </md-tooltip>
                 <ng-md-icon icon="crop_16_9" style="fill:grey;"></ng-md-icon>
             </md-button>
             <md-button class="md-icon-button md-icon-button-mini" ng-click="onExit();">
+                <md-tooltip>
+                    退出
+                </md-tooltip>
                 <ng-md-icon icon="close" style="fill:{{mdPrimaryColor}}"></ng-md-icon>
             </md-button>
         </div>
