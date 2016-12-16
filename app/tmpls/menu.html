@@ -38,6 +38,23 @@
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
+                <md-menu>
+                    <button ng-click="$mdOpenMenu()">
+                        帮助
+                    </button>
+                    <md-menu-content>
+                        <md-menu-item>
+                            <md-button ng-click="onHelp();">
+                                帮助
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="onAbout();">
+                                关于
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
             </md-menu-bar>
         </div>
     </div>

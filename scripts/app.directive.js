@@ -53,7 +53,7 @@ angular
             '<div>' +
             '   <div class="drop-area" id="file-drop-area" my-drop-zone on-file-drop="onFileDrop">' +
             '      <div class="drop-area-icon">' +
-            '          <ng-md-icon icon="cloud_download" size="100" style="fill:#e91e63;"></ng-md-icon>' +
+            '          <ng-md-icon icon="cloud_download" size="100" style="fill:{{$root.mdPrimaryColor}};"></ng-md-icon>' +
             '      </div>' +
             '      <div class="drop-area-tip" ng-if="!!current.filePath" ng-bind="current.filePath"></div>' +
             '      <div class="drop-area-tip" ng-if="!current.filePath">点击选择xls文件或将文件拖放到这里</div>' +

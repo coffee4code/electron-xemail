@@ -3,12 +3,15 @@ var angular = require('angular'),
 
 angular
     .module('app.controller',[])
-    .controller('appCtrl',['$scope',function($scope){
+    .controller('appCtrl',['$rootScope', '$scope', '$mdColors',function($rootScope, $scope, $mdColors){
+
     }])
-    .controller('menuCtrl',['$scope', '$state',function($scope, $state){
+    .controller('menuCtrl',['$scope', '$state', '$mdDialog',function($scope, $state, $mdDialog){
         $scope.onOpen = onOpen;
         $scope.onExit = onExit;
         $scope.onSetting = onSetting;
+        $scope.onHelp = onHelp;
+        $scope.onAbout = onAbout;
 
         function onOpen() {
             $state.go('app.open');
@@ -20,6 +23,33 @@ angular
         function onSetting() {
             $state.go('app.setting');
         }
+        function onHelp(event) {
+            dialogOpen('help', event);
+        }
+        function onAbout(event) {
+            dialogOpen('about', event);
+        }
+
+        function dialogOpen(type, event) {
+            $mdDialog
+                .show({
+                    controller: dialogCtrl,
+                    templateUrl: 'tmpls/dialogs/dialog.' + type + '.html',
+                    parent: angular.element(document.body),
+                    targetEvent: event,
+                    clickOutsideToClose:true,
+                    fullscreen: false
+                })
+            ;
+        }
+        function dialogCtrl($scope, $mdDialog) {
+            $scope.hide = function() {
+                $mdDialog.hide();
+            };
+        }
+
+    }])
+    .controller('dialogHelpCtrl',['$scope',function($scope){
 
     }])
     .controller('contentCtrl',['$scope',function($scope){

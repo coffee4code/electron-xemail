@@ -1,0 +1,30 @@
+<md-dialog aria-label="Mango (Fruit)">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>关于</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="hide()">
+                    <ng-md-icon icon="close" style="fill: #ffffff;"></ng-md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content class="dialog-with-adder">
+            <div class="md-dialog-content">
+                <div class="md-title" layout="row" layout-align="center center">
+                    <img src="images/icon-48.png" alt="" style="margin-bottom: 20px;">
+                </div>
+                <div class="md-title" layout="row" layout-align="center center">工资条小助手</div>
+                <div class="md-subhead" layout="row" layout-align="center center">版本：v1.0.0</div>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row" layout-align="center center" class="dialog-with-adder">
+            <md-button class="md-raised md-primary" md-autofocus ng-click="hide()">
+                确定
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
+</script>

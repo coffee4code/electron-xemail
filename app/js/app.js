@@ -3,12 +3,15 @@ var angular = require('angular'),
 
 angular
     .module('app.controller',[])
-    .controller('appCtrl',['$scope',function($scope){
+    .controller('appCtrl',['$rootScope', '$scope', '$mdColors',function($rootScope, $scope, $mdColors){
+
     }])
-    .controller('menuCtrl',['$scope', '$state',function($scope, $state){
+    .controller('menuCtrl',['$scope', '$state', '$mdDialog',function($scope, $state, $mdDialog){
         $scope.onOpen = onOpen;
         $scope.onExit = onExit;
         $scope.onSetting = onSetting;
+        $scope.onHelp = onHelp;
+        $scope.onAbout = onAbout;
 
         function onOpen() {
             $state.go('app.open');
@@ -20,6 +23,33 @@ angular
         function onSetting() {
             $state.go('app.setting');
         }
+        function onHelp(event) {
+            dialogOpen('help', event);
+        }
+        function onAbout(event) {
+            dialogOpen('about', event);
+        }
+
+        function dialogOpen(type, event) {
+            $mdDialog
+                .show({
+                    controller: dialogCtrl,
+                    templateUrl: 'tmpls/dialogs/dialog.' + type + '.html',
+                    parent: angular.element(document.body),
+                    targetEvent: event,
+                    clickOutsideToClose:true,
+                    fullscreen: false
+                })
+            ;
+        }
+        function dialogCtrl($scope, $mdDialog) {
+            $scope.hide = function() {
+                $mdDialog.hide();
+            };
+        }
+
+    }])
+    .controller('dialogHelpCtrl',['$scope',function($scope){
 
     }])
     .controller('contentCtrl',['$scope',function($scope){
@@ -123,7 +153,7 @@ angular
             '<div>' +
             '   <div class="drop-area" id="file-drop-area" my-drop-zone on-file-drop="onFileDrop">' +
             '      <div class="drop-area-icon">' +
-            '          <ng-md-icon icon="cloud_download" size="100" style="fill:#e91e63;"></ng-md-icon>' +
+            '          <ng-md-icon icon="cloud_download" size="100" style="fill:{{$root.mdPrimaryColor}};"></ng-md-icon>' +
             '      </div>' +
             '      <div class="drop-area-tip" ng-if="!!current.filePath" ng-bind="current.filePath"></div>' +
             '      <div class="drop-area-tip" ng-if="!current.filePath">点击选择xls文件或将文件拖放到这里</div>' +
@@ -261,14 +291,15 @@ angular
         'app.filter',
         ]);
 
-app.run(['$rootScope', '$state', function ($rootScope, $state) {
-    $rootScope.$on('$stateChangeStart', function (event, toState) {
+app.run(['$rootScope', '$state', '$mdColors',function ($rootScope, $state,$mdColors) {
+    $rootScope.mdPrimaryColor = $mdColors.getThemeColor('grey');
 
+    $rootScope.$on('$stateChangeStart', function (event, toState) {
     });
 }])
     .config(['$mdThemingProvider',function($mdThemingProvider) {
         $mdThemingProvider.theme('default')
-            .primaryPalette('pink')
+            .primaryPalette('grey')
             .accentPalette('orange');
     }]);
 app.bootstrap = function () {

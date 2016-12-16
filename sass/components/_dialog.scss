@@ -1,0 +1,7 @@
+.dialog-with-adder {
+	padding: 15px 50px;
+	min-width: 300px;
+}
+.dialog-with-adder + .dialog-with-adder {
+	padding-top: 0;
+}

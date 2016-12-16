@@ -15,14 +15,15 @@ var angular = require('angular'),
         'app.filter',
         ]);
 
-app.run(['$rootScope', '$state', function ($rootScope, $state) {
-    $rootScope.$on('$stateChangeStart', function (event, toState) {
+app.run(['$rootScope', '$state', '$mdColors',function ($rootScope, $state,$mdColors) {
+    $rootScope.mdPrimaryColor = $mdColors.getThemeColor('grey');
 
+    $rootScope.$on('$stateChangeStart', function (event, toState) {
     });
 }])
     .config(['$mdThemingProvider',function($mdThemingProvider) {
         $mdThemingProvider.theme('default')
-            .primaryPalette('pink')
+            .primaryPalette('grey')
             .accentPalette('orange');
     }]);
 app.bootstrap = function () {

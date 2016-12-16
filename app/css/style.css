@@ -30,3 +30,12 @@ body {
 .drop-container .drop-area.drop-active {
   border: 1px dotted #e91e63;
 }
+
+.dialog-with-adder {
+  padding: 15px 50px;
+  min-width: 300px;
+}
+
+.dialog-with-adder + .dialog-with-adder {
+  padding-top: 0;
+}
