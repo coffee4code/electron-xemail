@@ -39,3 +39,8 @@ body {
 .dialog-with-adder + .dialog-with-adder {
   padding-top: 0;
 }
+
+.md-button.md-icon-button.md-icon-button-mini {
+  margin: 0;
+  padding: 0;
+}

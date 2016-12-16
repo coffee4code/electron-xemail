@@ -57,5 +57,17 @@
                 </md-menu>
             </md-menu-bar>
         </div>
+        <span flex></span>
+        <div>
+            <md-button class="md-icon-button md-icon-button-mini" ng-click="onMinimize();">
+                <ng-md-icon icon="remove" style="fill:{{mdPrimaryColor}}"></ng-md-icon>
+            </md-button>
+            <md-button class="md-icon-button md-icon-button-mini" disabled ng-click="onMinimize();">
+                <ng-md-icon icon="crop_16_9" style="fill:grey;"></ng-md-icon>
+            </md-button>
+            <md-button class="md-icon-button md-icon-button-mini" ng-click="onExit();">
+                <ng-md-icon icon="close" style="fill:{{mdPrimaryColor}}"></ng-md-icon>
+            </md-button>
+        </div>
     </div>
 </md-toolbar>

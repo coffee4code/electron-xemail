@@ -20,6 +20,11 @@ angular
             options.SETTINGS = setting;
         }
     }])
+    .config(['$mdThemingProvider',function($mdThemingProvider) {
+        $mdThemingProvider.theme('default')
+            .primaryPalette('pink')
+            .accentPalette('orange');
+    }])
     .config(['configProvider',function(configProvider){
         var setting = {
             smtp_host: 'smtp.qq.com',

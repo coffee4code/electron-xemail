@@ -9,6 +9,7 @@ angular
     .controller('menuCtrl',['$scope', '$state', '$mdDialog',function($scope, $state, $mdDialog){
         $scope.onOpen = onOpen;
         $scope.onExit = onExit;
+        $scope.onMinimize = onMinimize;
         $scope.onSetting = onSetting;
         $scope.onHelp = onHelp;
         $scope.onAbout = onAbout;
@@ -19,6 +20,10 @@ angular
         function onExit() {
             var window = remote.getCurrentWindow();
             window.close();
+        }
+        function onMinimize() {
+            var window = remote.getCurrentWindow();
+            window.minimize();
         }
         function onSetting() {
             $state.go('app.setting');

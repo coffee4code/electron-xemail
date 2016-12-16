@@ -25,11 +25,7 @@ app.run(['$rootScope', '$state', '$mdColors', 'settingService',function ($rootSc
 
 
 }])
-    .config(['$mdThemingProvider',function($mdThemingProvider) {
-        $mdThemingProvider.theme('default')
-            .primaryPalette('pink')
-            .accentPalette('orange');
-    }]);
+;
 app.bootstrap = function () {
     angular.bootstrap(window.document, ['app']);
 };

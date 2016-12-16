@@ -9,6 +9,7 @@ angular
     .controller('menuCtrl',['$scope', '$state', '$mdDialog',function($scope, $state, $mdDialog){
         $scope.onOpen = onOpen;
         $scope.onExit = onExit;
+        $scope.onMinimize = onMinimize;
         $scope.onSetting = onSetting;
         $scope.onHelp = onHelp;
         $scope.onAbout = onAbout;
@@ -19,6 +20,10 @@ angular
         function onExit() {
             var window = remote.getCurrentWindow();
             window.close();
+        }
+        function onMinimize() {
+            var window = remote.getCurrentWindow();
+            window.minimize();
         }
         function onSetting() {
             $state.go('app.setting');
@@ -374,6 +379,11 @@ angular
             options.SETTINGS = setting;
         }
     }])
+    .config(['$mdThemingProvider',function($mdThemingProvider) {
+        $mdThemingProvider.theme('default')
+            .primaryPalette('pink')
+            .accentPalette('orange');
+    }])
     .config(['configProvider',function(configProvider){
         var setting = {
             smtp_host: 'smtp.qq.com',
@@ -512,11 +522,7 @@ app.run(['$rootScope', '$state', '$mdColors', 'settingService',function ($rootSc
 
 
 }])
-    .config(['$mdThemingProvider',function($mdThemingProvider) {
-        $mdThemingProvider.theme('default')
-            .primaryPalette('pink')
-            .accentPalette('orange');
-    }]);
+;
 app.bootstrap = function () {
     angular.bootstrap(window.document, ['app']);
 };
