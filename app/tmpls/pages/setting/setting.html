@@ -1,0 +1,26 @@
+<div>
+    <md-button class="md-icon-button">
+        <ng-md-icon icon="arrow_back"></ng-md-icon>
+    </md-button>
+</div>
+<md-divider></md-divider>
+<div layout="row" flex>
+    <div flex="25">
+        <ul>
+            <li>
+                <a href="javascript:;" ui-sref="app.setting.user">
+                    发送设置
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;" ui-sref="app.setting.template">
+                    模板
+                </a>
+            </li>
+        </ul>
+    </div>
+    <md-divider></md-divider>
+    <div flex>
+        <div ui-view="list"></div>
+    </div>
+</div>

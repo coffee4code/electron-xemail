@@ -45,7 +45,7 @@ angular
             $scope.window.webContents.openDevTools({mode: 'detach'});
         }
         function onSetting() {
-            $state.go('app.setting');
+            $state.go('app.setting.user');
         }
         function onHelp(event) {
             dialogOpen('help', event);
@@ -129,6 +129,12 @@ angular
         // console.info(v);
         // console.info(all);
     }])
+    .controller('settingUserCtrl',['$scope',function($scope){
+        console.info('settingUserCtrl');
+    }])
+    .controller('settingTemplateCtrl',['$scope',function($scope){
+        console.info('settingTemplateCtrl');
+    }])
 ;
 
 ;var angular = require('angular');
@@ -176,12 +182,12 @@ angular
             },
             template:'' +
             '<div>' +
-            '   <div class="drop-area" id="file-drop-area"  layout="column" flex layout-column layout-align="center center" my-drop-zone on-file-drop="onFileDrop">' +
-            '      <div class="drop-area-icon" layout="column" flex layout-column layout-align="center bottom">' +
+            '   <div class="drop-area" id="file-drop-area"  layout="column" flex layout-align="center center" my-drop-zone on-file-drop="onFileDrop">' +
+            '      <div class="drop-area-icon" layout="column" flex layout-align="center bottom">' +
             '          <ng-md-icon icon="cloud_download" size="100" style="fill:{{$root.mdPrimaryColor}};"></ng-md-icon>' +
             '      </div>' +
-            '      <div class="drop-area-tip" layout="column" flex layout-column ng-if="!!current.filePath" ng-bind="current.filePath"></div>' +
-            '      <div class="drop-area-tip" layout="column" flex layout-column ng-if="!current.filePath">点击选择xls文件或将文件拖放到这里</div>' +
+            '      <div class="drop-area-tip" layout="column" flex ng-if="!!current.filePath" ng-bind="current.filePath"></div>' +
+            '      <div class="drop-area-tip" layout="column" flex ng-if="!current.filePath">点击选择xls文件或将文件拖放到这里</div>' +
             '   </div>' +
             '   <input id="file-input" type="file" my-on-change="onFileChange" style="display: none;">' +
             '</div>',
@@ -275,10 +281,29 @@ angular
             })
             .state('app.setting', {
                 url: '/setting',
+                absolute: true,
                 views: {
                     main: {
-                        templateUrl:'tmpls/pages/setting.html',
+                        templateUrl:'tmpls/pages/setting/setting.html',
                         controller: 'settingCtrl'
+                    }
+                }
+            })
+            .state('app.setting.user', {
+                url: '/user',
+                views: {
+                    list: {
+                        templateUrl:'tmpls/pages/setting/user.html',
+                        controller: 'settingUserCtrl'
+                    }
+                }
+            })
+            .state('app.setting.template', {
+                url: '/template',
+                views: {
+                    list: {
+                        templateUrl:'tmpls/pages/setting/template.html',
+                        controller: 'settingTemplateCtrl'
                     }
                 }
             })

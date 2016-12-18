@@ -45,7 +45,7 @@ angular
             $scope.window.webContents.openDevTools({mode: 'detach'});
         }
         function onSetting() {
-            $state.go('app.setting');
+            $state.go('app.setting.user');
         }
         function onHelp(event) {
             dialogOpen('help', event);
@@ -128,6 +128,12 @@ angular
         // var all = settingService.getAll();
         // console.info(v);
         // console.info(all);
+    }])
+    .controller('settingUserCtrl',['$scope',function($scope){
+        console.info('settingUserCtrl');
+    }])
+    .controller('settingTemplateCtrl',['$scope',function($scope){
+        console.info('settingTemplateCtrl');
     }])
 ;
 

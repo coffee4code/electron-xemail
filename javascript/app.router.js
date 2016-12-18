@@ -53,10 +53,29 @@ angular
             })
             .state('app.setting', {
                 url: '/setting',
+                absolute: true,
                 views: {
                     main: {
-                        templateUrl:'tmpls/pages/setting.html',
+                        templateUrl:'tmpls/pages/setting/setting.html',
                         controller: 'settingCtrl'
+                    }
+                }
+            })
+            .state('app.setting.user', {
+                url: '/user',
+                views: {
+                    list: {
+                        templateUrl:'tmpls/pages/setting/user.html',
+                        controller: 'settingUserCtrl'
+                    }
+                }
+            })
+            .state('app.setting.template', {
+                url: '/template',
+                views: {
+                    list: {
+                        templateUrl:'tmpls/pages/setting/template.html',
+                        controller: 'settingTemplateCtrl'
                     }
                 }
             })
