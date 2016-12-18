@@ -1,10 +1,10 @@
-<div layout="row" flex style="height: 85%;">
+<div flex layout="column">
     <div class="drop-container" layout="column" flex>
         <div class="drop-center" layout="column" flex>
             <my-file-picker layout="column" flex my-on-change="onFileChange" file-type="current.fileType"></my-file-picker>
         </div>
     </div>
 </div>
-<div layout="row" layout-align="center center" style="height: 15%;">
+<div layout="row" layout-align="center center" style="height: 100px;">
     <md-button ng-click="onStart();" class="md-raised md-primary" ng-disabled="current.status<=0">确定</md-button>
 </div>
