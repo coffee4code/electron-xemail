@@ -1,26 +1,27 @@
-<div>
-    <md-button class="md-icon-button">
-        <ng-md-icon icon="arrow_back"></ng-md-icon>
-    </md-button>
-</div>
+
 <md-divider></md-divider>
 <div layout="row" flex>
     <div flex="25">
-        <ul>
-            <li>
-                <a href="javascript:;" ui-sref="app.setting.user">
-                    发送设置
-                </a>
-            </li>
-            <li>
-                <a href="javascript:;" ui-sref="app.setting.template">
-                    模板
-                </a>
-            </li>
-        </ul>
+        <div style="padding: 13px 16px;" md-colors="{background: 'grey-300'}">
+            设置
+        </div>
+        <md-menu-item>
+            <md-button class="md-button-custom" ui-sref="app.setting.user">
+                <ng-md-icon icon="mail_outline" size="22" style="fill:{{mdPrimaryColor}}"></ng-md-icon>
+                邮件设置
+            </md-button>
+        </md-menu-item>
+        <md-divider></md-divider>
+        <md-menu-item>
+            <md-button class="md-button-custom" ui-sref="app.setting.template">
+                <ng-md-icon icon="palette" size="22" style="fill:{{mdPrimaryColor}}"></ng-md-icon>
+                模板设置
+            </md-button>
+        </md-menu-item>
+        <md-divider></md-divider>
     </div>
     <md-divider></md-divider>
-    <div flex>
-        <div ui-view="list"></div>
+    <div flex layout="column">
+        <div flex ui-view="list" layout="column" flex></div>
     </div>
 </div>

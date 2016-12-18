@@ -57,7 +57,12 @@ angular
                 views: {
                     main: {
                         templateUrl:'tmpls/pages/setting/setting.html',
-                        controller: 'settingCtrl'
+                        controller: 'settingCtrl',
+                        resolve: {
+                            setting: ['settingService', function (settingService){
+                                return settingService.getAll();
+                            }]
+                        }
                     }
                 }
             })

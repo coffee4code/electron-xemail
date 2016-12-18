@@ -33,7 +33,7 @@ angular
         function queryByString(database, string, filter) {
             var data = null;
             _open(database);
-            if(DB && DB[database]){
+            if(_isopen(database)){
                 var db = DB[database];
                 var stmt = db.prepare(string);
                 data = stmt.getAsObject(filter);
@@ -44,7 +44,7 @@ angular
         function executeByString(database, sql) {
             var data = null;
             _open(database);
-            if(DB && DB[database]){
+            if(_isopen(database)){
                 var db = DB[database];
                 data = db.exec(sql);
                 _commit(database);
@@ -55,7 +55,7 @@ angular
         function queryTableData(database) {
             var data = null;
             _open(database);
-            if(DB && DB[database]) {
+            if(_isopen(database)) {
                 var db = DB[database];
                 data = db.exec("SELECT * FROM "+ database);
                 db.close();
@@ -67,15 +67,19 @@ angular
             return fs.existsSync(_getDbPath(database));
         }
 
+        function _isopen(database) {
+            return DB && DB[database] && DB[database]['db'];
+        }
+
         function _open(database) {
-            if(DB && DB[database]){
+            if(_isopen(database)){
                 return;
             }
             var fileBuffer = fs.readFileSync(_getDbPath(database));
             DB[database] = new SQL.Database(fileBuffer);
         }
         function _commit(database) {
-            if(DB && DB[database]) {
+            if(_isopen(database)) {
                 var db = DB[database],
                     data = db.export(),
                     buffer = new Buffer(data);

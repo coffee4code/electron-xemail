@@ -8,11 +8,15 @@
 	}
 }
 
-.md-icon-in-button {
-	display: inline-block;
-	height: 100%;
-	line-height: 100%;
-	vertical-align: middle;
-	position: relative;
-	right: -8px;
+.md-button-custom {
+	ng-md-icon {
+		position: relative;
+		vertical-align: middle;
+		margin-right: 15px;
+
+		svg {
+			position: relative;
+			top: 4px;
+		}
+	}
 }

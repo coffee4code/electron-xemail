@@ -46,11 +46,13 @@ body {
   opacity: 1;
 }
 
-.md-icon-in-button {
-  display: inline-block;
-  height: 100%;
-  line-height: 100%;
-  vertical-align: middle;
+.md-button-custom ng-md-icon {
   position: relative;
-  right: -8px;
+  vertical-align: middle;
+  margin-right: 15px;
+}
+
+.md-button-custom ng-md-icon svg {
+  position: relative;
+  top: 4px;
 }

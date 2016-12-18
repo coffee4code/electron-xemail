@@ -117,7 +117,8 @@ angular
     .controller('listCtrl',['$scope', '$state', 'path',function($scope, $state, path){
         $scope.path = path;
     }])
-    .controller('settingCtrl',['$scope', 'settingService',function($scope, settingService){
+    .controller('settingCtrl',['$scope', 'setting',function($scope, setting){
+        $scope.setting = setting;
         // var a1 = settingService.getItem('smtp_host');
         // console.info(a1);
         // settingService.setItem('smtp_host','smtp.163.com');
@@ -129,8 +130,26 @@ angular
         // console.info(v);
         // console.info(all);
     }])
-    .controller('settingUserCtrl',['$scope',function($scope){
-        console.info('settingUserCtrl');
+    .controller('settingUserCtrl',['$scope', '$mdToast', 'settingService',function($scope, $mdToast, settingService){
+        $scope.current = {
+            status : 1
+        };
+        $scope.onSave = onSave;
+
+        function onSave() {
+            settingService.setItemBatch({
+                sender_email: $scope.setting.sender_email,
+                sender_password: $scope.setting.sender_password,
+                smtp_host: $scope.setting.smtp_host,
+                smtp_port: $scope.setting.smtp_port,
+            });
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent('保存成功！')
+                    .position('left bottom')
+                    .hideDelay(3000)
+            );
+        }
     }])
     .controller('settingTemplateCtrl',['$scope',function($scope){
         console.info('settingTemplateCtrl');
@@ -285,7 +304,12 @@ angular
                 views: {
                     main: {
                         templateUrl:'tmpls/pages/setting/setting.html',
-                        controller: 'settingCtrl'
+                        controller: 'settingCtrl',
+                        resolve: {
+                            setting: ['settingService', function (settingService){
+                                return settingService.getAll();
+                            }]
+                        }
                     }
                 }
             })
@@ -484,7 +508,7 @@ angular
         function queryByString(database, string, filter) {
             var data = null;
             _open(database);
-            if(DB && DB[database]){
+            if(_isopen(database)){
                 var db = DB[database];
                 var stmt = db.prepare(string);
                 data = stmt.getAsObject(filter);
@@ -495,7 +519,7 @@ angular
         function executeByString(database, sql) {
             var data = null;
             _open(database);
-            if(DB && DB[database]){
+            if(_isopen(database)){
                 var db = DB[database];
                 data = db.exec(sql);
                 _commit(database);
@@ -506,7 +530,7 @@ angular
         function queryTableData(database) {
             var data = null;
             _open(database);
-            if(DB && DB[database]) {
+            if(_isopen(database)) {
                 var db = DB[database];
                 data = db.exec("SELECT * FROM "+ database);
                 db.close();
@@ -518,15 +542,19 @@ angular
             return fs.existsSync(_getDbPath(database));
         }
 
+        function _isopen(database) {
+            return DB && DB[database] && DB[database]['db'];
+        }
+
         function _open(database) {
-            if(DB && DB[database]){
+            if(_isopen(database)){
                 return;
             }
             var fileBuffer = fs.readFileSync(_getDbPath(database));
             DB[database] = new SQL.Database(fileBuffer);
         }
         function _commit(database) {
-            if(DB && DB[database]) {
+            if(_isopen(database)) {
                 var db = DB[database],
                     data = db.export(),
                     buffer = new Buffer(data);
