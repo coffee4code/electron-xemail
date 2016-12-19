@@ -16,16 +16,16 @@ angular
         };
 
         function init() {
-            var settingSql = 'DROP TABLE IF EXISTS '+dbName+'; CREATE TABLE ' + dbName + ' (itemKey, itemValue);';
+            var settingSql = 'DROP TABLE IF EXISTS '+dbName+'; CREATE TABLE ' + dbName + ' (id INTEGER PRIMARY KEY AUTOINCREMENT, itemKey STRING, itemValue STRING);';
             var sqls = [];
             for(var key in SETTINGS) {
-                sqls.push("INSERT INTO " + dbName + " VALUES ('" + key +"','"+ SETTINGS[key] +"')");
+                sqls.push("INSERT INTO " + dbName + " VALUES (NULL, '" + key +"','"+ SETTINGS[key] +"')");
             }
             databaseService.createWithData(dbName, settingSql+sqls.join(';'));
         }
 
         function getAll() {
-            var data = [],
+            var data = {},
                 query = databaseService.queryTableData(dbName);
             data = _getValues(query);
             return data;
@@ -35,7 +35,7 @@ angular
             var data = null,
                 query = databaseService.queryByString(dbName, 'SELECT * FROM '+ dbName + ' WHERE itemKey=:key;', {':key': key});
             if(query) {
-                data = [];
+                data = {};
                 data[query['itemKey']] = query['itemValue'];
             }
             return data;
@@ -67,13 +67,13 @@ angular
         }
 
         function _getValues(query) {
-            var data = [];
+            var data = {};
             if(query && query.length){
                 query = query[0].values;
             }
             if(query && query.length) {
                 for(var item in query) {
-                    data[query[item][0]] = query[item][1];
+                    data[query[item][1]] = query[item][2];
                 }
             }
             return data;

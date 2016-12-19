@@ -117,8 +117,8 @@ angular
     .controller('listCtrl',['$scope', '$state', 'path',function($scope, $state, path){
         $scope.path = path;
     }])
-    .controller('settingCtrl',['$scope', 'setting',function($scope, setting){
-        $scope.setting = setting;
+    .controller('settingCtrl',['$scope', 'settingService', 'setting',function($scope, settingService, setting){
+        // $scope.setting = setting;
         // var a1 = settingService.getItem('smtp_host');
         // console.info(a1);
         // settingService.setItem('smtp_host','smtp.163.com');
