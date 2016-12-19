@@ -36,7 +36,12 @@ angular
             });
         }
         function onMaximum() {
-            $scope.window.maximize();
+            // $scope.window.maximize();
+            if($scope.window.isMaximized()){
+                $scope.window.unmaximize();
+            } else {
+                $scope.window.maximize();
+            }
         }
         function onMinimize() {
             $scope.window.minimize();
