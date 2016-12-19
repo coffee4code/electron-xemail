@@ -2,14 +2,13 @@
   "name": "SalaryNoteHelper",
   "version": "1.0.0",
   "description": "读取xls文件发送工资条邮件",
-  "main": "main.js",
+  "main": "app/main.js",
   "build": {
     "appId": "com.yin.xmee",
     "files": [
       "app/**/*",
       "node_modules/**/*",
-      "package.json",
-      "main.js"
+      "package.json"
     ]
   },
   "scripts": {
