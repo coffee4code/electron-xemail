@@ -120,7 +120,6 @@ angular
                 DB[database] = new SQL.Database(fileBuffer);
                 return true;
             } catch (e) {
-            } finally {
                 return false;
             }
 
