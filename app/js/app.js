@@ -118,7 +118,7 @@ angular
         $scope.path = path;
     }])
     .controller('settingCtrl',['$scope', 'settingService', 'setting',function($scope, settingService, setting){
-        // $scope.setting = setting;
+        $scope.setting = setting;
         // var a1 = settingService.getItem('smtp_host');
         // console.info(a1);
         // settingService.setItem('smtp_host','smtp.163.com');
@@ -348,7 +348,7 @@ angular
             getItem: getItem,
             setItem: setItem,
             getItemBatch: getItemBatch,
-            setItemBatch: setItemBatch,
+            setItemBatch: setItemBatch
         };
 
         function init() {
@@ -357,19 +357,19 @@ angular
             for(var key in SETTINGS) {
                 sqls.push("INSERT INTO " + dbName + " VALUES (NULL, '" + key +"','"+ SETTINGS[key] +"')");
             }
-            databaseService.createWithData(dbName, settingSql+sqls.join(';'));
+            databaseService.create(dbName, settingSql+sqls.join(';'));
         }
 
         function getAll() {
             var data = {},
-                query = databaseService.queryTableData(dbName);
+                query = databaseService.table(dbName);
             data = _getValues(query);
             return data;
         }
 
         function getItem(key) {
             var data = null,
-                query = databaseService.queryByString(dbName, 'SELECT * FROM '+ dbName + ' WHERE itemKey=:key;', {':key': key});
+                query = databaseService.filter(dbName, 'SELECT * FROM '+ dbName + ' WHERE itemKey=:key;', {':key': key});
             if(query) {
                 data = {};
                 data[query['itemKey']] = query['itemValue'];
@@ -378,7 +378,7 @@ angular
         }
 
         function setItem(key, value) {
-            return databaseService.executeByString(dbName,'UPDATE '+dbName+' SET itemValue="'+value+'" WHERE itemKey="'+key+'";');
+            return databaseService.execute(dbName,'UPDATE '+dbName+' SET itemValue="'+value+'" WHERE itemKey="'+key+'";');
         }
 
         function getItemBatch(keys) {
@@ -388,7 +388,7 @@ angular
             }
             sqls = sqls.join(' ');
             sqls = 'SELECT * FROM '+dbName+' WHERE '+ sqls;
-            var query = databaseService.executeByString(dbName,sqls);
+            var query = databaseService.execute(dbName,sqls);
             var data = _getValues(query);
             return data;
         }
@@ -399,7 +399,7 @@ angular
                 sqls.push('UPDATE '+dbName+' SET itemValue="'+data[key]+'" WHERE itemKey="'+key+'"');
             }
             sqls = sqls.join(';');
-            return databaseService.executeByString(dbName,sqls);
+            return databaseService.execute(dbName,sqls);
         }
 
         function _getValues(query) {
@@ -486,13 +486,13 @@ angular
         var DB = [];
 
         return {
-            queryByString: queryByString,
-            executeByString: executeByString,
-            queryTableData: queryTableData,
-            createWithData: createWithData,
+            filter: filter,
+            execute: execute,
+            table: table,
+            create: create
         };
 
-        function createWithData(database, sql) {
+        function create(database, sql) {
 
             if(DB && DB[database]){
                 return ;
@@ -505,7 +505,7 @@ angular
             }
         }
 
-        function queryByString(database, string, filter) {
+        function filter(database, string, filter) {
             var data = null;
             _open(database);
             if(_isopen(database)){
@@ -516,7 +516,7 @@ angular
             return data;
         }
 
-        function executeByString(database, sql) {
+        function execute(database, sql) {
             var data = null;
             _open(database);
             if(_isopen(database)){
@@ -527,7 +527,7 @@ angular
             return data;
         }
 
-        function queryTableData(database) {
+        function table(database) {
             var data = null;
             _open(database);
             if(_isopen(database)) {

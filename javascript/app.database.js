@@ -11,13 +11,13 @@ angular
         var DB = [];
 
         return {
-            queryByString: queryByString,
-            executeByString: executeByString,
-            queryTableData: queryTableData,
-            createWithData: createWithData,
+            filter: filter,
+            execute: execute,
+            table: table,
+            create: create
         };
 
-        function createWithData(database, sql) {
+        function create(database, sql) {
 
             if(DB && DB[database]){
                 return ;
@@ -30,7 +30,7 @@ angular
             }
         }
 
-        function queryByString(database, string, filter) {
+        function filter(database, string, filter) {
             var data = null;
             _open(database);
             if(_isopen(database)){
@@ -41,7 +41,7 @@ angular
             return data;
         }
 
-        function executeByString(database, sql) {
+        function execute(database, sql) {
             var data = null;
             _open(database);
             if(_isopen(database)){
@@ -52,7 +52,7 @@ angular
             return data;
         }
 
-        function queryTableData(database) {
+        function table(database) {
             var data = null;
             _open(database);
             if(_isopen(database)) {

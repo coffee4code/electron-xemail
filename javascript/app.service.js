@@ -12,7 +12,7 @@ angular
             getItem: getItem,
             setItem: setItem,
             getItemBatch: getItemBatch,
-            setItemBatch: setItemBatch,
+            setItemBatch: setItemBatch
         };
 
         function init() {
@@ -21,19 +21,19 @@ angular
             for(var key in SETTINGS) {
                 sqls.push("INSERT INTO " + dbName + " VALUES (NULL, '" + key +"','"+ SETTINGS[key] +"')");
             }
-            databaseService.createWithData(dbName, settingSql+sqls.join(';'));
+            databaseService.create(dbName, settingSql+sqls.join(';'));
         }
 
         function getAll() {
             var data = {},
-                query = databaseService.queryTableData(dbName);
+                query = databaseService.table(dbName);
             data = _getValues(query);
             return data;
         }
 
         function getItem(key) {
             var data = null,
-                query = databaseService.queryByString(dbName, 'SELECT * FROM '+ dbName + ' WHERE itemKey=:key;', {':key': key});
+                query = databaseService.filter(dbName, 'SELECT * FROM '+ dbName + ' WHERE itemKey=:key;', {':key': key});
             if(query) {
                 data = {};
                 data[query['itemKey']] = query['itemValue'];
@@ -42,7 +42,7 @@ angular
         }
 
         function setItem(key, value) {
-            return databaseService.executeByString(dbName,'UPDATE '+dbName+' SET itemValue="'+value+'" WHERE itemKey="'+key+'";');
+            return databaseService.execute(dbName,'UPDATE '+dbName+' SET itemValue="'+value+'" WHERE itemKey="'+key+'";');
         }
 
         function getItemBatch(keys) {
@@ -52,7 +52,7 @@ angular
             }
             sqls = sqls.join(' ');
             sqls = 'SELECT * FROM '+dbName+' WHERE '+ sqls;
-            var query = databaseService.executeByString(dbName,sqls);
+            var query = databaseService.execute(dbName,sqls);
             var data = _getValues(query);
             return data;
         }
@@ -63,7 +63,7 @@ angular
                 sqls.push('UPDATE '+dbName+' SET itemValue="'+data[key]+'" WHERE itemKey="'+key+'"');
             }
             sqls = sqls.join(';');
-            return databaseService.executeByString(dbName,sqls);
+            return databaseService.execute(dbName,sqls);
         }
 
         function _getValues(query) {
