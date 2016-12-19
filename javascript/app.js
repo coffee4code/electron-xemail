@@ -1,10 +1,10 @@
 var angular = require('angular'),
-    angularAnamiate = require('angular-animate'),
+    angularAnimiate = require('angular-animate'),
     angularAria = require('angular-aria'),
     angularMaterial = require('angular-material'),
     angularMdIcons = require('angular-material-icons'),
     app = angular.module('app', [
-        angularAnamiate,
+        angularAnimiate,
         angularAria,
         angularMaterial,
         angularMdIcons,

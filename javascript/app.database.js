@@ -58,7 +58,6 @@ angular
             if(_isopen(database)) {
                 var db = DB[database];
                 data = db.exec("SELECT * FROM "+ database);
-                db.close();
             }
             return data;
         }
