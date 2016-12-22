@@ -1,5 +1,6 @@
 var angular = require('angular'),
-    remote = require('electron').remote;
+    remote = require('electron').remote,
+    path = require('path');
 
 angular
     .module('app.controller',[])
@@ -78,12 +79,6 @@ angular
         }
 
     }])
-    .controller('dialogHelpCtrl',['$scope',function($scope){
-
-    }])
-    .controller('contentCtrl',['$scope',function($scope){
-
-    }])
     .controller('contentCtrl',['$scope',function($scope){
 
     }])
@@ -115,24 +110,20 @@ angular
         }
         function onStart() {
             if($scope.current.file) {
-                $state.go('app.list',{path:$scope.current.file.path})
+                $state.go('app.sheet.load',{filePath:$scope.current.file.path})
             }
         }
     }])
-    .controller('listCtrl',['$scope', '$state', 'path',function($scope, $state, path){
-        $scope.path = path;
+    .controller('sheetCtrl',['$scope', function($scope){
     }])
-    .controller('settingCtrl',['$scope', 'settingService',function($scope, settingService){
-        // var a1 = settingService.getItem('smtp_host');
-        // console.info(a1);
-        // settingService.setItem('smtp_host','smtp.163.com');
-        // var a2 = settingService.getItem('smtp_host');
-        // console.info(a2);
-        // settingService.setItemBatch({'smtp_host':'smtp.yin.com','smtp_port':'123'});
-        // var v = settingService.getItemBatch(['smtp_host','smtp_port']);
-        // var all = settingService.getAll();
-        // console.info(v);
-        // console.info(all);
+    .controller('sheetLoadCtrl',['$scope', '$state', 'xlsxService', 'filePath',function($scope, $state, xlsxService, filePath){
+        $scope.path = filePath;
+        $scope.fileName = path.basename(filePath);
+        $scope.sheets = xlsxService.load(filePath);
+    }])
+    .controller('listCtrl',['$scope', function($scope){
+    }])
+    .controller('settingCtrl',['$scope', function($scope){
     }])
     .controller('settingUserCtrl',['$scope', '$mdToast', 'settingService', 'setting', function($scope, $mdToast, settingService, setting){
         $scope.setting = setting;
@@ -226,8 +217,8 @@ angular
             '      <div class="drop-area-icon" layout="column" flex layout-align="center bottom">' +
             '          <ng-md-icon icon="cloud_download" size="100" style="fill:{{$root.mdPrimaryColor}};"></ng-md-icon>' +
             '      </div>' +
-            '      <div class="drop-area-tip" layout="column" flex ng-if="!!current.filePath" ng-bind="current.filePath"></div>' +
-            '      <div class="drop-area-tip" layout="column" flex ng-if="!current.filePath">点击选择xls文件或将文件拖放到这里</div>' +
+            '      <div class="drop-area-tip" layout="column" layout-align="center center" flex ng-if="!!current.filePath" ng-bind="current.filePath"></div>' +
+            '      <div class="drop-area-tip" layout="column" layout-align="center center" flex ng-if="!current.filePath">点击选择xls文件或将文件拖放到这里</div>' +
             '   </div>' +
             '   <input id="file-input" type="file" my-on-change="onFileChange" style="display: none;">' +
             '</div>',
@@ -318,18 +309,37 @@ angular
                     }
                 }
             })
-            .state('app.list', {
-                url: '/list?path',
+            .state('app.sheet', {
+                url: '/sheet',
+                abstract: true,
                 views: {
                     main: {
-                        templateUrl:'tmpls/pages/list.html',
-                        controller: 'listCtrl',
-                        params: ['path'],
+                        templateUrl:'tmpls/pages/sheet/sheet.html',
+                        controller: 'sheetCtrl'
+                    },
+                }
+            })
+            .state('app.sheet.load', {
+                url: '/load?filePath',
+                views: {
+                    step: {
+                        templateUrl:'tmpls/pages/sheet/load.html',
+                        controller: 'sheetLoadCtrl',
+                        params: ['filePath'],
                         resolve:{
-                            path: ['$stateParams',function($stateParams){
-                                return $stateParams.path;
+                            filePath: ['$stateParams',function($stateParams){
+                                return $stateParams.filePath;
                             }]
                         },
+                    },
+                }
+            })
+            .state('app.sheet.list', {
+                url: '/list',
+                views: {
+                    main: {
+                        templateUrl:'tmpls/pages/sheet/list.html',
+                        controller: 'sheetListCtrl'
                     },
                 }
             })
@@ -374,9 +384,22 @@ angular
         }
     ]);
 
-;var angular = require('angular');
+;var angular = require('angular'),
+    XLSX = require('xlsx');
 angular
     .module('app.service',[])
+    .service('xlsxService',['config', function(config) {
+
+        var WORKBOOK = null;
+        return {
+            load: load
+        };
+
+        function load(filePath) {
+            WORKBOOK = XLSX.readFile(filePath);
+            return WORKBOOK.Sheets;
+        }
+    }])
     .service('templateService',['config', 'databaseService' ,function(config, databaseService) {
         var TEMPLATES = config.get().TEMPLATES,
             dbName = 'template';

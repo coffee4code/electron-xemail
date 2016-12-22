@@ -36,18 +36,37 @@ angular
                     }
                 }
             })
-            .state('app.list', {
-                url: '/list?path',
+            .state('app.sheet', {
+                url: '/sheet',
+                abstract: true,
                 views: {
                     main: {
-                        templateUrl:'tmpls/pages/list.html',
-                        controller: 'listCtrl',
-                        params: ['path'],
+                        templateUrl:'tmpls/pages/sheet/sheet.html',
+                        controller: 'sheetCtrl'
+                    },
+                }
+            })
+            .state('app.sheet.load', {
+                url: '/load?filePath',
+                views: {
+                    step: {
+                        templateUrl:'tmpls/pages/sheet/load.html',
+                        controller: 'sheetLoadCtrl',
+                        params: ['filePath'],
                         resolve:{
-                            path: ['$stateParams',function($stateParams){
-                                return $stateParams.path;
+                            filePath: ['$stateParams',function($stateParams){
+                                return $stateParams.filePath;
                             }]
                         },
+                    },
+                }
+            })
+            .state('app.sheet.list', {
+                url: '/list',
+                views: {
+                    main: {
+                        templateUrl:'tmpls/pages/sheet/list.html',
+                        controller: 'sheetListCtrl'
                     },
                 }
             })

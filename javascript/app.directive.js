@@ -47,8 +47,8 @@ angular
             '      <div class="drop-area-icon" layout="column" flex layout-align="center bottom">' +
             '          <ng-md-icon icon="cloud_download" size="100" style="fill:{{$root.mdPrimaryColor}};"></ng-md-icon>' +
             '      </div>' +
-            '      <div class="drop-area-tip" layout="column" flex ng-if="!!current.filePath" ng-bind="current.filePath"></div>' +
-            '      <div class="drop-area-tip" layout="column" flex ng-if="!current.filePath">点击选择xls文件或将文件拖放到这里</div>' +
+            '      <div class="drop-area-tip" layout="column" layout-align="center center" flex ng-if="!!current.filePath" ng-bind="current.filePath"></div>' +
+            '      <div class="drop-area-tip" layout="column" layout-align="center center" flex ng-if="!current.filePath">点击选择xls文件或将文件拖放到这里</div>' +
             '   </div>' +
             '   <input id="file-input" type="file" my-on-change="onFileChange" style="display: none;">' +
             '</div>',

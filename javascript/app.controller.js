@@ -1,5 +1,6 @@
 var angular = require('angular'),
-    remote = require('electron').remote;
+    remote = require('electron').remote,
+    path = require('path');
 
 angular
     .module('app.controller',[])
@@ -78,12 +79,6 @@ angular
         }
 
     }])
-    .controller('dialogHelpCtrl',['$scope',function($scope){
-
-    }])
-    .controller('contentCtrl',['$scope',function($scope){
-
-    }])
     .controller('contentCtrl',['$scope',function($scope){
 
     }])
@@ -115,24 +110,20 @@ angular
         }
         function onStart() {
             if($scope.current.file) {
-                $state.go('app.list',{path:$scope.current.file.path})
+                $state.go('app.sheet.load',{filePath:$scope.current.file.path})
             }
         }
     }])
-    .controller('listCtrl',['$scope', '$state', 'path',function($scope, $state, path){
-        $scope.path = path;
+    .controller('sheetCtrl',['$scope', function($scope){
     }])
-    .controller('settingCtrl',['$scope', 'settingService',function($scope, settingService){
-        // var a1 = settingService.getItem('smtp_host');
-        // console.info(a1);
-        // settingService.setItem('smtp_host','smtp.163.com');
-        // var a2 = settingService.getItem('smtp_host');
-        // console.info(a2);
-        // settingService.setItemBatch({'smtp_host':'smtp.yin.com','smtp_port':'123'});
-        // var v = settingService.getItemBatch(['smtp_host','smtp_port']);
-        // var all = settingService.getAll();
-        // console.info(v);
-        // console.info(all);
+    .controller('sheetLoadCtrl',['$scope', '$state', 'xlsxService', 'filePath',function($scope, $state, xlsxService, filePath){
+        $scope.path = filePath;
+        $scope.fileName = path.basename(filePath);
+        $scope.sheets = xlsxService.load(filePath);
+    }])
+    .controller('listCtrl',['$scope', function($scope){
+    }])
+    .controller('settingCtrl',['$scope', function($scope){
     }])
     .controller('settingUserCtrl',['$scope', '$mdToast', 'settingService', 'setting', function($scope, $mdToast, settingService, setting){
         $scope.setting = setting;

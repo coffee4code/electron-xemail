@@ -1,6 +1,19 @@
-var angular = require('angular');
+var angular = require('angular'),
+    XLSX = require('xlsx');
 angular
     .module('app.service',[])
+    .service('xlsxService',['config', function(config) {
+
+        var WORKBOOK = null;
+        return {
+            load: load
+        };
+
+        function load(filePath) {
+            WORKBOOK = XLSX.readFile(filePath);
+            return WORKBOOK.Sheets;
+        }
+    }])
     .service('templateService',['config', 'databaseService' ,function(config, databaseService) {
         var TEMPLATES = config.get().TEMPLATES,
             dbName = 'template';
