@@ -1,0 +1,43 @@
+
+.wizard-container {
+    height: 40px;
+    padding: 5px 10px;
+    overflow: hidden;
+    max-width: 100%;
+}
+.wizard {
+    margin: 0;
+    padding: 0;
+}
+.wizard li {
+    position: relative;
+    padding-left: 15px;
+}
+
+.wizard li::before, .wizard li::after {
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    border-color: transparent;
+    border-left-color: #fff;
+}
+
+.wizard li::before {
+    border-width: 28px;
+    right: -25px;
+}
+
+
+.wizard li::after {
+    border-left-color: $grey-color;
+    border-width: 21px;
+    right: -10px;
+}
+
+.wizard li.active {
+}
+
+.wizard li.active::after {
+}
