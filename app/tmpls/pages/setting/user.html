@@ -1,25 +1,40 @@
 <md-content flex layout="column">
-    <div flex></div>
-    <div flex layout="row">
-        <div flex="50" style="padding: 0 50px;">
-            <md-input-container class="md-block">
-                <input ng-model="setting.smtp_host" type="text" placeholder="SMTP地址" ng-required="true">
-            </md-input-container>
-            <md-input-container class="md-block">
-                <input ng-model="setting.smtp_port" type="text" placeholder="SMTP端口" ng-required="true">
-            </md-input-container>
-        </div>
-        <md-divider></md-divider>
-        <div flex="50" style="padding: 0 50px;">
-            <md-input-container class="md-block">
-                <input ng-model="setting.sender_email" type="email" placeholder="邮箱账号" ng-required="true">
-            </md-input-container>
-            <md-input-container class="md-block">
-                <input ng-model="setting.sender_password" type="password" placeholder="登录密码" ng-required="true">
-            </md-input-container>
-        </div>
+    <div flex layout="column">
+        <md-content layout-padding="10px">
+            <div flex></div>
+            <div layout="row">
+                <div flex="90" flex-offset="5">
+                    <md-content>
+                        <div class="md-title">服务器设置</div>
+                        <div flex="60" flex-offset="20">
+                            <md-input-container class="md-block">
+                                <input ng-model="setting.smtp_host" type="text" placeholder="SMTP地址" ng-required="true">
+                                <div class="hint">邮件SMTP服务器地址</div>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <input ng-model="setting.smtp_port" type="text" placeholder="SMTP端口" ng-required="true">
+                                <div class="hint">邮件SMTP服务器地址</div>
+                            </md-input-container>
+                        </div>
+                    </md-content>
+                    <md-content>
+                        <div class="md-title">邮箱</div>
+                        <div flex="60" flex-offset="20">
+                            <md-input-container class="md-block">
+                                <input ng-model="setting.sender_email" type="email" placeholder="邮箱账号" ng-required="true">
+                                <div class="hint">发送邮件使用的邮箱帐号</div>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <input ng-model="setting.sender_password" type="password" placeholder="登录密码" ng-required="true">
+                                <div class="hint">发送邮件使用的邮箱登录密码</div>
+                            </md-input-container>
+                        </div>
+                    </md-content>
+                </div>
+            </div>
+            <div flex></div>
+        </md-content>
     </div>
-    <div flex></div>
     <md-divider></md-divider>
     <div style="height: 60px;" layout="row" layout-align="end center">
         <md-button ui-sref="app.open">取消</md-button>

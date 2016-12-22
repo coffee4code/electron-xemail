@@ -1,6 +1,56 @@
 var angular = require('angular');
 angular
     .module('app.service',[])
+    .service('templateService',['config', 'databaseService' ,function(config, databaseService) {
+        var TEMPLATES = config.get().TEMPLATES,
+            dbName = 'template';
+
+        return {
+            init: init,
+            getAll: getAll,
+            setAll: setAll
+        };
+
+        function init() {
+            var settingSql = 'DROP TABLE IF EXISTS '+dbName+'; CREATE TABLE ' + dbName + ' (id INTEGER PRIMARY KEY AUTOINCREMENT, cell STRING, cellColumn STRING);';
+            var sqls = [];
+            for(var key in TEMPLATES) {
+                sqls.push("INSERT INTO " + dbName + " VALUES (NULL, '" + key +"','"+ TEMPLATES[key] +"')");
+            }
+            databaseService.create(dbName, settingSql+sqls.join(';'));
+        }
+
+        function getAll() {
+            var data = {},
+                query = databaseService.table(dbName);
+            data = _getValues(query);
+            return data;
+        }
+
+        function setAll(data) {
+            var sqls = [];
+            for(var key in data) {
+                sqls.push('UPDATE '+dbName+' SET cellColumn="'+data[key]+'" WHERE cell="'+key+'"');
+            }
+            sqls = sqls.join(';');
+            return databaseService.execute(dbName,sqls);
+        }
+
+
+
+        function _getValues(query) {
+            var data = {};
+            if(query && query.length){
+                query = query[0].values;
+            }
+            if(query && query.length) {
+                for(var item in query) {
+                    data[query[item][1]] = query[item][2];
+                }
+            }
+            return data;
+        }
+    }])
     .service('settingService',['config', 'databaseService' ,function(config, databaseService) {
 
         var SETTINGS = config.get().SETTINGS,

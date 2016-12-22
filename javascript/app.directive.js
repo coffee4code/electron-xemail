@@ -86,4 +86,18 @@ angular
                 }
             }
         };
-    }]);
+    }])
+    .directive('myInputUppercase', ['$filter', function($filter) {
+        return {
+            restrict: 'EA',
+            require: 'ngModel',
+            link: function (scope, element, attrs, ngModel) {
+                function toUpper(text) {
+                    return (text || '').toUpperCase();
+                }
+                ngModel.$parsers.push(toUpper);
+                ngModel.$formatters.push(toUpper);
+            }
+        }
+    }])
+;

@@ -57,12 +57,7 @@ angular
                 views: {
                     main: {
                         templateUrl:'tmpls/pages/setting/setting.html',
-                        controller: 'settingCtrl',
-                        resolve: {
-                            setting: ['settingService', function (settingService){
-                                return settingService.getAll();
-                            }]
-                        }
+                        controller: 'settingCtrl'
                     }
                 }
             })
@@ -71,7 +66,12 @@ angular
                 views: {
                     list: {
                         templateUrl:'tmpls/pages/setting/user.html',
-                        controller: 'settingUserCtrl'
+                        controller: 'settingUserCtrl',
+                        resolve: {
+                            setting: ['settingService', function (settingService){
+                                return settingService.getAll();
+                            }]
+                        }
                     }
                 }
             })
@@ -80,7 +80,12 @@ angular
                 views: {
                     list: {
                         templateUrl:'tmpls/pages/setting/template.html',
-                        controller: 'settingTemplateCtrl'
+                        controller: 'settingTemplateCtrl',
+                        resolve: {
+                            template: ['templateService', function (templateService){
+                                return templateService.getAll();
+                            }]
+                        }
                     }
                 }
             })

@@ -122,8 +122,7 @@ angular
     .controller('listCtrl',['$scope', '$state', 'path',function($scope, $state, path){
         $scope.path = path;
     }])
-    .controller('settingCtrl',['$scope', 'settingService', 'setting',function($scope, settingService, setting){
-        $scope.setting = setting;
+    .controller('settingCtrl',['$scope', 'settingService',function($scope, settingService){
         // var a1 = settingService.getItem('smtp_host');
         // console.info(a1);
         // settingService.setItem('smtp_host','smtp.163.com');
@@ -135,11 +134,13 @@ angular
         // console.info(v);
         // console.info(all);
     }])
-    .controller('settingUserCtrl',['$scope', '$mdToast', 'settingService',function($scope, $mdToast, settingService){
+    .controller('settingUserCtrl',['$scope', '$mdToast', 'settingService', 'setting', function($scope, $mdToast, settingService, setting){
+        $scope.setting = setting;
         $scope.current = {
             status : 1
         };
         $scope.onSave = onSave;
+
 
         function onSave() {
             settingService.setItemBatch({
@@ -156,8 +157,23 @@ angular
             );
         }
     }])
-    .controller('settingTemplateCtrl',['$scope',function($scope){
-        console.info('settingTemplateCtrl');
+    .controller('settingTemplateCtrl',['$scope', '$mdToast', 'templateService', 'template', function($scope, $mdToast, templateService, template){
+        $scope.template = template;
+        $scope.current = {
+            status : 1
+        };
+        $scope.onSave = onSave;
+
+
+        function onSave() {
+            templateService.setAll(template);
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent('保存成功！')
+                    .position('left bottom')
+                    .hideDelay(3000)
+            );
+        }
     }])
 ;
 

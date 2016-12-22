@@ -4,9 +4,11 @@ angular
     .module('app.config',[])
     .provider("config",[function(){
         var options = {
-            SETTINGS: {}
+            SETTINGS: {},
+            TEMPLATES: {}
         };
         this.setSetting = setSetting;
+        this.setTemplate = setTemplate;
         this.$get=function(){
             return {
                 get:get
@@ -18,6 +20,9 @@ angular
         }
         function setSetting(setting){
             options.SETTINGS = setting;
+        }
+        function setTemplate(template) {
+            options.TEMPLATES = template;
         }
     }])
     .config(['$mdThemingProvider',function($mdThemingProvider) {
@@ -51,7 +56,27 @@ angular
             sender_email : '1062893543@qq.com',
             sender_password : 'anqckibffhrpbcef'
         };
+        var template = {
+            employee_email : 'K',
+            employee_name : 'B',
+            employee_department : 'C',
+            employee_workday : 'R',
+            employee_attendance : 'T',
+            wage_base : 'L',
+            wage_allowance : 'M',
+            wage_reward : 'N',
+            wage_everyday : 'Q',
+            wage_total : 'O',
+            deductions_absence : 'U',
+            deductions_sick_leave : 'V',
+            deductions_other : 'W',
+            deductions_social_security : 'X',
+            deductions_provident_fund : 'Y',
+            deductions_personal_tax : 'Z',
+            final_amount : 'AC'
+        };
         configProvider.setSetting(setting);
+        configProvider.setTemplate(template);
     }])
 
 ;

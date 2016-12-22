@@ -17,11 +17,12 @@ var angular = require('angular'),
         'app.filter',
         ]);
 
-app.run(['$rootScope', '$state', '$mdColors', 'settingService',function ($rootScope, $state,$mdColors, settingService) {
+app.run(['$rootScope', '$state', '$mdColors', 'settingService', 'templateService' ,function ($rootScope, $state,$mdColors, settingService, templateService) {
 
     $rootScope.mdPrimaryColor = $mdColors.getThemeColor('pink');
 
     settingService.init();
+    templateService.init();
 
 
 }])

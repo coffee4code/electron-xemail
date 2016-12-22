@@ -9,6 +9,7 @@
 html,
 button,
 select,
+html,
 textarea,
 input {
   font-family: Helvetica, Tahoma, Arial, "WenQuanYi MicroHei", "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
@@ -71,4 +72,26 @@ body {
 .md-button-custom ng-md-icon svg {
   position: relative;
   top: 4px;
+}
+
+md-input-container {
+  margin-bottom: 40px;
+}
+
+input[my-input-uppercase] {
+  text-transform: uppercase;
+}
+
+.hint {
+  /* Position the hint */
+  position: absolute;
+  left: 2px;
+  right: auto;
+  bottom: 7px;
+  /* Copy styles from ng-messages */
+  font-size: 10px;
+  line-height: 14px;
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+  /* Set our own color */
+  color: grey;
 }

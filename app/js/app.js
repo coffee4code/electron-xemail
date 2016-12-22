@@ -122,8 +122,7 @@ angular
     .controller('listCtrl',['$scope', '$state', 'path',function($scope, $state, path){
         $scope.path = path;
     }])
-    .controller('settingCtrl',['$scope', 'settingService', 'setting',function($scope, settingService, setting){
-        $scope.setting = setting;
+    .controller('settingCtrl',['$scope', 'settingService',function($scope, settingService){
         // var a1 = settingService.getItem('smtp_host');
         // console.info(a1);
         // settingService.setItem('smtp_host','smtp.163.com');
@@ -135,11 +134,13 @@ angular
         // console.info(v);
         // console.info(all);
     }])
-    .controller('settingUserCtrl',['$scope', '$mdToast', 'settingService',function($scope, $mdToast, settingService){
+    .controller('settingUserCtrl',['$scope', '$mdToast', 'settingService', 'setting', function($scope, $mdToast, settingService, setting){
+        $scope.setting = setting;
         $scope.current = {
             status : 1
         };
         $scope.onSave = onSave;
+
 
         function onSave() {
             settingService.setItemBatch({
@@ -156,8 +157,23 @@ angular
             );
         }
     }])
-    .controller('settingTemplateCtrl',['$scope',function($scope){
-        console.info('settingTemplateCtrl');
+    .controller('settingTemplateCtrl',['$scope', '$mdToast', 'templateService', 'template', function($scope, $mdToast, templateService, template){
+        $scope.template = template;
+        $scope.current = {
+            status : 1
+        };
+        $scope.onSave = onSave;
+
+
+        function onSave() {
+            templateService.setAll(template);
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent('保存成功！')
+                    .position('left bottom')
+                    .hideDelay(3000)
+            );
+        }
     }])
 ;
 
@@ -249,7 +265,21 @@ angular
                 }
             }
         };
-    }]);
+    }])
+    .directive('myInputUppercase', ['$filter', function($filter) {
+        return {
+            restrict: 'EA',
+            require: 'ngModel',
+            link: function (scope, element, attrs, ngModel) {
+                function toUpper(text) {
+                    return (text || '').toUpperCase();
+                }
+                ngModel.$parsers.push(toUpper);
+                ngModel.$formatters.push(toUpper);
+            }
+        }
+    }])
+;
 ;var angular = require('angular'),
     ngRouter = require('angular-ui-router');
 
@@ -309,12 +339,7 @@ angular
                 views: {
                     main: {
                         templateUrl:'tmpls/pages/setting/setting.html',
-                        controller: 'settingCtrl',
-                        resolve: {
-                            setting: ['settingService', function (settingService){
-                                return settingService.getAll();
-                            }]
-                        }
+                        controller: 'settingCtrl'
                     }
                 }
             })
@@ -323,7 +348,12 @@ angular
                 views: {
                     list: {
                         templateUrl:'tmpls/pages/setting/user.html',
-                        controller: 'settingUserCtrl'
+                        controller: 'settingUserCtrl',
+                        resolve: {
+                            setting: ['settingService', function (settingService){
+                                return settingService.getAll();
+                            }]
+                        }
                     }
                 }
             })
@@ -332,7 +362,12 @@ angular
                 views: {
                     list: {
                         templateUrl:'tmpls/pages/setting/template.html',
-                        controller: 'settingTemplateCtrl'
+                        controller: 'settingTemplateCtrl',
+                        resolve: {
+                            template: ['templateService', function (templateService){
+                                return templateService.getAll();
+                            }]
+                        }
                     }
                 }
             })
@@ -342,6 +377,56 @@ angular
 ;var angular = require('angular');
 angular
     .module('app.service',[])
+    .service('templateService',['config', 'databaseService' ,function(config, databaseService) {
+        var TEMPLATES = config.get().TEMPLATES,
+            dbName = 'template';
+
+        return {
+            init: init,
+            getAll: getAll,
+            setAll: setAll
+        };
+
+        function init() {
+            var settingSql = 'DROP TABLE IF EXISTS '+dbName+'; CREATE TABLE ' + dbName + ' (id INTEGER PRIMARY KEY AUTOINCREMENT, cell STRING, cellColumn STRING);';
+            var sqls = [];
+            for(var key in TEMPLATES) {
+                sqls.push("INSERT INTO " + dbName + " VALUES (NULL, '" + key +"','"+ TEMPLATES[key] +"')");
+            }
+            databaseService.create(dbName, settingSql+sqls.join(';'));
+        }
+
+        function getAll() {
+            var data = {},
+                query = databaseService.table(dbName);
+            data = _getValues(query);
+            return data;
+        }
+
+        function setAll(data) {
+            var sqls = [];
+            for(var key in data) {
+                sqls.push('UPDATE '+dbName+' SET cellColumn="'+data[key]+'" WHERE cell="'+key+'"');
+            }
+            sqls = sqls.join(';');
+            return databaseService.execute(dbName,sqls);
+        }
+
+
+
+        function _getValues(query) {
+            var data = {};
+            if(query && query.length){
+                query = query[0].values;
+            }
+            if(query && query.length) {
+                for(var item in query) {
+                    data[query[item][1]] = query[item][2];
+                }
+            }
+            return data;
+        }
+    }])
     .service('settingService',['config', 'databaseService' ,function(config, databaseService) {
 
         var SETTINGS = config.get().SETTINGS,
@@ -428,9 +513,11 @@ angular
     .module('app.config',[])
     .provider("config",[function(){
         var options = {
-            SETTINGS: {}
+            SETTINGS: {},
+            TEMPLATES: {}
         };
         this.setSetting = setSetting;
+        this.setTemplate = setTemplate;
         this.$get=function(){
             return {
                 get:get
@@ -442,6 +529,9 @@ angular
         }
         function setSetting(setting){
             options.SETTINGS = setting;
+        }
+        function setTemplate(template) {
+            options.TEMPLATES = template;
         }
     }])
     .config(['$mdThemingProvider',function($mdThemingProvider) {
@@ -475,7 +565,27 @@ angular
             sender_email : '1062893543@qq.com',
             sender_password : 'anqckibffhrpbcef'
         };
+        var template = {
+            employee_email : 'K',
+            employee_name : 'B',
+            employee_department : 'C',
+            employee_workday : 'R',
+            employee_attendance : 'T',
+            wage_base : 'L',
+            wage_allowance : 'M',
+            wage_reward : 'N',
+            wage_everyday : 'Q',
+            wage_total : 'O',
+            deductions_absence : 'U',
+            deductions_sick_leave : 'V',
+            deductions_other : 'W',
+            deductions_social_security : 'X',
+            deductions_provident_fund : 'Y',
+            deductions_personal_tax : 'Z',
+            final_amount : 'AC'
+        };
         configProvider.setSetting(setting);
+        configProvider.setTemplate(template);
     }])
 
 ;;var angular = require('angular'),
@@ -666,11 +776,12 @@ angular
         'app.filter',
         ]);
 
-app.run(['$rootScope', '$state', '$mdColors', 'settingService',function ($rootScope, $state,$mdColors, settingService) {
+app.run(['$rootScope', '$state', '$mdColors', 'settingService', 'templateService' ,function ($rootScope, $state,$mdColors, settingService, templateService) {
 
     $rootScope.mdPrimaryColor = $mdColors.getThemeColor('pink');
 
     settingService.init();
+    templateService.init();
 
 
 }])
