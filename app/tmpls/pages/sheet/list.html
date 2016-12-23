@@ -56,21 +56,17 @@
                     </table>
                 </md-table-container>
             </div>
-            <div class="table-footer" layout="row" layout-align="center center">
-                <span flex></span>
-                <div>
-                    选择
-                    <span class="num">{{selected.length}}</span>
-                    条数据，共
-                    <span class="num">{{rowList.length}}</span>
-                    条
-                </div>
-            </div>
-
         </div>
     </div>
     <md-divider></md-divider>
     <div style="height: 60px;" layout="row" layout-align="end center">
+        <span class="table-footer" layout="row" layout-align="end center">
+            选择
+            <span class="num">{{selected.length}}</span>
+            条数据，共
+            <span class="num">{{rowList.length}}</span>
+            条
+        </span>
         <md-button ui-sref="app.sheet.load({filePath:current.filePath})">上一步</md-button>
         <md-button ng-click="onNext();" class="md-raised md-primary" ng-disabled="!rowList.length || !selected.length">下一步</md-button>
     </div>
