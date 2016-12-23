@@ -136,7 +136,7 @@ angular
     .controller('sheetListCtrl',['$scope', 'xlsxService', function($scope, xlsxService){
         $scope.current.progress= 50;
         $scope.rowList = xlsxService.list($scope.current.sheetName);
-        $scope.selected = $scope.rowList;
+        $scope.selected = [];
         $scope.onNext = onNext;
 
         function onNext() {

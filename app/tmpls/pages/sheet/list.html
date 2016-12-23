@@ -11,16 +11,46 @@
                 <table md-table md-row-select="true" multiple="true" ng-model="selected">
                     <thead md-head>
                         <tr md-row>
-                            <th md-column><span>员工姓名</span></th>
+                            <th md-column><span>序号</span></th>
                             <th md-column><span>员工邮箱</span></th>
-                            <th md-column><span>工资</span></th>
+                            <th md-column><span>员工姓名</span></th>
+                            <th md-column><span>员工部门</span></th>
+                            <th md-column><span>满勤天数</span></th>
+                            <th md-column><span>实际出勤</span></th>
+                            <th md-column><span>基本工资</span></th>
+                            <th md-column><span>岗位津贴</span></th>
+                            <th md-column><span>员工奖金</span></th>
+                            <th md-column><span>日工资</span></th>
+                            <th md-column><span>应发合计</span></th>
+                            <th md-column><span>缺勤扣款</span></th>
+                            <th md-column><span>病事假扣款</span></th>
+                            <th md-column><span>其他扣款</span></th>
+                            <th md-column><span>社保个人部分</span></th>
+                            <th md-column><span>公积金个人部分</span></th>
+                            <th md-column><span>个税</span></th>
+                            <th md-column><span>实发工资</span></th>
                         </tr>
                     </thead>
                     <tbody md-body>
-                        <tr md-row md-select="row" md-auto-select="true" ng-repeat="row in rowList">
-                            <td md-cell>{{row.employee_name}}</td>
-                            <td md-cell>{{row.employee_email}}</td>
-                            <td md-cell>{{row.final_amount}}</td>
+                        <tr md-row md-select="row" md-auto-select="true" ng-repeat="row in rowList" ng-class="{even: $even, odd: $odd}">
+                            <td md-cell>{{$index+1}}</td>
+                            <td md-cell>{{ row.employee_email }}</td>
+                            <td md-cell>{{ row.employee_name }}</td>
+                            <td md-cell>{{ row.employee_department }}</td>
+                            <td md-cell>{{ row.employee_workday }}</td>
+                            <td md-cell>{{ row.employee_attendance }}</td>
+                            <td md-cell>{{ row.wage_base }}</td>
+                            <td md-cell>{{ row.wage_allowance }}</td>
+                            <td md-cell>{{ row.wage_reward }}</td>
+                            <td md-cell>{{ row.wage_everyday }}</td>
+                            <td md-cell>{{ row.wage_total }}</td>
+                            <td md-cell>{{ row.deductions_absence }}</td>
+                            <td md-cell>{{ row.deductions_sick_leave }}</td>
+                            <td md-cell>{{ row.deductions_other }}</td>
+                            <td md-cell>{{ row.deductions_social_security }}</td>
+                            <td md-cell>{{ row.deductions_provident_fund }}</td>
+                            <td md-cell>{{ row.deductions_personal_tax }}</td>
+                            <td md-cell>{{ row.final_amount }}</td>
                         </tr>
                     </tbody>
                 </table>

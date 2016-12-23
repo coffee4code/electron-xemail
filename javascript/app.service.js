@@ -38,9 +38,12 @@ angular
                         for(var t in template) {
                             var cell = sheet[(template[t]+''+rowIndex)];
                             if(cell && cell.v){
-                                row[t] = cell.v
+                                row[t] = cell.v;
+                                if(t=='wage_everyday') {
+                                    row[t] = Number(cell.v).toFixed(2);
+                                }
                             }else {
-                                row[t] = '';
+                                row[t] = '-';
                             }
                         }
                         data.push(row);
