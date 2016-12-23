@@ -115,7 +115,7 @@ input[my-input-uppercase] {
   background: #fff;
   font-size: 13px;
   color: #aaa;
-  padding-right: 12px;
+  padding-left: 12px;
 }
 
 .table-footer .num {
