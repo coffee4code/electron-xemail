@@ -66,7 +66,12 @@ angular
                 views: {
                     step: {
                         templateUrl:'tmpls/pages/sheet/list.html',
-                        controller: 'sheetListCtrl'
+                        controller: 'sheetListCtrl',
+                        resolve: {
+                            templateDetail: ['templateService', function (templateService){
+                                return templateService.getDetail();
+                            }]
+                        }
                     },
                 }
             })
@@ -103,6 +108,9 @@ angular
                         resolve: {
                             template: ['templateService', function (templateService){
                                 return templateService.getAll();
+                            }],
+                            templateDetail: ['templateService', function (templateService){
+                                return templateService.getDetail();
                             }]
                         }
                     }

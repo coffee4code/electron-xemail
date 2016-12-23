@@ -21,8 +21,10 @@ app.on('activate', function () {
 
 function createWindow () {
     mainWin = new BrowserWindow({
-        minWidth: 900,
-        minHeight: 650,
+        width: 1366,
+        height: 768,
+        minWidth: 1366,
+        minHeight: 768,
         frame: false
     });
     mainWin.setMenu(null);
@@ -33,7 +35,7 @@ function createWindow () {
     }));
 
     //https://github.com/kevinsawicki/tray-example
-    mainWin.webContents.openDevTools({mode: 'detach'});
+    mainWin.webContents.openDevTools();
 
     mainWin.on('closed', function () {
         mainWin = null

@@ -96,6 +96,18 @@ input[my-input-uppercase] {
   color: grey;
 }
 
+.table-header {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 0 0 12px;
+}
+
+.table-header > ng-md-icon {
+  position: relative;
+  top: 5px;
+  padding: 0 4px;
+}
+
 .table-footer {
   height: 50px;
   background: #fff;
@@ -110,9 +122,14 @@ input[my-input-uppercase] {
 }
 
 table.md-table.md-row-select td.md-cell:nth-child(n+3):nth-last-child(n+2), table.md-table.md-row-select th.md-column:nth-child(n+3):nth-last-child(n+2) {
-  padding: 0 20px 0 0 !important;
+  padding: 0 10px 0 10px !important;
 }
 
 table tr.even {
   background: #ececec;
+}
+
+table.table-center th,
+table.table-center td {
+  text-align: center !important;
 }

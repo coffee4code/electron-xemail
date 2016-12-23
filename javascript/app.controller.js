@@ -48,7 +48,7 @@ angular
             $scope.window.minimize();
         }
         function onDevTool() {
-            $scope.window.webContents.openDevTools({mode: 'detach'});
+            $scope.window.webContents.openDevTools();
         }
         function onSetting() {
             $state.go('app.setting.user');
@@ -133,8 +133,9 @@ angular
             $state.go('app.sheet.list');
         }
     }])
-    .controller('sheetListCtrl',['$scope', 'xlsxService', function($scope, xlsxService){
+    .controller('sheetListCtrl',['$scope', 'xlsxService', 'templateDetail', function($scope, xlsxService, templateDetail){
         $scope.current.progress= 50;
+        $scope.templateDetail = templateDetail;
         $scope.rowList = xlsxService.list($scope.current.sheetName);
         $scope.selected = [];
         $scope.onNext = onNext;
@@ -169,8 +170,9 @@ angular
             );
         }
     }])
-    .controller('settingTemplateCtrl',['$scope', '$mdToast', 'templateService', 'template', function($scope, $mdToast, templateService, template){
+    .controller('settingTemplateCtrl',['$scope', '$mdToast', 'templateService', 'template', 'templateDetail', function($scope, $mdToast, templateService, template, templateDetail){
         $scope.template = template;
+        $scope.templateDetail = templateDetail;
         $scope.current = {
             status : 1
         };

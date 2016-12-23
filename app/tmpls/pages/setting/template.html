@@ -9,19 +9,19 @@
                         <div class="md-caption" md-colors="{'color':'red'}" style="margin-bottom: 10px;">邮件模板中 「年度」和「月份」 会在程序内自动生成为当前年月</div>
                         <div flex="60" flex-offset="20" layout="row" layout-wrap>
                             <md-input-container flex="33">
-                                <input my-input-uppercase ng-model="template.employee_email" type="text" placeholder="邮箱" ng-required="true">
+                                <input my-input-uppercase ng-model="template.employee_email" type="text" placeholder="{{ templateDetail['employee_email'].label }}" ng-required="true">
                             </md-input-container>
                             <md-input-container flex="33">
-                                <input my-input-uppercase ng-model="template.employee_name" type="text" placeholder="姓名" ng-required="true">
+                                <input my-input-uppercase ng-model="template.employee_name" type="text" placeholder="{{ templateDetail['employee_name'].label }}" ng-required="true">
                             </md-input-container>
                             <md-input-container flex="33">
-                                <input my-input-uppercase ng-model="template.employee_department" type="text" placeholder="员工部门" ng-required="true">
+                                <input my-input-uppercase ng-model="template.employee_department" type="text" placeholder="{{ templateDetail['employee_department'].label }}" ng-required="true">
                             </md-input-container>
                             <md-input-container flex="33">
-                                <input my-input-uppercase ng-model="template.employee_workday" type="text" placeholder="满勤天数" ng-required="true">
+                                <input my-input-uppercase ng-model="template.employee_workday" type="text" placeholder="{{ templateDetail['employee_workday'].label }}" ng-required="true">
                             </md-input-container>
                             <md-input-container flex="33">
-                                <input my-input-uppercase ng-model="template.employee_attendance" type="text" placeholder="实际出勤" ng-required="true">
+                                <input my-input-uppercase ng-model="template.employee_attendance" type="text" placeholder="{{ templateDetail['employee_attendance'].label }}" ng-required="true">
                             </md-input-container>
                         </div>
                     </md-content>
@@ -30,19 +30,19 @@
                         <div class="md-title">应发项目</div>
                         <div flex="60" flex-offset="20" layout="row" layout-wrap>
                             <md-input-container flex="33">
-                                <input my-input-uppercase ng-model="template.wage_base" type="text" placeholder="基本工资" ng-required="true">
+                                <input my-input-uppercase ng-model="template.wage_base" type="text" placeholder="{{ templateDetail['wage_base'].label }}" ng-required="true">
                             </md-input-container>
                             <md-input-container flex="33">
-                                <input my-input-uppercase ng-model="template.wage_allowance" type="text" placeholder="岗位津贴" ng-required="true">
+                                <input my-input-uppercase ng-model="template.wage_allowance" type="text" placeholder="{{ templateDetail['wage_allowance'].label }}" ng-required="true">
                             </md-input-container>
                             <md-input-container flex="33">
-                                <input my-input-uppercase ng-model="template.wage_reward" type="text" placeholder="奖金" ng-required="true">
+                                <input my-input-uppercase ng-model="template.wage_reward" type="text" placeholder="{{ templateDetail['wage_reward'].label }}" ng-required="true">
                             </md-input-container>
                             <md-input-container flex="33">
-                                <input my-input-uppercase ng-model="template.wage_everyday" type="text" placeholder="日工资" ng-required="true">
+                                <input my-input-uppercase ng-model="template.wage_everyday" type="text" placeholder="{{ templateDetail['wage_everyday'].label }}" ng-required="true">
                             </md-input-container>
                             <md-input-container flex="33">
-                                <input my-input-uppercase ng-model="template.wage_total" type="text" placeholder="应发合计" ng-required="true">
+                                <input my-input-uppercase ng-model="template.wage_total" type="text" placeholder="{{ templateDetail['wage_total'].label }}" ng-required="true">
                             </md-input-container>
                         </div>
                     </md-content>
@@ -51,22 +51,22 @@
                         <div class="md-title">扣除项目</div>
                         <div flex="60" flex-offset="20" layout="row" layout-wrap>
                             <md-input-container flex="33">
-                                <input my-input-uppercase ng-model="template.deductions_absence" type="text" placeholder="缺勤扣款" ng-required="true">
+                                <input my-input-uppercase ng-model="template.deductions_absence" type="text" placeholder="{{ templateDetail['deductions_absence'].label }}" ng-required="true">
                             </md-input-container>
                             <md-input-container flex="33">
-                                <input my-input-uppercase ng-model="template.deductions_sick_leave" type="text" placeholder="病事假扣款" ng-required="true">
+                                <input my-input-uppercase ng-model="template.deductions_sick_leave" type="text" placeholder="{{ templateDetail['deductions_sick_leave'].label }}" ng-required="true">
                             </md-input-container>
                             <md-input-container flex="33">
-                                <input my-input-uppercase ng-model="template.deductions_other" type="text" placeholder="其他扣款" ng-required="true">
+                                <input my-input-uppercase ng-model="template.deductions_other" type="text" placeholder="{{ templateDetail['deductions_other'].label }}" ng-required="true">
                             </md-input-container>
                             <md-input-container flex="33">
-                                <input my-input-uppercase ng-model="template.deductions_social_security" type="text" placeholder="社保个人部分" ng-required="true">
+                                <input my-input-uppercase ng-model="template.deductions_social_security" type="text" placeholder="{{ templateDetail['deductions_social_security'].label }}" ng-required="true">
                             </md-input-container>
                             <md-input-container flex="33">
-                                <input my-input-uppercase ng-model="template.deductions_provident_fund" type="text" placeholder="公积金个人部分" ng-required="true">
+                                <input my-input-uppercase ng-model="template.deductions_provident_fund" type="text" placeholder="{{ templateDetail['deductions_provident_fund'].label }}" ng-required="true">
                             </md-input-container>
                             <md-input-container flex="33">
-                                <input my-input-uppercase ng-model="template.deductions_personal_tax" type="text" placeholder="个税" ng-required="true">
+                                <input my-input-uppercase ng-model="template.deductions_personal_tax" type="text" placeholder="{{ templateDetail['deductions_personal_tax'].label }}" ng-required="true">
                             </md-input-container>
                         </div>
                     </md-content>
@@ -75,7 +75,7 @@
                         <div class="md-title">实发项目</div>
                         <div flex="60" flex-offset="20" layout="row" layout-wrap>
                             <md-input-container flex="33">
-                                <input my-input-uppercase ng-model="template.final_amount" type="text" placeholder="实发工资" ng-required="true">
+                                <input my-input-uppercase ng-model="template.final_amount" type="text" placeholder="{{ templateDetail['final_amount'].label }}" ng-required="true">
                             </md-input-container>
                         </div>
                     </md-content>
