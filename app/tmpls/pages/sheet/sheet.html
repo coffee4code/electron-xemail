@@ -1,21 +1,6 @@
-<md-content layout="column">
-    <div class="wizard-container" layout="column" md-colors="{background: 'grey-300'}">
-        <ul class="wizard" flex layout="row">
-            <li class="active current" flex layout="row" layout-align="start center">
-                <span>1.选择表单</span>
-            </li>
-            <li flex layout="row" layout-align="start center">
-                <span>2.数据导入</span>
-            </li>
-            <li flex layout="row" layout-align="start center">
-                <span>3.发送邮件</span>
-            </li>
-            <li flex layout="row" layout-align="start center">
-                <span>4.生成报告</span>
-            </li>
-        </ul>
-    </div>
-    <div>
+<div flex layout="column">
+    <md-progress-linear md-mode="determinate" value="{{current.progress}}"></md-progress-linear>
+    <div flex layout="column">
         <div ui-view="step"></div>
     </div>
-</md-content>
+</div>

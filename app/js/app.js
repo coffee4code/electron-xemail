@@ -115,10 +115,14 @@ angular
         }
     }])
     .controller('sheetCtrl',['$scope', function($scope){
+        $scope.current = {
+            progress: 0
+        };
     }])
     .controller('sheetLoadCtrl',['$scope', '$state', 'xlsxService', 'filePath',function($scope, $state, xlsxService, filePath){
         $scope.path = filePath;
         $scope.fileName = path.basename(filePath);
+        $scope.current.progress= 25;
         $scope.sheets = xlsxService.load(filePath);
     }])
     .controller('listCtrl',['$scope', function($scope){
