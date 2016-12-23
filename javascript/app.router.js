@@ -64,7 +64,7 @@ angular
             .state('app.sheet.list', {
                 url: '/list',
                 views: {
-                    main: {
+                    step: {
                         templateUrl:'tmpls/pages/sheet/list.html',
                         controller: 'sheetListCtrl'
                     },

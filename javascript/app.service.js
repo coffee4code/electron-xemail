@@ -2,16 +2,26 @@ var angular = require('angular'),
     XLSX = require('xlsx');
 angular
     .module('app.service',[])
-    .service('xlsxService',['config', function(config) {
+    .service('xlsxService',['templateService', function(templateService) {
 
-        var WORKBOOK = null;
+        var WORKBOOK = null,
+            WOOKSHEET = null;
         return {
-            load: load
+            load: load,
+            list: list
         };
 
         function load(filePath) {
             WORKBOOK = XLSX.readFile(filePath);
-            return WORKBOOK.Sheets;
+            console.info(WORKBOOK);
+            return WORKBOOK.SheetNames;
+        }
+
+        function list(sheetName) {
+            var data = [],
+                template = templateService.getAll();
+            WOOKSHEET = WORKBOOK.Sheets[sheetName];
+            return WOOKSHEET;
         }
     }])
     .service('templateService',['config', 'databaseService' ,function(config, databaseService) {

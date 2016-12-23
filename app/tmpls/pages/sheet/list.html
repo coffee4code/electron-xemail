@@ -1,3 +1,10 @@
-<div>
-    {{path}}
-</div>
+<md-content flex layout="column">
+    <div flex layout="column">
+
+    </div>
+    <md-divider></md-divider>
+    <div style="height: 60px;" layout="row" layout-align="end center">
+        <md-button ui-sref="app.sheet.load({filePath:current.filePath})">上一步</md-button>
+        <md-button ng-click="onNext();" class="md-raised md-primary" ng-disabled="!current.sheetName">下一步</md-button>
+    </div>
+</md-content>

@@ -116,16 +116,28 @@ angular
     }])
     .controller('sheetCtrl',['$scope', function($scope){
         $scope.current = {
-            progress: 0
+            progress: 0,
+            filePath:'',
+            fileName:'',
+            sheetName:''
         };
     }])
     .controller('sheetLoadCtrl',['$scope', '$state', 'xlsxService', 'filePath',function($scope, $state, xlsxService, filePath){
-        $scope.path = filePath;
-        $scope.fileName = path.basename(filePath);
         $scope.current.progress= 25;
-        $scope.sheets = xlsxService.load(filePath);
+        $scope.current.filePath = filePath;
+        $scope.current.fileName = path.basename(filePath);
+        $scope.sheetNames = xlsxService.load(filePath);
+        $scope.onNext = onNext;
+
+        function onNext() {
+            $state.go('app.sheet.list');
+        }
     }])
-    .controller('listCtrl',['$scope', function($scope){
+    .controller('sheetListCtrl',['$scope', 'xlsxService', function($scope, xlsxService){
+        $scope.current.progress= 50;
+        $scope.rowList = xlsxService.list($scope.current.sheetName);
+
+        console.info($scope.rowList);
     }])
     .controller('settingCtrl',['$scope', function($scope){
     }])
@@ -341,7 +353,7 @@ angular
             .state('app.sheet.list', {
                 url: '/list',
                 views: {
-                    main: {
+                    step: {
                         templateUrl:'tmpls/pages/sheet/list.html',
                         controller: 'sheetListCtrl'
                     },
@@ -392,16 +404,26 @@ angular
     XLSX = require('xlsx');
 angular
     .module('app.service',[])
-    .service('xlsxService',['config', function(config) {
+    .service('xlsxService',['templateService', function(templateService) {
 
-        var WORKBOOK = null;
+        var WORKBOOK = null,
+            WOOKSHEET = null;
         return {
-            load: load
+            load: load,
+            list: list
         };
 
         function load(filePath) {
             WORKBOOK = XLSX.readFile(filePath);
-            return WORKBOOK.Sheets;
+            console.info(WORKBOOK);
+            return WORKBOOK.SheetNames;
+        }
+
+        function list(sheetName) {
+            var data = [],
+                template = templateService.getAll();
+            WOOKSHEET = WORKBOOK.Sheets[sheetName];
+            return WOOKSHEET;
         }
     }])
     .service('templateService',['config', 'databaseService' ,function(config, databaseService) {
