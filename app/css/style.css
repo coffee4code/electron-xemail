@@ -110,6 +110,10 @@ input[my-input-uppercase] {
   padding: 0 4px;
 }
 
+.table-header md-input-container {
+  margin: 0 !important;
+}
+
 .table-footer {
   height: 50px;
   background: #fff;

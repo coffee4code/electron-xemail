@@ -6,6 +6,9 @@
         <ng-md-icon icon="keyboard_arrow_right" size="18" style="fill: #aaa;"></ng-md-icon>
         <span>{{current.sheetName}}</span>
         <span flex></span>
+        <md-input-container md-no-float>
+            <input ng-model="keyword" type="text" placeholder="搜索" ng-model-options="{debounce: 700}">
+        </md-input-container>
         <md-menu>
             <md-button class="md-icon-button" aria-label="打开菜单" ng-click="$mdOpenMenu()">
                 <ng-md-icon md-menu-origin icon="more_vert" style="fill:{{mdPrimaryColor}}"></ng-md-icon>

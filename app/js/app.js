@@ -134,14 +134,36 @@ angular
         }
     }])
     .controller('sheetListCtrl',['$scope', 'xlsxService', 'templateDetail', function($scope, xlsxService, templateDetail){
+        var rowList = xlsxService.list($scope.current.sheetName);
         $scope.current.progress= 50;
         $scope.templateDetail = templateDetail;
-        $scope.rowList = xlsxService.list($scope.current.sheetName);
+        $scope.rowListClone = angular.copy(rowList);
         $scope.selected = [];
+        $scope.keyword = '';
         $scope.onNext = onNext;
 
+        onWatchFilter();
+        function onWatchFilter() {
+            $scope.$watch('keyword', function(newValue) {
+                $scope.rowList = $scope.rowListClone.filter(function(val){
+                    return _search(val,newValue);
+                });
+            });
+        }
         function onNext() {
             console.info($scope.selected);
+        }
+
+        function _search(row, kw) {
+            if(!kw) {
+                return row;
+            }
+            for(var key in row) {
+                if(String(row[key]).indexOf(kw) > -1){
+                    return row;
+                }
+            }
+            return null;
         }
 
     }])
