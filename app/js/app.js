@@ -135,9 +135,14 @@ angular
     }])
     .controller('sheetListCtrl',['$scope', 'xlsxService', function($scope, xlsxService){
         $scope.current.progress= 50;
+        $scope.selected = [];
         $scope.rowList = xlsxService.list($scope.current.sheetName);
+        $scope.onNext = onNext;
 
-        console.info($scope.rowList);
+        function onNext() {
+            console.info($scope.selected);
+        }
+
     }])
     .controller('settingCtrl',['$scope', function($scope){
     }])
@@ -404,7 +409,7 @@ angular
     XLSX = require('xlsx');
 angular
     .module('app.service',[])
-    .service('xlsxService',['templateService', function(templateService) {
+    .service('xlsxService',['$filter','templateService', function($filter, templateService) {
 
         var WORKBOOK = null,
             WOOKSHEET = null;
@@ -423,7 +428,40 @@ angular
             var data = [],
                 template = templateService.getAll();
             WOOKSHEET = WORKBOOK.Sheets[sheetName];
-            return WOOKSHEET;
+
+            data = _parse(WOOKSHEET, template);
+            return data;
+        }
+
+        function _parse(sheet, template) {
+            var data = [];
+            if(sheet['!ref']) {
+                var match = sheet['!ref'].match(/^([A-Z]+?)([\d]+?):([A-Z]+?)([\d]+?)$/),
+                    maxRow = match[4],
+                    rowIndex = 0;
+                for(;rowIndex<maxRow;rowIndex++) {
+                    if(_isValidRow(sheet,rowIndex,template.employee_email)) {
+                        var row= {};
+                        for(var t in template) {
+                            var cell = sheet[(template[t]+''+rowIndex)];
+                            if(cell && cell.v){
+                                row[t] = cell.v
+                            }else {
+                                row[t] = '';
+                            }
+                        }
+                        data.push(row);
+                    }
+                }
+            }
+            return data;
+        }
+        function _isValidRow(sheet, rowIndex, emailColumn) {
+            var cell = sheet[emailColumn+''+rowIndex];
+            if(cell && cell.v && $filter('isemail')(cell.v)) {
+                return true;
+            }
+            return false;
         }
     }])
     .service('templateService',['config', 'databaseService' ,function(config, databaseService) {
@@ -605,7 +643,7 @@ angular
         // blue-grey
         $mdThemingProvider.theme('default')
             .primaryPalette('pink')
-            .accentPalette('orange');
+            .accentPalette('pink');
     }])
     .config(['configProvider',function(configProvider){
         var setting = {
@@ -806,16 +844,23 @@ angular
             return limit.indexOf(suffix) > -1
         }
     }])
+    .filter('isemail',[function(){
+        return function(input){
+            return input && /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i.test(input);
+        }
+    }])
 ;;var angular = require('angular'),
     angularAnimiate = require('angular-animate'),
     angularAria = require('angular-aria'),
     angularMaterial = require('angular-material'),
     angularMdIcons = require('angular-material-icons'),
+    angularMdTable = require('angular-material-data-table'),
     app = angular.module('app', [
         angularAnimiate,
         angularAria,
         angularMaterial,
         angularMdIcons,
+        angularMdTable,
         'app.router',
         'app.directive',
         'app.controller',

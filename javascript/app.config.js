@@ -47,7 +47,7 @@ angular
         // blue-grey
         $mdThemingProvider.theme('default')
             .primaryPalette('pink')
-            .accentPalette('orange');
+            .accentPalette('pink');
     }])
     .config(['configProvider',function(configProvider){
         var setting = {

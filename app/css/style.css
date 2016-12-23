@@ -95,3 +95,16 @@ input[my-input-uppercase] {
   /* Set our own color */
   color: grey;
 }
+
+.table-footer {
+  height: 50px;
+  background: #fff;
+  font-size: 13px;
+  color: #aaa;
+  padding-right: 12px;
+}
+
+.table-footer .num {
+  color: #e91e63;
+  padding: 0 8px;
+}
