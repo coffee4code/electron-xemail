@@ -9,6 +9,7 @@ angular
     }])
     .controller('menuCtrl',['$scope', '$state', '$mdDialog',function($scope, $state, $mdDialog){
         $scope.window = remote.getCurrentWindow();
+        $scope.onHome = onHome;
         $scope.onOpen = onOpen;
         $scope.onExit = onExit;
         $scope.onMaximum = onMaximum;
@@ -18,8 +19,11 @@ angular
         $scope.onHelp = onHelp;
         $scope.onAbout = onAbout;
 
+        function onHome() {
+            $state.go('app.home');
+        }
         function onOpen() {
-            $state.go('app.open');
+            $state.go('app.sheet.open');
         }
         function onExit() {
             var confirm = $mdDialog.confirm()
@@ -50,8 +54,8 @@ angular
         function onDevTool() {
             $scope.window.webContents.openDevTools();
         }
-        function onSetting() {
-            $state.go('app.setting.user');
+        function onSetting(type) {
+            $state.go('app.setting.'+ type);
         }
         function onHelp(event) {
             dialogOpen('help', event);
@@ -82,10 +86,21 @@ angular
     .controller('contentCtrl',['$scope',function($scope){
 
     }])
-    .controller('openCtrl',['$scope', '$state', '$filter', '$mdToast',function($scope, $state, $filter, $mdToast){
+    .controller('homeCtrl',['$scope',function($scope){
+
+    }])
+    .controller('sheetCtrl',['$scope', function($scope){
         $scope.current = {
             year: 2016,
             month: 12,
+            progress: 0,
+            filePath:'',
+            fileName:'',
+            sheetName:''
+        };
+    }])
+    .controller('sheetOpenCtrl',['$scope', '$state', '$filter', '$mdToast',function($scope, $state, $filter, $mdToast){
+        $scope.openner = {
             status : 0,
             fileType: ['xls','xlsx'],
             file: null
@@ -96,10 +111,10 @@ angular
         function onFileChange(file) {
             var isValid = false;
             if(file && file.path) {
-                isValid = $filter('filetype')(file.path, $scope.current.fileType.join(','));
+                isValid = $filter('filetype')(file.path, $scope.openner.fileType.join(','));
             }
             if(!isValid) {
-                $scope.current.status = -1;
+                $scope.openner.status = -1;
                 $mdToast.show(
                     $mdToast.simple()
                         .textContent('不支持的文件类型!')
@@ -107,28 +122,20 @@ angular
                 );
                 return false;
             }
-            $scope.current.status = 1;
-            $scope.current.file = file;
+            $scope.openner.status = 1;
+            $scope.openner.file = file;
         }
         function onStart() {
-            if($scope.current.file) {
-                $state.go('app.sheet.load',{filePath:$scope.current.file.path})
+            if($scope.openner.file) {
+                $scope.current.filePath = $scope.openner.file.path;
+                $state.go('app.sheet.load');
             }
         }
     }])
-    .controller('sheetCtrl',['$scope', function($scope){
-        $scope.current = {
-            progress: 0,
-            filePath:'',
-            fileName:'',
-            sheetName:''
-        };
-    }])
-    .controller('sheetLoadCtrl',['$scope', '$state', 'xlsxService', 'filePath',function($scope, $state, xlsxService, filePath){
+    .controller('sheetLoadCtrl',['$scope', '$state', 'xlsxService',function($scope, $state, xlsxService){
         $scope.current.progress= 25;
-        $scope.current.filePath = filePath;
-        $scope.current.fileName = path.basename(filePath);
-        $scope.sheetNames = xlsxService.load(filePath);
+        $scope.current.fileName = path.basename($scope.current.filePath);
+        $scope.sheetNames = xlsxService.load($scope.current.filePath);
         $scope.current.sheetName = $scope.sheetNames[0];
         $scope.onNext = onNext;
 
@@ -359,7 +366,7 @@ angular
         function ($stateProvider, $urlRouterProvider, $locationProvider) {
             $locationProvider.hashPrefix('!');
 
-            $urlRouterProvider.otherwise('/open');
+            $urlRouterProvider.otherwise('/home');
 
             $stateProvider
             .state('app', {
@@ -376,12 +383,12 @@ angular
                     }
                 }
             })
-            .state('app.open', {
-                url: '/open',
+            .state('app.home', {
+                url: '/home',
                 views: {
                     main: {
-                        templateUrl:'tmpls/pages/open.html',
-                        controller: 'openCtrl'
+                        templateUrl:'tmpls/pages/home.html',
+                        controller: 'homeCtrl'
                     }
                 }
             })
@@ -395,18 +402,21 @@ angular
                     },
                 }
             })
+            .state('app.sheet.open', {
+                url: '/open',
+                views: {
+                    step: {
+                        templateUrl:'tmpls/pages/sheet/open.html',
+                        controller: 'sheetOpenCtrl'
+                    }
+                }
+            })
             .state('app.sheet.load', {
-                url: '/load?filePath',
+                url: '/load',
                 views: {
                     step: {
                         templateUrl:'tmpls/pages/sheet/load.html',
-                        controller: 'sheetLoadCtrl',
-                        params: ['filePath'],
-                        resolve:{
-                            filePath: ['$stateParams',function($stateParams){
-                                return $stateParams.filePath;
-                            }]
-                        },
+                        controller: 'sheetLoadCtrl'
                     },
                 }
             })

@@ -43,7 +43,7 @@
                         <div flex="85" layout="column">
                             <div class="drop-container" layout="column" flex>
                                 <div class="drop-center" layout="column" flex>
-                                    <my-file-picker layout="column" flex my-on-change="onFileChange" file-type="current.fileType"></my-file-picker>
+                                    <my-file-picker layout="column" flex my-on-change="onFileChange" file-type="openner.fileType"></my-file-picker>
                                 </div>
                             </div>
                         </div>
@@ -54,6 +54,6 @@
     </div>
     <md-divider></md-divider>
     <div layout="row" layout-align="end center" style="height: 60px;">
-        <md-button ng-click="onStart();" class="md-raised md-primary" ng-disabled="current.status<=0">确定</md-button>
+        <md-button ng-click="onStart();" class="md-raised md-primary" ng-disabled="openner.status<=0">确定</md-button>
     </div>
 </div>

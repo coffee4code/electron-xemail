@@ -10,7 +10,7 @@ angular
         function ($stateProvider, $urlRouterProvider, $locationProvider) {
             $locationProvider.hashPrefix('!');
 
-            $urlRouterProvider.otherwise('/open');
+            $urlRouterProvider.otherwise('/home');
 
             $stateProvider
             .state('app', {
@@ -27,12 +27,12 @@ angular
                     }
                 }
             })
-            .state('app.open', {
-                url: '/open',
+            .state('app.home', {
+                url: '/home',
                 views: {
                     main: {
-                        templateUrl:'tmpls/pages/open.html',
-                        controller: 'openCtrl'
+                        templateUrl:'tmpls/pages/home.html',
+                        controller: 'homeCtrl'
                     }
                 }
             })
@@ -46,18 +46,21 @@ angular
                     },
                 }
             })
+            .state('app.sheet.open', {
+                url: '/open',
+                views: {
+                    step: {
+                        templateUrl:'tmpls/pages/sheet/open.html',
+                        controller: 'sheetOpenCtrl'
+                    }
+                }
+            })
             .state('app.sheet.load', {
-                url: '/load?filePath',
+                url: '/load',
                 views: {
                     step: {
                         templateUrl:'tmpls/pages/sheet/load.html',
-                        controller: 'sheetLoadCtrl',
-                        params: ['filePath'],
-                        resolve:{
-                            filePath: ['$stateParams',function($stateParams){
-                                return $stateParams.filePath;
-                            }]
-                        },
+                        controller: 'sheetLoadCtrl'
                     },
                 }
             })

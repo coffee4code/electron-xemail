@@ -14,6 +14,11 @@
                     </button>
                     <md-menu-content>
                         <md-menu-item>
+                            <md-button ng-click="onHome();">
+                                主页
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
                             <md-button ng-click="onOpen();">
                                 打开
                             </md-button>
@@ -32,8 +37,13 @@
                     </button>
                     <md-menu-content>
                         <md-menu-item>
-                            <md-button ng-click="onSetting();">
-                                设置
+                            <md-button ng-click="onSetting('user');">
+                                邮件设置
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="onSetting('template');">
+                                模板设置
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>

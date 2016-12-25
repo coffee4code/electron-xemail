@@ -6,7 +6,6 @@
                 <div flex="90" flex-offset="5">
                     <md-content>
                         <div class="md-title">员工信息</div>
-                        <div class="md-caption" md-colors="{'color':'red'}" style="margin-bottom: 10px;">邮件模板中 「年度」和「月份」 会在程序内自动生成为当前年月</div>
                         <div flex="60" flex-offset="20" layout="row" layout-wrap class="md-input-container-higher">
                             <md-input-container flex="33">
                                 <input my-input-uppercase ng-model="template.employee_email" type="text" placeholder="{{ templateDetail['employee_email'].label }}" ng-required="true">
@@ -87,7 +86,7 @@
 
     <md-divider></md-divider>
     <div style="height: 60px;" layout="row" layout-align="end center">
-        <md-button ui-sref="app.open">取消</md-button>
+        <md-button ui-sref="app.home">取消</md-button>
         <md-button ng-click="onSave();" class="md-raised md-primary" ng-disabled="current.status<=0">保存</md-button>
     </div>
 </md-content>
