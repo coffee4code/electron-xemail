@@ -21,10 +21,10 @@ app.on('activate', function () {
 
 function createWindow () {
     mainWin = new BrowserWindow({
-        width: 1366,
-        height: 730,
-        minWidth: 1366,
-        minHeight: 768,
+        width: 1200,
+        height: 700,
+        minWidth: 1200,
+        minHeight: 700,
         frame: false
     });
     mainWin.setMenu(null);

@@ -1,5 +1,4 @@
 .drop-container {
-	padding: 50px 50px 0 50px;
 	text-align: center;
 
 	.drop-center {
@@ -8,8 +7,9 @@
 
 	.drop-area {
 		height: 100%;
-		border: 1px dotted #ececec;
-		padding: 110px;
+		border: 1px dotted #acacac;
+		background: #efefef;
+		border-radius: 8px;
 	}
 
 	.drop-area.drop-active {

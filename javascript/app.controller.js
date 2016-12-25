@@ -84,6 +84,8 @@ angular
     }])
     .controller('openCtrl',['$scope', '$state', '$filter', '$mdToast',function($scope, $state, $filter, $mdToast){
         $scope.current = {
+            year: 2016,
+            month: 12,
             status : 0,
             fileType: ['xls','xlsx'],
             file: null

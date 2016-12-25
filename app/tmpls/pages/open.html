@@ -1,10 +1,59 @@
 <div flex layout="column">
-    <div class="drop-container" layout="column" flex>
-        <div class="drop-center" layout="column" flex>
-            <my-file-picker layout="column" flex my-on-change="onFileChange" file-type="current.fileType"></my-file-picker>
+    <div flex layout="row">
+        <div flex="60" flex-offset="20" layout="column">
+            <div flex="15"></div>
+            <div flex="80" layout="column">
+                <div flex layout="column" style="overflow: hidden;">
+                    <div layout="row">
+                        <div flex="15" layout="row" layout-align="start center">
+                            <span class="md-subhead" style="color: {{ mdPrimaryColor }};position: relative;top: -8px;">
+                                时间：
+                            </span>
+                        </div>
+                        <div flex="85" layout="row" layout-align="start center">
+                            <div flex layout="row">
+                                <md-input-container  md-no-float class="md-block md-full-width">
+                                    <input ng-model="current.year" type="number" placeholder="年份" ng-required="true">
+                                </md-input-container>
+                                <md-input-container  md-no-float class="md-block md-full-width">
+                                    <md-select ng-model="current.month">
+                                        <md-option ng-value="1">01月</md-option>
+                                        <md-option ng-value="2">02月</md-option>
+                                        <md-option ng-value="3">03月</md-option>
+                                        <md-option ng-value="4">04月</md-option>
+                                        <md-option ng-value="5">05月</md-option>
+                                        <md-option ng-value="6">06月</md-option>
+                                        <md-option ng-value="7">07月</md-option>
+                                        <md-option ng-value="8">08月</md-option>
+                                        <md-option ng-value="9">09月</md-option>
+                                        <md-option ng-value="10">10月</md-option>
+                                        <md-option ng-value="11">11月</md-option>
+                                        <md-option ng-value="12">12月</md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div layout="row" flex style="padding: 20px 0 45px 0;">
+                        <div flex="15" layout="row" layout-align="start center">
+                            <span class="md-subhead" style="color: {{ mdPrimaryColor }};">
+                                文件：
+                            </span>
+                        </div>
+                        <div flex="85" layout="column">
+                            <div class="drop-container" layout="column" flex>
+                                <div class="drop-center" layout="column" flex>
+                                    <my-file-picker layout="column" flex my-on-change="onFileChange" file-type="current.fileType"></my-file-picker>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-<div layout="row" layout-align="end center" style="height: 60px;">
-    <md-button ng-click="onStart();" class="md-raised md-primary" ng-disabled="current.status<=0">确定</md-button>
+    <md-divider></md-divider>
+    <div layout="row" layout-align="end center" style="height: 60px;">
+        <md-button ng-click="onStart();" class="md-raised md-primary" ng-disabled="current.status<=0">确定</md-button>
+    </div>
 </div>

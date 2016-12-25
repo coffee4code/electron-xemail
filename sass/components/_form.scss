@@ -1,7 +1,12 @@
-md-input-container {
-	margin-bottom: 40px;
+.md-input-container-higher {
+	md-input-container {
+		margin-bottom: 40px;
+	}
 }
 
+.md-full-width {
+	width: 100%;
+}
 input[my-input-uppercase] {
 	text-transform: uppercase;
 }

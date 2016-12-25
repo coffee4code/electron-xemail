@@ -44,11 +44,13 @@ angular
             template:'' +
             '<div>' +
             '   <div class="drop-area" id="file-drop-area"  layout="column" flex layout-align="center center" my-drop-zone on-file-drop="onFileDrop">' +
-            '      <div class="drop-area-icon" layout="column" flex layout-align="center bottom">' +
+            '      <div flex></div>' +
+            '      <div class="drop-area-icon" layout="column" layout-align="center bottom">' +
             '          <ng-md-icon icon="cloud_download" size="100" style="fill:{{$root.mdPrimaryColor}};"></ng-md-icon>' +
             '      </div>' +
-            '      <div class="drop-area-tip" layout="column" layout-align="center center" flex ng-if="!!current.filePath" ng-bind="current.filePath"></div>' +
-            '      <div class="drop-area-tip" layout="column" layout-align="center center" flex ng-if="!current.filePath">点击选择xls文件或将文件拖放到这里</div>' +
+            '      <div class="drop-area-tip" layout="column" layout-align="center center" ng-if="!!current.filePath" ng-bind="current.filePath"></div>' +
+            '      <div class="drop-area-tip" layout="column" layout-align="center center" ng-if="!current.filePath">点击选择xls文件或将文件拖放到这里</div>' +
+            '      <div flex></div>' +
             '   </div>' +
             '   <input id="file-input" type="file" my-on-change="onFileChange" style="display: none;">' +
             '</div>',
