@@ -9,26 +9,9 @@
         <md-input-container md-no-float>
             <input ng-model="keyword" type="text" placeholder="搜索" ng-model-options="{debounce: 700}">
         </md-input-container>
-        <md-menu>
-            <md-button class="md-icon-button" aria-label="打开菜单" ng-click="$mdOpenMenu()">
-                <ng-md-icon md-menu-origin icon="more_vert" style="fill:{{mdPrimaryColor}}"></ng-md-icon>
-            </md-button>
-            <md-menu-content width="4">
-                <md-menu-item>
-                    <md-button ng-disabled="true">
-                        显示项目
-                    </md-button>
-                </md-menu-item>
-                <md-divider></md-divider>
-                <md-menu-item ng-repeat="(key,tmpl) in templateDetail">
-                    <md-button>
-                        <md-switch ng-model="tmpl.show">
-                            {{ tmpl.label }}
-                        </md-switch>
-                    </md-button>
-                </md-menu-item>
-            </md-menu-content>
-        </md-menu>
+        <md-button class="md-icon-button" aria-label="打开菜单" ng-click="onDetailDialog($event)">
+            <ng-md-icon md-menu-origin icon="more_vert" style="fill:{{mdPrimaryColor}}"></ng-md-icon>
+        </md-button>
     </div>
     <md-divider></md-divider>
     <div flex layout="column">

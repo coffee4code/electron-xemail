@@ -134,13 +134,14 @@ angular
             $state.go('app.sheet.list');
         }
     }])
-    .controller('sheetListCtrl',['$scope', 'xlsxService', 'templateDetail', function($scope, xlsxService, templateDetail){
+    .controller('sheetListCtrl',['$scope', '$mdDialog', 'xlsxService', 'templateDetail', function($scope, $mdDialog, xlsxService, templateDetail){
         $scope.current.progress= 50;
         $scope.templateDetail = templateDetail;
         $scope.rowList = xlsxService.list($scope.current.sheetName);
         $scope.selected = [];
         $scope.keyword = '';
         $scope.onNext = onNext;
+        $scope.onDetailDialog = onDetailDialog;
 
         onWatchFilter();
         onPreSelect();
@@ -155,6 +156,26 @@ angular
             for(var i=0;i<$scope.rowList.length;i++) {
                 $scope.selected.push($scope.rowList[i]);
             }
+        }
+        function onDetailDialog(event) {
+            $mdDialog
+                .show({
+                    templateUrl: 'tmpls/dialogs/dialog.template.detail.html',
+                    parent: angular.element(document.body),
+                    targetEvent: event,
+                    clickOutsideToClose:true,
+                    fullscreen: false,
+                    locals: {
+                        templateDetail: $scope.templateDetail
+                    },
+                    controller: ['$scope','$mdDialog', 'templateDetail',function ($scope, $mdDialog, templateDetail) {
+                        $scope.templateDetail = templateDetail;
+                        $scope.onClose = function() {
+                            $mdDialog.hide();
+                        };
+                    }]
+                })
+            ;
         }
         function onNext() {
             console.info($scope.selected);
