@@ -127,6 +127,7 @@ angular
         $scope.current.filePath = filePath;
         $scope.current.fileName = path.basename(filePath);
         $scope.sheetNames = xlsxService.load(filePath);
+        $scope.current.sheetName = $scope.sheetNames[0];
         $scope.onNext = onNext;
 
         function onNext() {
