@@ -100,6 +100,7 @@ angular
         };
     }])
     .controller('sheetOpenCtrl',['$scope', '$state', '$filter', '$mdToast',function($scope, $state, $filter, $mdToast){
+        $scope.current.progress= 0;
         $scope.openner = {
             status : 0,
             fileType: ['xls','xlsx'],

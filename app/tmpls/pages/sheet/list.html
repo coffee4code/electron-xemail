@@ -62,7 +62,7 @@
             <span class="num">{{selected.length}}</span>
             条
         </span>
-        <md-button ui-sref="app.sheet.load({filePath:current.filePath})">上一步</md-button>
+        <md-button ui-sref="app.sheet.load">上一步</md-button>
         <md-button ng-click="onNext();" class="md-raised md-primary" ng-disabled="!rowList.length || !selected.length">下一步</md-button>
     </div>
 </md-content>

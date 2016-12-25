@@ -1,3 +1,36 @@
-<div layout="column" flex layout-align="center center">
-    <a href="javascript:;" ui-sref="app.sheet.open">打开</a>
+<div layout="row" flex>
+    <div flex="70" layout="row" flex-offset="15">
+        <div flex layout="column">
+            <div flex></div>
+            <md-grid-list
+                    md-cols="4"
+                    md-row-height="5:4"
+                    md-gutter="12px"
+                    class="grid-container"
+            >
+                <md-grid-tile class="grid-center grid-red" md-rowspan="2" md-colspan="2" ui-sref="app.sheet.open">
+                    <ng-md-icon icon="send" size="80" style="fill: #fff;"></ng-md-icon>
+                    <md-grid-tile-footer>
+                        <h3 class="center">打开</h3>
+                    </md-grid-tile-footer>
+                </md-grid-tile>
+
+                <md-grid-tile class="grid-center grid-blue" md-rowspan="1" md-colspan="2" ui-sref="app.setting.user">
+                    <ng-md-icon icon="settings" size="50" style="fill: #fff;"></ng-md-icon>
+                    <md-grid-tile-footer>
+                        <h3>设置</h3>
+                    </md-grid-tile-footer>
+                </md-grid-tile>
+
+                <md-grid-tile class="grid-center grid-orange" md-rowspan="1" md-colspan="2" ui-sref="app.history">
+                    <ng-md-icon icon="history" size="50" style="fill: #fff;"></ng-md-icon>
+                    <md-grid-tile-footer>
+                        <h3>历史记录</h3>
+                    </md-grid-tile-footer>
+                </md-grid-tile>
+
+            </md-grid-list>
+            <div flex></div>
+        </div>
+    </div>
 </div>

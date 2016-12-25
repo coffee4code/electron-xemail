@@ -35,7 +35,7 @@ function createWindow () {
     }));
 
     //https://github.com/kevinsawicki/tray-example
-    mainWin.webContents.openDevTools();
+    // mainWin.webContents.openDevTools();
 
     mainWin.on('closed', function () {
         mainWin = null

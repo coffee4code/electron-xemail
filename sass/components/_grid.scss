@@ -1,0 +1,37 @@
+$color-blue: #448aff;
+$grid-orange: #f57f17;
+.grid-container {
+
+    .grid-center md-grid-tile-footer figcaption {
+        width: 100%;
+
+        h3 {
+            margin: 0;
+            text-align: center;
+        }
+    }
+
+    .grid-red {
+        background: rgba($primary-color, .8);
+
+        &:hover {
+            background: rgba($primary-color, 1);
+        }
+    }
+
+    .grid-blue {
+        background: rgba($color-blue, .8);
+
+        &:hover {
+            background: rgba($color-blue, 1);
+        }
+    }
+
+    .grid-orange {
+        background: rgba($grid-orange, .8);
+
+        &:hover {
+            background: rgba($grid-orange, 1);
+        }
+    }
+}
