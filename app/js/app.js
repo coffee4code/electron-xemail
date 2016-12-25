@@ -90,9 +90,10 @@ angular
 
     }])
     .controller('sheetCtrl',['$scope', function($scope){
+        var now = new Date();
         $scope.current = {
-            year: 2016,
-            month: 12,
+            year: now.getFullYear(),
+            month: now.getMonth() + 1,
             progress: 0,
             filePath:'',
             fileName:'',

@@ -16,7 +16,7 @@
                                     <input ng-model="current.year" type="number" placeholder="年份" ng-required="true">
                                 </md-input-container>
                                 <md-input-container  md-no-float class="md-block md-full-width">
-                                    <md-select ng-model="current.month">
+                                    <md-select ng-model="current.month" ng-required="true">
                                         <md-option ng-value="1">01月</md-option>
                                         <md-option ng-value="2">02月</md-option>
                                         <md-option ng-value="3">03月</md-option>
@@ -55,6 +55,6 @@
     <md-divider></md-divider>
     <div layout="row" layout-align="end center" style="height: 60px;">
         <md-button ui-sref="app.home">取消</md-button>
-        <md-button ng-click="onStart();" class="md-raised md-primary" ng-disabled="openner.status<=0">确定</md-button>
+        <md-button ng-click="onStart();" class="md-raised md-primary" ng-disabled="openner.status<=0 || !current.year || !current.month">确定</md-button>
     </div>
 </div>
