@@ -134,21 +134,26 @@ angular
         }
     }])
     .controller('sheetListCtrl',['$scope', 'xlsxService', 'templateDetail', function($scope, xlsxService, templateDetail){
-        var rowList = xlsxService.list($scope.current.sheetName);
         $scope.current.progress= 50;
         $scope.templateDetail = templateDetail;
-        $scope.rowListClone = angular.copy(rowList);
+        $scope.rowList = xlsxService.list($scope.current.sheetName);
         $scope.selected = [];
         $scope.keyword = '';
         $scope.onNext = onNext;
 
         onWatchFilter();
+        onPreSelect();
         function onWatchFilter() {
             $scope.$watch('keyword', function(newValue) {
-                $scope.rowList = $scope.rowListClone.filter(function(val){
-                    return _search(val,newValue);
+                $scope.rowList.map(function(val){
+                    val.show = _search(val,newValue);
                 });
             });
+        }
+        function onPreSelect() {
+            for(var i=0;i<$scope.rowList.length;i++) {
+                $scope.selected.push($scope.rowList[i]);
+            }
         }
         function onNext() {
             console.info($scope.selected);
@@ -156,14 +161,14 @@ angular
 
         function _search(row, kw) {
             if(!kw) {
-                return row;
+                return true;
             }
             for(var key in row) {
                 if(String(row[key]).indexOf(kw) > -1){
-                    return row;
+                    return true;
                 }
             }
-            return null;
+            return false;
         }
 
     }])

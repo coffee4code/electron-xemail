@@ -22,7 +22,7 @@ app.on('activate', function () {
 function createWindow () {
     mainWin = new BrowserWindow({
         width: 1366,
-        height: 768,
+        height: 730,
         minWidth: 1366,
         minHeight: 768,
         frame: false

@@ -50,7 +50,7 @@
                             </tr>
                         </thead>
                         <tbody md-body>
-                            <tr md-row md-select="row" md-auto-select="true" ng-repeat="row in rowList" ng-class="{even: $even, odd: $odd}">
+                            <tr ng-if="row.show" md-row md-select="row" md-auto-select="true" ng-repeat="row in rowList" ng-class="{even: $even, odd: $odd}">
                                 <td md-cell ng-repeat="(key, tmpl) in templateDetail" ng-show="tmpl.show">
                                     {{ row[key] }}
                                 </td>
@@ -64,13 +64,21 @@
     <md-divider></md-divider>
     <div style="height: 60px;" layout="row" layout-align="end center">
         <span class="table-footer" layout="row" layout-align="end center">
-            选择
-            <span class="num">{{selected.length}}</span>
-            条数据，共
+            共
             <span class="num">{{rowList.length}}</span>
-            条
+            条数据
+            <span ng-if="!!keyword">
+                ，搜索结果
+                <span class="num">{{ (rowList | filter: {show:true} ).length }}</span>
+                条
+            </span>
         </span>
         <span flex></span>
+        <span class="table-footer" layout="row" layout-align="end center">
+            已选择
+            <span class="num">{{selected.length}}</span>
+            条
+        </span>
         <md-button ui-sref="app.sheet.load({filePath:current.filePath})">上一步</md-button>
         <md-button ng-click="onNext();" class="md-raised md-primary" ng-disabled="!rowList.length || !selected.length">下一步</md-button>
     </div>
