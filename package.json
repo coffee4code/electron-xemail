@@ -15,7 +15,7 @@
     "start": "electron .",
     "pack": "build --dir",
     "release": "build",
-    "test": "./dist/linux-unpacked/xmee"
+    "test": "./dist/linux-unpacked/salarynotehelper"
   },
   "repository": "git@github.com:smallyin/electron-xemail.git",
   "keywords": [
