@@ -24,23 +24,28 @@
                                     md-on-deselect="onDeselectItem"
                                     ng-repeat="row in (current.imported|filter:{statusSent:false})"
                                     ng-class="{even: $even, odd: $odd}"
-                                    ng-if="!row.statusSent"
                                 >
                                     <td md-cell>{{::($index+1)}}</td>
                                     <td md-cell>{{ row['employee_name'] }}</td>
                                     <td md-cell>{{ row['employee_email'] }}</td>
                                     <td md-cell>
                                         <md-button class="md-icon-button" md-ink-ripple="#f57f17" aria-label="预览" ng-click="onSendItem(row);">
+                                            <md-tooltip>预览</md-tooltip>
                                             <ng-md-icon icon="remove_red_eye" style="fill: #f57f17;"></ng-md-icon>
                                         </md-button>
                                     </td>
                                     <td md-cell>
                                         <span ng-if="!row.statusChecked" style="color: {{mdPrimaryColor}};">未发送</span>
-                                        <ng-md-icon ng-if="row.statusChecked" icon="access_time" style="fill: #f57f17;"></ng-md-icon>
+                                        <md-button ng-if="row.statusChecked" class="md-icon-button">
+                                            <md-tooltip>排队中</md-tooltip>
+                                            <ng-md-icon icon="access_time" style="fill: #f57f17;"></ng-md-icon>
+                                        </md-button>
                                     </td>
                                     <td md-cell>
                                         <md-button class="md-icon-button md-primary" aria-label="发送" ng-click="onSendItem(row);" ng-disabled="row.statusChecked || row.statusSent">
-                                            <ng-md-icon icon="send" style="fill: {{(row.statusChecked || row.statusSent) ? '#cecece' : mdPrimaryColor}};"></ng-md-icon>
+                                            <md-tooltip ng-if="!row.statusChecked">发送</md-tooltip>
+                                            <md-tooltip ng-if="row.statusChecked">排队中</md-tooltip>
+                                            <ng-md-icon icon="send" style="fill: {{row.statusChecked ? '#cecece' : mdPrimaryColor}};"></ng-md-icon>
                                         </md-button>
                                     </td>
                                 </tr>
@@ -97,11 +102,15 @@
                                     <td md-cell>{{ row['employee_email'] }}</td>
                                     <td md-cell>
                                         <md-button class="md-icon-button" md-ink-ripple="#f57f17" aria-label="查看" ng-click="onSendItem(row);">
+                                            <md-tooltip>查看</md-tooltip>
                                             <ng-md-icon icon="remove_red_eye" style="fill: #f57f17;"></ng-md-icon>
                                         </md-button>
                                     </td>
                                     <td md-cell>
-                                        <ng-md-icon icon="check" style="fill: #2e7d32;"></ng-md-icon>
+                                        <md-button class="md-icon-button">
+                                            <md-tooltip>发送成功</md-tooltip>
+                                            <ng-md-icon icon="check" style="fill: #2e7d32;"></ng-md-icon>
+                                        </md-button>
                                     </td>
                                 </tr>
                                 </tbody>

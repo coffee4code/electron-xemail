@@ -216,7 +216,7 @@ angular
 
         function onDeselectItem(item) {
             $scope.current.imported.map(function(val){
-                if(val.id === item.id) {
+                if(val.uuid === item.uuid) {
                     val.statusChecked = false;
                 }
             });
@@ -224,7 +224,7 @@ angular
 
         function onSelectItem(item) {
             $scope.current.imported.map(function(val){
-                if(val.id === item.id) {
+                if(val.uuid === item.uuid) {
                     val.statusChecked = true;
                 }
             });
@@ -236,7 +236,8 @@ angular
 
         function onSendItem(item) {
             $scope.current.imported.map(function(val){
-                if(val.id === item.id) {
+                if(val.uuid === item.uuid) {
+                    console.info(val);
                     val.statusSent = true;
                 }
             });

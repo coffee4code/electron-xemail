@@ -2,7 +2,7 @@ var angular = require('angular'),
     XLSX = require('xlsx');
 angular
     .module('app.service',[])
-    .service('xlsxService',['$filter','templateService', function($filter, templateService) {
+    .service('xlsxService',['$filter', 'UtilService' , 'templateService', function($filter, UtilService, templateService) {
 
         var WORKBOOK = null,
             WOOKSHEET = null;
@@ -45,7 +45,7 @@ angular
                                 row[t] = '-';
                             }
                         }
-                        row['id'] = data.length;
+                        row['uuid'] = UtilService.guid();
                         data.push(row);
                     }
                 }
@@ -254,5 +254,18 @@ angular
             return data;
         }
 
+    }])
+    .service('UtilService', [function () {
+        this.guid = guid;
+
+        function guid () {
+            function s4 () {
+                return Math.floor((1 + Math.random()) * 0x10000)
+                    .toString(16)
+                    .substring(1);
+            }
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                s4() + '-' + s4() + s4() + s4();
+        }
     }])
 ;
