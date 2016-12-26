@@ -1,4 +1,4 @@
-<md-content flex layout="column">
+<md-content flex layout="column" class="animated slideInRight">
     <div layout="row" class="table-header" md-colors="{'background':'grey-300'}">
         <ng-md-icon icon="note" size="18" style="fill: {{mdPrimaryColor}};"></ng-md-icon>
         <span>文件：</span>
@@ -22,26 +22,28 @@
             <div style="color: #cccccc;">没有数据</div>
         </div>
         <div ng-if="rowList.length" flex layout="column">
-            <div flex layout="column">
-                <md-table-container>
-                    <table md-table md-row-select="true" multiple="true" ng-model="selected" class="table-center">
-                        <thead md-head>
-                            <tr md-row>
-                                <th md-column ng-repeat="(key, tmpl) in templateDetail" ng-show="tmpl.show">
-                                    <span>{{ tmpl.label }}</span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody md-body>
-                            <tr ng-if="row.show" md-row md-select="row" md-auto-select="true" ng-repeat="row in rowList" ng-class="{even: $even, odd: $odd}">
-                                <td md-cell ng-repeat="(key, tmpl) in templateDetail" ng-show="tmpl.show">
-                                    {{ row[key] }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </md-table-container>
-            </div>
+            <md-table-container>
+                <table md-table md-row-select="true" multiple="true" ng-model="current.imported" class="table-center">
+                    <thead md-head>
+                        <tr md-row>
+                            <th md-column>
+                                <span>序号</span>
+                            </th>
+                            <th md-column ng-repeat="(key, tmpl) in templateDetail" ng-show="tmpl.show">
+                                <span>{{ tmpl.label }}</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody md-body>
+                        <tr ng-if="row.show" md-row md-select="row" md-auto-select="true" ng-repeat="row in rowList" ng-class="{even: $even, odd: $odd}">
+                            <td md-cell>{{::($index+1)}}</td>
+                            <td md-cell ng-repeat="(key, tmpl) in templateDetail" ng-show="tmpl.show">
+                                {{ row[key] }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
         </div>
     </div>
     <md-divider></md-divider>
@@ -59,10 +61,10 @@
         <span flex></span>
         <span class="table-footer" layout="row" layout-align="end center">
             已选择
-            <span class="num">{{selected.length}}</span>
+            <span class="num">{{current.imported.length}}</span>
             条
         </span>
-        <md-button ui-sref="app.sheet.load">上一步</md-button>
-        <md-button ng-click="onNext();" class="md-raised md-primary" ng-disabled="!rowList.length || !selected.length">下一步</md-button>
+        <md-button ui-sref="app.sheet.load" aria-label="上一步">上一步</md-button>
+        <md-button ng-click="onNext();" class="md-raised md-primary" ng-disabled="!rowList.length || !current.imported.length" aria-label="生成邮件">生成邮件</md-button>
     </div>
 </md-content>

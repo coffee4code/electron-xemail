@@ -1,0 +1,14 @@
+<div flex layout="column" class="animated zoomIn">
+    <div flex="75" layout="column" layout-align="center center">
+        <ng-md-icon icon="thumb_up" size="100" style="fill:{{ mdPrimaryColor }};"></ng-md-icon>
+        <div style="margin-top: 50px;">
+            <span>成功发送</span>
+            <span class="num">{{ ::(current.imported|filter:{statusSent:true}).length }}</span>
+            <span>封邮件</span>
+        </div>
+    </div>
+    <div flex="25" layout="row" layout-align="center center">
+        <md-button ui-sref="app.history" class="md-raised md-button-orange" md-ink-ripple="#f57f17" aria-label="查看历史记录">查看历史记录</md-button>
+        <md-button ui-sref="app.home" class="md-raised md-primary" aria-label="返回主页">返回首页</md-button>
+    </div>
+</div>

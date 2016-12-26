@@ -9,22 +9,13 @@ angular
     }])
     .controller('menuCtrl',['$scope', '$state', '$mdDialog',function($scope, $state, $mdDialog){
         $scope.window = remote.getCurrentWindow();
-        $scope.onHome = onHome;
-        $scope.onOpen = onOpen;
         $scope.onExit = onExit;
         $scope.onMaximum = onMaximum;
         $scope.onDevTool = onDevTool;
         $scope.onMinimize = onMinimize;
-        $scope.onSetting = onSetting;
         $scope.onHelp = onHelp;
         $scope.onAbout = onAbout;
 
-        function onHome() {
-            $state.go('app.home');
-        }
-        function onOpen() {
-            $state.go('app.sheet.open');
-        }
         function onExit() {
             var confirm = $mdDialog.confirm()
                 .title('关闭')
@@ -54,32 +45,28 @@ angular
         function onDevTool() {
             $scope.window.webContents.openDevTools();
         }
-        function onSetting(type) {
-            $state.go('app.setting.'+ type);
-        }
         function onHelp(event) {
-            dialogOpen('help', event);
+            _dialogOpen('help', event);
         }
         function onAbout(event) {
-            dialogOpen('about', event);
+            _dialogOpen('about', event);
         }
 
-        function dialogOpen(type, event) {
+        function _dialogOpen(type, event) {
             $mdDialog
                 .show({
-                    controller: dialogCtrl,
                     templateUrl: 'tmpls/dialogs/dialog.' + type + '.html',
                     parent: angular.element(document.body),
                     targetEvent: event,
                     clickOutsideToClose:true,
-                    fullscreen: false
+                    fullscreen: false,
+                    controller: ['$scope', '$mdDialog', function($scope, $mdDialog) {
+                            $scope.hide = function() {
+                            $mdDialog.hide();
+                        };
+                    }],
                 })
             ;
-        }
-        function dialogCtrl($scope, $mdDialog) {
-            $scope.hide = function() {
-                $mdDialog.hide();
-            };
         }
 
     }])
@@ -97,7 +84,8 @@ angular
             progress: 0,
             filePath:'',
             fileName:'',
-            sheetName:''
+            sheetName:'',
+            imported: []
         };
     }])
     .controller('sheetOpenCtrl',['$scope', '$state', '$filter', '$mdToast',function($scope, $state, $filter, $mdToast){
@@ -145,17 +133,16 @@ angular
             $state.go('app.sheet.list');
         }
     }])
-    .controller('sheetListCtrl',['$scope', '$mdDialog', 'xlsxService', 'templateDetail', function($scope, $mdDialog, xlsxService, templateDetail){
+    .controller('sheetListCtrl',['$scope', '$state', '$mdDialog', 'xlsxService', 'templateDetail', function($scope, $state, $mdDialog, xlsxService, templateDetail){
         $scope.current.progress= 50;
+        $scope.current.imported= [];
         $scope.templateDetail = templateDetail;
-        $scope.rowList = xlsxService.list($scope.current.sheetName);
-        $scope.selected = [];
         $scope.keyword = '';
         $scope.onNext = onNext;
         $scope.onDetailDialog = onDetailDialog;
 
-        onWatchFilter();
         onPreSelect();
+        onWatchFilter();
         function onWatchFilter() {
             $scope.$watch('keyword', function(newValue) {
                 $scope.rowList.map(function(val){
@@ -164,8 +151,9 @@ angular
             });
         }
         function onPreSelect() {
+            $scope.rowList = xlsxService.list($scope.current.sheetName);
             for(var i=0;i<$scope.rowList.length;i++) {
-                $scope.selected.push($scope.rowList[i]);
+                $scope.current.imported.push($scope.rowList[i]);
             }
         }
         function onDetailDialog(event) {
@@ -189,7 +177,7 @@ angular
             ;
         }
         function onNext() {
-            console.info($scope.selected);
+            $state.go('app.sheet.send');
         }
 
         function _search(row, kw) {
@@ -204,6 +192,77 @@ angular
             return false;
         }
 
+    }])
+    .controller('sheetSendCtrl',['$scope', '$state', 'templateDetail', function($scope, $state, templateDetail){
+        $scope.current.progress = 75;
+        $scope.nowTab= 0;
+        $scope.nowChecked= [];
+        $scope.templateDetail = templateDetail;
+        $scope.onDeselectItem = onDeselectItem;
+        $scope.onSelectItem = onSelectItem;
+        $scope.onViewItem = onViewItem;
+        $scope.onSendItem = onSendItem;
+        $scope.onSendAll = onSendAll;
+        $scope.onFinish = onFinish;
+        $scope.onNext = onNext;
+
+        onPreCheck();
+        function onPreCheck() {
+            for(var i=0;i<$scope.current.imported.length;i++) {
+                $scope.current.imported[i].statusChecked = true;
+                $scope.current.imported[i].statusSent = false;
+                $scope.nowChecked.push($scope.current.imported[i]);
+            }
+        }
+
+        function onDeselectItem(item) {
+            $scope.current.imported.map(function(val){
+                if(val.uuid === item.uuid) {
+                    val.statusChecked = false;
+                }
+            });
+        }
+
+        function onSelectItem(item) {
+            $scope.current.imported.map(function(val){
+                if(val.uuid === item.uuid) {
+                    val.statusChecked = true;
+                }
+            });
+        }
+
+        function onViewItem(item) {
+            console.info(item);
+        }
+
+        function onSendItem(item) {
+            $scope.current.imported.map(function(val){
+                if(val.uuid === item.uuid) {
+                    console.info(val);
+                    val.statusSent = true;
+                }
+            });
+        }
+
+        function onSendAll() {
+            $scope.nowChecked.map(function(val){
+                val.statusSent = true;
+            });
+        }
+
+        function onFinish() {
+            $scope.nowTab= 1;
+        }
+
+        function onNext() {
+            $state.go('app.sheet.done');
+        }
+
+    }])
+    .controller('sheetDoneCtrl',['$scope', function($scope){
+        $scope.current.progress = 100;
+    }])
+    .controller('historyCtrl',['$scope', function($scope){
     }])
     .controller('settingCtrl',['$scope', function($scope){
     }])
@@ -401,7 +460,7 @@ angular
                     main: {
                         templateUrl:'tmpls/pages/sheet/sheet.html',
                         controller: 'sheetCtrl'
-                    },
+                    }
                 }
             })
             .state('app.sheet.open', {
@@ -419,7 +478,7 @@ angular
                     step: {
                         templateUrl:'tmpls/pages/sheet/load.html',
                         controller: 'sheetLoadCtrl'
-                    },
+                    }
                 }
             })
             .state('app.sheet.list', {
@@ -433,7 +492,39 @@ angular
                                 return templateService.getDetail();
                             }]
                         }
-                    },
+                    }
+                }
+            })
+            .state('app.sheet.send', {
+                url: '/send',
+                views: {
+                    step: {
+                        templateUrl:'tmpls/pages/sheet/send.html',
+                        controller: 'sheetSendCtrl',
+                        resolve: {
+                            templateDetail: ['templateService', function (templateService){
+                                return templateService.getDetail();
+                            }]
+                        }
+                    }
+                }
+            })
+            .state('app.sheet.done', {
+                url: '/done',
+                views: {
+                    step: {
+                        templateUrl:'tmpls/pages/sheet/done.html',
+                        controller: 'sheetDoneCtrl'
+                    }
+                }
+            })
+            .state('app.history', {
+                url: '/history',
+                views: {
+                    main: {
+                        templateUrl:'tmpls/pages/history.html',
+                        controller: 'historyCtrl'
+                    }
                 }
             })
             .state('app.setting', {
@@ -484,7 +575,7 @@ angular
     XLSX = require('xlsx');
 angular
     .module('app.service',[])
-    .service('xlsxService',['$filter','templateService', function($filter, templateService) {
+    .service('xlsxService',['$filter', 'UtilService' , 'templateService', function($filter, UtilService, templateService) {
 
         var WORKBOOK = null,
             WOOKSHEET = null;
@@ -527,6 +618,7 @@ angular
                                 row[t] = '-';
                             }
                         }
+                        row['uuid'] = UtilService.guid();
                         data.push(row);
                     }
                 }
@@ -735,6 +827,19 @@ angular
             return data;
         }
 
+    }])
+    .service('UtilService', [function () {
+        this.guid = guid;
+
+        function guid () {
+            function s4 () {
+                return Math.floor((1 + Math.random()) * 0x10000)
+                    .toString(16)
+                    .substring(1);
+            }
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                s4() + '-' + s4() + s4() + s4();
+        }
     }])
 ;
 ;var angular = require('angular');

@@ -1,4 +1,4 @@
-<md-content flex layout="column">
+<md-content flex layout="column" class="animated zoomIn">
     <div flex layout="column">
         <md-content layout-padding="10px">
             <div flex></div>
@@ -37,7 +37,7 @@
     </div>
     <md-divider></md-divider>
     <div style="height: 60px;" layout="row" layout-align="end center">
-        <md-button ui-sref="app.home">取消</md-button>
-        <md-button ng-click="onSave();" class="md-raised md-primary" ng-disabled="current.status<=0">保存</md-button>
+        <md-button ui-sref="app.home" aria-label="取消">取消</md-button>
+        <md-button ng-click="onSave();" class="md-raised md-primary" ng-disabled="current.status<=0" aria-label="保存">保存</md-button>
     </div>
 </md-content>

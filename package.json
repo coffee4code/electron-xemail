@@ -57,6 +57,7 @@
     "angular-material-data-table": "^0.10.10",
     "angular-material-icons": "^0.7.1",
     "angular-ui-router": "^0.3.2",
+    "animate.css": "^3.5.2",
     "install": "^0.8.2",
     "jquery": "^2.2.1",
     "nodemailer": "^2.7.0",

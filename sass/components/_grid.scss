@@ -1,5 +1,3 @@
-$color-blue: #448aff;
-$grid-orange: #f57f17;
 .grid-container {
 
     .grid-center md-grid-tile-footer figcaption {
@@ -28,10 +26,10 @@ $grid-orange: #f57f17;
     }
 
     .grid-orange {
-        background: rgba($grid-orange, .8);
+        background: rgba($color-orange, .8);
 
         &:hover {
-            background: rgba($grid-orange, 1);
+            background: rgba($color-orange, 1);
         }
     }
 }

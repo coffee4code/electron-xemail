@@ -14,18 +14,24 @@
                     </button>
                     <md-menu-content>
                         <md-menu-item>
-                            <md-button ng-click="onHome();">
-                                主页
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button ng-click="onOpen();">
-                                打开
+                            <md-button ui-sref="app.home" aria-label="首页">
+                                首页
                             </md-button>
                         </md-menu-item>
                         <md-menu-divider></md-menu-divider>
                         <md-menu-item>
-                            <md-button ng-click="onExit();">
+                            <md-button ui-sref="app.sheet.open" aria-label="打开">
+                                打开
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ui-sref="app.history" aria-label="历史记录">
+                                历史记录
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-divider></md-menu-divider>
+                        <md-menu-item>
+                            <md-button ng-click="onExit();" aria-label="退出">
                                 退出
                             </md-button>
                         </md-menu-item>
@@ -37,12 +43,12 @@
                     </button>
                     <md-menu-content>
                         <md-menu-item>
-                            <md-button ng-click="onSetting('user');">
+                            <md-button ui-sref="app.setting.user" aria-label="邮件设置">
                                 邮件设置
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button ng-click="onSetting('template');">
+                            <md-button ui-sref="app.setting.template" aria-label="模板设置">
                                 模板设置
                             </md-button>
                         </md-menu-item>
@@ -54,12 +60,12 @@
                     </button>
                     <md-menu-content>
                         <md-menu-item>
-                            <md-button ng-click="onHelp();">
+                            <md-button ng-click="onHelp();" aria-label="帮助">
                                 帮助
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button ng-click="onAbout();">
+                            <md-button ng-click="onAbout();" aria-label="关于">
                                 关于
                             </md-button>
                         </md-menu-item>
@@ -69,25 +75,25 @@
         </div>
         <span flex></span>
         <div>
-            <md-button class="md-icon-button md-icon-button-mini" ng-click="onDevTool();">
+            <md-button class="md-icon-button md-icon-button-mini" ng-click="onDevTool();" aria-label="调试">
                 <md-tooltip>
                     调试
                 </md-tooltip>
                 <ng-md-icon icon="code" style="fill:grey;"></ng-md-icon>
             </md-button>
-            <md-button class="md-icon-button md-icon-button-mini" ng-click="onMinimize();">
+            <md-button class="md-icon-button md-icon-button-mini" ng-click="onMinimize();" aria-label="最小化窗口">
                 <md-tooltip>
                     最小化窗口
                 </md-tooltip>
                 <ng-md-icon icon="remove" style="fill:{{mdPrimaryColor}}"></ng-md-icon>
             </md-button>
-            <md-button class="md-icon-button md-icon-button-mini" ng-click="onMaximum();">
+            <md-button class="md-icon-button md-icon-button-mini" ng-click="onMaximum();" aria-label="最大化窗口">
                 <md-tooltip>
                     最大化窗口
                 </md-tooltip>
                 <ng-md-icon icon="crop_16_9" style="fill:{{mdPrimaryColor}};"></ng-md-icon>
             </md-button>
-            <md-button class="md-icon-button md-icon-button-mini" ng-click="onExit();">
+            <md-button class="md-icon-button md-icon-button-mini" ng-click="onExit();" aria-label="退出">
                 <md-tooltip>
                     退出
                 </md-tooltip>

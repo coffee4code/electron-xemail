@@ -1,4 +1,4 @@
-<div flex layout="column">
+<div flex layout="column" class="animated zoomIn">
     <div flex layout="row">
         <div flex="60" flex-offset="20" layout="column">
             <div flex="15"></div>
@@ -16,7 +16,7 @@
                                     <input ng-model="current.year" type="number" placeholder="年份" ng-required="true">
                                 </md-input-container>
                                 <md-input-container  md-no-float class="md-block md-full-width">
-                                    <md-select ng-model="current.month" ng-required="true">
+                                    <md-select ng-model="current.month" aria-label="月份" ng-required="true">
                                         <md-option ng-value="1">01月</md-option>
                                         <md-option ng-value="2">02月</md-option>
                                         <md-option ng-value="3">03月</md-option>
@@ -54,7 +54,7 @@
     </div>
     <md-divider></md-divider>
     <div layout="row" layout-align="end center" style="height: 60px;">
-        <md-button ui-sref="app.home">取消</md-button>
-        <md-button ng-click="onStart();" class="md-raised md-primary" ng-disabled="openner.status<=0 || !current.year || !current.month">确定</md-button>
+        <md-button ui-sref="app.home" aria-label="取消">取消</md-button>
+        <md-button ng-click="onStart();" class="md-raised md-primary" ng-disabled="openner.status<=0 || !current.year || !current.month" aria-label="打开">打开</md-button>
     </div>
 </div>
