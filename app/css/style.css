@@ -100,6 +100,11 @@ input[my-input-uppercase] {
   color: grey;
 }
 
+md-tab-content > div,
+md-tab-content > div > div {
+  height: 100%;
+}
+
 .table-header {
   height: 40px;
   line-height: 40px;
