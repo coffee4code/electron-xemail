@@ -1,10 +1,10 @@
-<md-dialog aria-label="Mango (Fruit)">
+<md-dialog aria-label="调整显示项目">
     <form ng-cloak>
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>调整显示项目</h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="onClose()">
+                <md-button class="md-icon-button" ng-click="onClose()" aria-label="关闭">
                     <ng-md-icon icon="close" style="fill: #ffffff;"></ng-md-icon>
                 </md-button>
             </div>
@@ -25,7 +25,7 @@
 
 
         <md-dialog-actions layout="row" layout-align="center center" class="dialog-with-adder">
-            <md-button class="md-raised md-primary" md-autofocus ng-click="onClose()">
+            <md-button class="md-raised md-primary" md-autofocus ng-click="onClose()" aria-label="确定">
                 确定
             </md-button>
         </md-dialog-actions>

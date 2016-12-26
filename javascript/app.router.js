@@ -83,7 +83,12 @@ angular
                 views: {
                     step: {
                         templateUrl:'tmpls/pages/sheet/send.html',
-                        controller: 'sheetSendCtrl'
+                        controller: 'sheetSendCtrl',
+                        resolve: {
+                            templateDetail: ['templateService', function (templateService){
+                                return templateService.getDetail();
+                            }]
+                        }
                     }
                 }
             })

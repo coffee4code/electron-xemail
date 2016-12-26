@@ -97,7 +97,8 @@ angular
             filePath:'',
             fileName:'',
             sheetName:'',
-            imported: []
+            imported: [],
+            checked: []
         };
     }])
     .controller('sheetOpenCtrl',['$scope', '$state', '$filter', '$mdToast',function($scope, $state, $filter, $mdToast){
@@ -204,9 +205,20 @@ angular
         }
 
     }])
-    .controller('sheetSendCtrl',['$scope', function($scope){
-        $scope.current.progress= 75;
+    .controller('sheetSendCtrl',['$scope', 'templateDetail', function($scope, templateDetail){
+        $scope.current.progress = 75;
+        $scope.templateDetail = templateDetail;
+        $scope.onSendOne = onSendOne;
+        $scope.onSendAll = onSendAll;
         console.info($scope.current);
+
+        function onSendOne(row) {
+            console.info(row);
+        }
+
+        function onSendAll() {
+            console.info($scope.current.checked);
+        }
     }])
     .controller('settingCtrl',['$scope', function($scope){
     }])
