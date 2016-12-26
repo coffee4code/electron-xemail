@@ -23,7 +23,12 @@
         </div>
         <div ng-if="rowList.length" flex layout="column">
             <md-table-container>
-                <table md-table md-row-select="true" multiple="true" ng-model="current.imported" class="table-center">
+                <table md-table
+                       md-row-select="true"
+                       multiple="true"
+                       ng-model="current.imported"
+                       class="table-center"
+                >
                     <thead md-head>
                         <tr md-row>
                             <th md-column>
@@ -35,7 +40,13 @@
                         </tr>
                     </thead>
                     <tbody md-body>
-                        <tr ng-if="row.show" md-row md-select="row" md-auto-select="true" ng-repeat="row in rowList" ng-class="{even: $even, odd: $odd}">
+                        <tr ng-if="row.show"
+                            md-row
+                            md-select="row"
+                            md-select-id="uuid"
+                            md-auto-select="true"
+                            ng-repeat="row in rowList"
+                            ng-class="{even: $even, odd: $odd}">
                             <td md-cell>{{::($index+1)}}</td>
                             <td md-cell ng-repeat="(key, tmpl) in templateDetail" ng-show="tmpl.show">
                                 {{ row[key] }}

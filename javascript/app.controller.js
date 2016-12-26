@@ -236,17 +236,26 @@ angular
         }
 
         function onSendItem(item) {
+            var uuid = item.uuid;
             $scope.current.imported.map(function(val){
-                if(val.uuid === item.uuid) {
-                    console.info(val);
+                if(val.uuid === uuid) {
                     val.statusSent = true;
                 }
+            });
+            $scope.nowChecked = $scope.nowChecked.filter(function(val){
+                return val.uuid !== uuid;
             });
         }
 
         function onSendAll() {
-            $scope.nowChecked.map(function(val){
-                val.statusSent = true;
+            var uuids = $scope.nowChecked.map(function(val){
+                return val.uuid;
+            });
+            $scope.nowChecked.length = 0;
+            $scope.current.imported.map(function(val){
+                if(uuids.indexOf(val.uuid) > -1 ) {
+                    val.statusSent = true;
+                }
             });
         }
 
