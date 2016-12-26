@@ -92,6 +92,24 @@ angular
                     }
                 }
             })
+            .state('app.sheet.done', {
+                url: '/done',
+                views: {
+                    step: {
+                        templateUrl:'tmpls/pages/sheet/done.html',
+                        controller: 'sheetDoneCtrl'
+                    }
+                }
+            })
+            .state('app.history', {
+                url: '/history',
+                views: {
+                    main: {
+                        templateUrl:'tmpls/pages/history.html',
+                        controller: 'historyCtrl'
+                    }
+                }
+            })
             .state('app.setting', {
                 url: '/setting',
                 absolute: true,

@@ -9,22 +9,13 @@ angular
     }])
     .controller('menuCtrl',['$scope', '$state', '$mdDialog',function($scope, $state, $mdDialog){
         $scope.window = remote.getCurrentWindow();
-        $scope.onHome = onHome;
-        $scope.onOpen = onOpen;
         $scope.onExit = onExit;
         $scope.onMaximum = onMaximum;
         $scope.onDevTool = onDevTool;
         $scope.onMinimize = onMinimize;
-        $scope.onSetting = onSetting;
         $scope.onHelp = onHelp;
         $scope.onAbout = onAbout;
 
-        function onHome() {
-            $state.go('app.home');
-        }
-        function onOpen() {
-            $state.go('app.sheet.open');
-        }
         function onExit() {
             var confirm = $mdDialog.confirm()
                 .title('关闭')
@@ -54,32 +45,28 @@ angular
         function onDevTool() {
             $scope.window.webContents.openDevTools();
         }
-        function onSetting(type) {
-            $state.go('app.setting.'+ type);
-        }
         function onHelp(event) {
-            dialogOpen('help', event);
+            _dialogOpen('help', event);
         }
         function onAbout(event) {
-            dialogOpen('about', event);
+            _dialogOpen('about', event);
         }
 
-        function dialogOpen(type, event) {
+        function _dialogOpen(type, event) {
             $mdDialog
                 .show({
-                    controller: dialogCtrl,
                     templateUrl: 'tmpls/dialogs/dialog.' + type + '.html',
                     parent: angular.element(document.body),
                     targetEvent: event,
                     clickOutsideToClose:true,
-                    fullscreen: false
+                    fullscreen: false,
+                    controller: ['$scope', '$mdDialog', function($scope, $mdDialog) {
+                            $scope.hide = function() {
+                            $mdDialog.hide();
+                        };
+                    }],
                 })
             ;
-        }
-        function dialogCtrl($scope, $mdDialog) {
-            $scope.hide = function() {
-                $mdDialog.hide();
-            };
         }
 
     }])
@@ -97,8 +84,7 @@ angular
             filePath:'',
             fileName:'',
             sheetName:'',
-            imported: [],
-            checked: []
+            imported: []
         };
     }])
     .controller('sheetOpenCtrl',['$scope', '$state', '$filter', '$mdToast',function($scope, $state, $filter, $mdToast){
@@ -206,29 +192,32 @@ angular
         }
 
     }])
-    .controller('sheetSendCtrl',['$scope', 'templateDetail', function($scope, templateDetail){
+    .controller('sheetSendCtrl',['$scope', '$state', 'templateDetail', function($scope, $state, templateDetail){
         $scope.current.progress = 75;
-        $scope.current.checked= [];
+        $scope.nowTab= 0;
+        $scope.nowChecked= [];
         $scope.templateDetail = templateDetail;
         $scope.onDeselectItem = onDeselectItem;
         $scope.onSelectItem = onSelectItem;
         $scope.onViewItem = onViewItem;
         $scope.onSendItem = onSendItem;
         $scope.onSendAll = onSendAll;
+        $scope.onFinish = onFinish;
+        $scope.onNext = onNext;
 
         onPreCheck();
         function onPreCheck() {
             for(var i=0;i<$scope.current.imported.length;i++) {
-                $scope.current.imported[i].checked = true;
-                $scope.current.imported[i].sent = false;
-                $scope.current.checked.push($scope.current.imported[i]);
+                $scope.current.imported[i].statusChecked = true;
+                $scope.current.imported[i].statusSent = false;
+                $scope.nowChecked.push($scope.current.imported[i]);
             }
         }
 
         function onDeselectItem(item) {
             $scope.current.imported.map(function(val){
                 if(val.id === item.id) {
-                    val.checked = false;
+                    val.statusChecked = false;
                 }
             });
         }
@@ -236,7 +225,7 @@ angular
         function onSelectItem(item) {
             $scope.current.imported.map(function(val){
                 if(val.id === item.id) {
-                    val.checked = true;
+                    val.statusChecked = true;
                 }
             });
         }
@@ -248,17 +237,30 @@ angular
         function onSendItem(item) {
             $scope.current.imported.map(function(val){
                 if(val.id === item.id) {
-                    val.sent = true;
+                    val.statusSent = true;
                 }
             });
         }
 
         function onSendAll() {
-            $scope.current.checked.map(function(val){
-                val.sent = true;
+            $scope.nowChecked.map(function(val){
+                val.statusSent = true;
             });
-            $scope.current.checked = [];
         }
+
+        function onFinish() {
+            $scope.nowTab= 1;
+        }
+
+        function onNext() {
+            $state.go('app.sheet.done');
+        }
+
+    }])
+    .controller('sheetDoneCtrl',['$scope', function($scope){
+        $scope.current.progress = 100;
+    }])
+    .controller('historyCtrl',['$scope', function($scope){
     }])
     .controller('settingCtrl',['$scope', function($scope){
     }])
@@ -502,6 +504,24 @@ angular
                                 return templateService.getDetail();
                             }]
                         }
+                    }
+                }
+            })
+            .state('app.sheet.done', {
+                url: '/done',
+                views: {
+                    step: {
+                        templateUrl:'tmpls/pages/sheet/done.html',
+                        controller: 'sheetDoneCtrl'
+                    }
+                }
+            })
+            .state('app.history', {
+                url: '/history',
+                views: {
+                    main: {
+                        templateUrl:'tmpls/pages/history.html',
+                        controller: 'historyCtrl'
                     }
                 }
             })

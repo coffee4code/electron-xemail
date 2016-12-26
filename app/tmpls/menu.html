@@ -14,13 +14,19 @@
                     </button>
                     <md-menu-content>
                         <md-menu-item>
-                            <md-button ng-click="onHome();" aria-label="主页">
-                                主页
+                            <md-button ui-sref="app.home" aria-label="首页">
+                                首页
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-divider></md-menu-divider>
+                        <md-menu-item>
+                            <md-button ui-sref="app.sheet.open" aria-label="打开">
+                                打开
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button ng-click="onOpen();" aria-label="打开">
-                                打开
+                            <md-button ui-sref="app.history" aria-label="历史记录">
+                                历史记录
                             </md-button>
                         </md-menu-item>
                         <md-menu-divider></md-menu-divider>
@@ -37,12 +43,12 @@
                     </button>
                     <md-menu-content>
                         <md-menu-item>
-                            <md-button ng-click="onSetting('user');" aria-label="邮件设置">
+                            <md-button ui-sref="app.setting.user" aria-label="邮件设置">
                                 邮件设置
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button ng-click="onSetting('template');" aria-label="模板设置">
+                            <md-button ui-sref="app.setting.template" aria-label="模板设置">
                                 模板设置
                             </md-button>
                         </md-menu-item>

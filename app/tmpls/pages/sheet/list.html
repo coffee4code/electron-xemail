@@ -1,4 +1,4 @@
-<md-content flex layout="column">
+<md-content flex layout="column" class="animated slideInRight">
     <div layout="row" class="table-header" md-colors="{'background':'grey-300'}">
         <ng-md-icon icon="note" size="18" style="fill: {{mdPrimaryColor}};"></ng-md-icon>
         <span>文件：</span>
@@ -26,6 +26,9 @@
                 <table md-table md-row-select="true" multiple="true" ng-model="current.imported" class="table-center">
                     <thead md-head>
                         <tr md-row>
+                            <th md-column>
+                                <span>序号</span>
+                            </th>
                             <th md-column ng-repeat="(key, tmpl) in templateDetail" ng-show="tmpl.show">
                                 <span>{{ tmpl.label }}</span>
                             </th>
@@ -33,6 +36,7 @@
                     </thead>
                     <tbody md-body>
                         <tr ng-if="row.show" md-row md-select="row" md-auto-select="true" ng-repeat="row in rowList" ng-class="{even: $even, odd: $odd}">
+                            <td md-cell>{{::($index+1)}}</td>
                             <td md-cell ng-repeat="(key, tmpl) in templateDetail" ng-show="tmpl.show">
                                 {{ row[key] }}
                             </td>
