@@ -43,7 +43,7 @@ angular
                     main: {
                         templateUrl:'tmpls/pages/sheet/sheet.html',
                         controller: 'sheetCtrl'
-                    },
+                    }
                 }
             })
             .state('app.sheet.open', {
@@ -61,7 +61,7 @@ angular
                     step: {
                         templateUrl:'tmpls/pages/sheet/load.html',
                         controller: 'sheetLoadCtrl'
-                    },
+                    }
                 }
             })
             .state('app.sheet.list', {
@@ -75,7 +75,16 @@ angular
                                 return templateService.getDetail();
                             }]
                         }
-                    },
+                    }
+                }
+            })
+            .state('app.sheet.send', {
+                url: '/send',
+                views: {
+                    step: {
+                        templateUrl:'tmpls/pages/sheet/send.html',
+                        controller: 'sheetSendCtrl'
+                    }
                 }
             })
             .state('app.setting', {

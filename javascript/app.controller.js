@@ -96,7 +96,8 @@ angular
             progress: 0,
             filePath:'',
             fileName:'',
-            sheetName:''
+            sheetName:'',
+            imported: []
         };
     }])
     .controller('sheetOpenCtrl',['$scope', '$state', '$filter', '$mdToast',function($scope, $state, $filter, $mdToast){
@@ -144,17 +145,15 @@ angular
             $state.go('app.sheet.list');
         }
     }])
-    .controller('sheetListCtrl',['$scope', '$mdDialog', 'xlsxService', 'templateDetail', function($scope, $mdDialog, xlsxService, templateDetail){
+    .controller('sheetListCtrl',['$scope', '$state', '$mdDialog', 'xlsxService', 'templateDetail', function($scope, $state, $mdDialog, xlsxService, templateDetail){
         $scope.current.progress= 50;
         $scope.templateDetail = templateDetail;
-        $scope.rowList = xlsxService.list($scope.current.sheetName);
-        $scope.selected = [];
         $scope.keyword = '';
         $scope.onNext = onNext;
         $scope.onDetailDialog = onDetailDialog;
 
-        onWatchFilter();
         onPreSelect();
+        onWatchFilter();
         function onWatchFilter() {
             $scope.$watch('keyword', function(newValue) {
                 $scope.rowList.map(function(val){
@@ -163,8 +162,9 @@ angular
             });
         }
         function onPreSelect() {
+            $scope.rowList = xlsxService.list($scope.current.sheetName);
             for(var i=0;i<$scope.rowList.length;i++) {
-                $scope.selected.push($scope.rowList[i]);
+                $scope.current.imported.push($scope.rowList[i]);
             }
         }
         function onDetailDialog(event) {
@@ -188,7 +188,7 @@ angular
             ;
         }
         function onNext() {
-            console.info($scope.selected);
+            $state.go('app.sheet.send');
         }
 
         function _search(row, kw) {
@@ -203,6 +203,10 @@ angular
             return false;
         }
 
+    }])
+    .controller('sheetSendCtrl',['$scope', function($scope){
+        $scope.current.progress= 75;
+        console.info($scope.current);
     }])
     .controller('settingCtrl',['$scope', function($scope){
     }])

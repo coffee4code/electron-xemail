@@ -24,7 +24,7 @@
         <div ng-if="rowList.length" flex layout="column">
             <div flex layout="column">
                 <md-table-container>
-                    <table md-table md-row-select="true" multiple="true" ng-model="selected" class="table-center">
+                    <table md-table md-row-select="true" multiple="true" ng-model="current.imported" class="table-center">
                         <thead md-head>
                             <tr md-row>
                                 <th md-column ng-repeat="(key, tmpl) in templateDetail" ng-show="tmpl.show">
@@ -59,10 +59,10 @@
         <span flex></span>
         <span class="table-footer" layout="row" layout-align="end center">
             已选择
-            <span class="num">{{selected.length}}</span>
+            <span class="num">{{current.imported.length}}</span>
             条
         </span>
         <md-button ui-sref="app.sheet.load">上一步</md-button>
-        <md-button ng-click="onNext();" class="md-raised md-primary" ng-disabled="!rowList.length || !selected.length">下一步</md-button>
+        <md-button ng-click="onNext();" class="md-raised md-primary" ng-disabled="!rowList.length || !current.imported.length">下一步</md-button>
     </div>
 </md-content>
