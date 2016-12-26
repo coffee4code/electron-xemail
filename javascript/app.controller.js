@@ -148,6 +148,7 @@ angular
     }])
     .controller('sheetListCtrl',['$scope', '$state', '$mdDialog', 'xlsxService', 'templateDetail', function($scope, $state, $mdDialog, xlsxService, templateDetail){
         $scope.current.progress= 50;
+        $scope.current.imported= [];
         $scope.templateDetail = templateDetail;
         $scope.keyword = '';
         $scope.onNext = onNext;
@@ -207,17 +208,56 @@ angular
     }])
     .controller('sheetSendCtrl',['$scope', 'templateDetail', function($scope, templateDetail){
         $scope.current.progress = 75;
+        $scope.current.checked= [];
         $scope.templateDetail = templateDetail;
-        $scope.onSendOne = onSendOne;
+        $scope.onDeselectItem = onDeselectItem;
+        $scope.onSelectItem = onSelectItem;
+        $scope.onViewItem = onViewItem;
+        $scope.onSendItem = onSendItem;
         $scope.onSendAll = onSendAll;
-        console.info($scope.current);
 
-        function onSendOne(row) {
-            console.info(row);
+        onPreCheck();
+        function onPreCheck() {
+            for(var i=0;i<$scope.current.imported.length;i++) {
+                $scope.current.imported[i].checked = true;
+                $scope.current.imported[i].sent = false;
+                $scope.current.checked.push($scope.current.imported[i]);
+            }
+        }
+
+        function onDeselectItem(item) {
+            $scope.current.imported.map(function(val){
+                if(val.id === item.id) {
+                    val.checked = false;
+                }
+            });
+        }
+
+        function onSelectItem(item) {
+            $scope.current.imported.map(function(val){
+                if(val.id === item.id) {
+                    val.checked = true;
+                }
+            });
+        }
+
+        function onViewItem(item) {
+            console.info(item);
+        }
+
+        function onSendItem(item) {
+            $scope.current.imported.map(function(val){
+                if(val.id === item.id) {
+                    val.sent = true;
+                }
+            });
         }
 
         function onSendAll() {
-            console.info($scope.current.checked);
+            $scope.current.checked.map(function(val){
+                val.sent = true;
+            });
+            $scope.current.checked = [];
         }
     }])
     .controller('settingCtrl',['$scope', function($scope){

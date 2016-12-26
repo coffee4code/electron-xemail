@@ -45,6 +45,7 @@ angular
                                 row[t] = '-';
                             }
                         }
+                        row['id'] = data.length;
                         data.push(row);
                     }
                 }
