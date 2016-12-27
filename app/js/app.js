@@ -258,6 +258,7 @@ angular
                     $scope.STATUS = STATUS;
                     $scope.type = type;
                     $scope.email = email;
+                    $scope.preview = 'html';
                     $scope.onClose = function() {
                         mdPanelRef.close();
                     };

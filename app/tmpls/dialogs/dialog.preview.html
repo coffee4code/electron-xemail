@@ -53,12 +53,21 @@
                 </span>
             </div>
         </div>
-        <div flex layout="column" ng-bind-html="email.htmlIframe"></div>
+        <div flex layout="column" ng-if="preview==='html'" ng-bind-html="email.htmlIframe"></div>
+        <div flex layout="column" ng-if="preview==='text'" ng-bind-html="email.textIframe"></div>
     </div>
 
     <md-divider></md-divider>
     <div layout="column" style="width: 100%;">
-        <div flex layout="row" layout-align="end center" style="height: 60px;">
+        <div flex layout="row" layout-align="end center" class="preview-footer">
+            <md-radio-group ng-model="preview" layout="row" layout-align="start center">
+                <md-radio-button value="html" class="md-primary">表单模式</md-radio-button>
+                <md-radio-button value="text" class="md-primary">
+                    文本模式
+                    <span class="preview-tip">(当收件人客户端不支持表单模式有效)</span>
+                </md-radio-button>
+            </md-radio-group>
+            <span flex></span>
             <md-button class="md-raised md-primary" ng-click="onClose();" aria-label="确定">
                 确定
             </md-button>

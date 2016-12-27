@@ -102,6 +102,19 @@ body {
   margin-bottom: 10px;
 }
 
+.dialog-preview .preview-footer {
+  width: 100%;
+  padding: 0 8px 0 20px;
+}
+
+.dialog-preview .preview-footer md-radio-group {
+  font-size: 14px;
+}
+
+.dialog-preview .preview-footer .preview-tip {
+  color: #aaa;
+}
+
 .dialog-preview .preview-title {
   width: 70px;
   color: #777;
