@@ -195,6 +195,6 @@
             条
         </span>
         <md-button ng-click="onSendAll();" class="md-raised md-primary" ng-disabled="!nowChecked.length" aria-label="发送已选" ng-if="(current.imported|filter:{statusSent:STATUS.INIT}).length">发送已选</md-button>
-        <md-button ng-click="onNext();" class="md-button" aria-label="完成">完成</md-button>
+        <md-button ng-click="onNext($event);" class="md-button" aria-label="完成">完成</md-button>
     </div>
 </md-content>

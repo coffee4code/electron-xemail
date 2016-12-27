@@ -198,7 +198,7 @@ angular
         }
 
     }])
-    .controller('sheetSendCtrl',['$scope', '$state', '$mdPanel', 'settingService', 'templateDetail', 'emailService', 'deliveryService', function($scope, $state, $mdPanel, settingService, templateDetail, emailService, deliveryService){
+    .controller('sheetSendCtrl',['$scope', '$state', '$mdDialog', '$mdPanel', 'settingService', 'templateDetail', 'emailService', 'deliveryService', function($scope, $state, $mdDialog, $mdPanel, settingService, templateDetail, emailService, deliveryService){
         $scope.current.progress = 75;
         $scope.nowTab= 0;
         $scope.nowChecked= [];
@@ -303,7 +303,42 @@ angular
             });
         }
 
-        function onNext() {
+        function onNext(event) {
+            var inited = 0,
+                failed = 0,
+                initedStr = '',
+                failedStr = '';
+            $scope.current.imported.map(function(val){
+                switch(val.statusSent) {
+                    case $scope.STATUS.INIT:
+                        inited += 1;
+                        break;
+                    case $scope.STATUS.FAIL:
+                        failed += 1;
+                        break;
+                    case $scope.STATUS.SUCCESS:
+                    default:
+                        break;
+                }
+            });
+            initedStr += inited ? inited + '条未发送' : '';
+            failedStr += (initedStr && failed) ? '，' + '' : '';
+            failedStr += failed ? failed + '条发送失败' : '';
+
+            if( inited || failed ) {
+                $mdDialog.show($mdDialog.confirm()
+                    .title('完成发送')
+                    .textContent('确定完成发送('+initedStr+failedStr+')？')
+                    .ariaLabel('完成发送')
+                    .targetEvent(event)
+                    .ok('返回继续发送')
+                    .cancel('确定完成')
+                ).then(function() {
+                }, function() {
+                    $state.go('app.sheet.done');
+                });
+                return false;
+            }
             $state.go('app.sheet.done');
         }
 
