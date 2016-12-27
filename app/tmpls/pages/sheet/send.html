@@ -166,6 +166,7 @@
                                     <th md-column><span>{{ templateDetail['employee_email'].label }}</span></th>
                                     <th md-column><span>查看</span></th>
                                     <th md-column><span>状态</span></th>
+                                    <th md-column><span>重新发送</span></th>
                                 </tr>
                                 </thead>
                                 <tbody md-body>
@@ -186,6 +187,12 @@
                                         <md-button class="md-icon-button">
                                             <md-tooltip>发送失败</md-tooltip>
                                             <ng-md-icon icon="close" style="fill: {{mdPrimaryColor}};"></ng-md-icon>
+                                        </md-button>
+                                    </td>
+                                    <td md-cell>
+                                        <md-button class="md-icon-button md-primary" aria-label="重新发送" ng-click="onSendItem(row);">
+                                            <md-tooltip>重新发送本条数据</md-tooltip>
+                                            <ng-md-icon icon="send" style="fill: {{ mdPrimaryColor }};"></ng-md-icon>
                                         </md-button>
                                     </td>
                                 </tr>
