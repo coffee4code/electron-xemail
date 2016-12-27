@@ -208,7 +208,6 @@ angular
         $scope.onViewItem = onViewItem;
         $scope.onSendItem = onSendItem;
         $scope.onSendAll = onSendAll;
-        $scope.onFinish = onFinish;
         $scope.onNext = onNext;
 
         onPreCheck();
@@ -302,10 +301,6 @@ angular
                     val.statusSent = Math.floor(Math.random() * 100) % 2 === 0 ? $scope.STATUS.SUCCESS : $scope.STATUS.FAIL;
                 }
             });
-        }
-
-        function onFinish() {
-            $scope.nowTab= 1;
         }
 
         function onNext() {

@@ -3,10 +3,18 @@
         <ng-md-icon icon="thumb_up" size="100" style="fill:{{ mdPrimaryColor }};"></ng-md-icon>
         <div style="margin-top: 50px;">
             <span>成功发送</span>
-            <span class="num">{{ ::(current.imported|filter:{statusSent:STATUS.SUCCESS}).length }}</span>
-            <span>封邮件,</span>
-            <span class="num">{{ ::(current.imported|filter:{statusSent:STATUS.FAIL}).length }}</span>
-            <span>封邮件发送失败</span>
+            <span class="num-success">{{ ::(current.imported|filter:{statusSent:STATUS.SUCCESS}).length }}</span>
+            <span>封邮件</span>
+            <span ng-if="(current.imported|filter:{statusSent:STATUS.FAIL}).length">
+                <span>，</span>
+                <span class="num-error">{{ ::(current.imported|filter:{statusSent:STATUS.FAIL}).length }}</span>
+                <span>封邮件发送失败</span>
+            </span>
+            <span ng-if="(current.imported|filter:{statusSent:STATUS.INIT}).length">
+                <span>，</span>
+                <span class="num-warn">{{ ::(current.imported|filter:{statusSent:STATUS.INIT}).length }}</span>
+                <span>封邮件未发送</span>
+            </span>
         </div>
     </div>
     <div flex="25" layout="row" layout-align="center center">

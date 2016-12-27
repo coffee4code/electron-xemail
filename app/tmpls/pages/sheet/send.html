@@ -1,10 +1,10 @@
-<md-tabs md-selected="nowTab" md-border-bottom layout-fill class="animated slideInRight">
-    <md-tab id="tab1" flex layout="column">
-        <md-tab-label>未发送（<span>{{(current.imported|filter:{statusSent:STATUS.INIT}).length}}</span>）</md-tab-label>
-        <md-tab-body flex layout="column">
-            <div layout="column">
-                <md-content flex layout="column">
-                    <div flex layout="column">
+<md-content flex layout="column" class="animated slideInRight">
+    <div flex layout="column">
+        <md-tabs md-selected="nowTab" md-border-bottom layout-fill>
+            <md-tab id="tab1" flex layout="column">
+                <md-tab-label>未发送（<span>{{(current.imported|filter:{statusSent:STATUS.INIT}).length}}</span>）</md-tab-label>
+                <md-tab-body flex layout="column">
+                    <div layout="column">
                         <div flex layout="column" layout-align="center center" ng-if="!(current.imported|filter:{statusSent:STATUS.INIT}).length">
                             <div>
                                 <ng-md-icon icon="error" size="40" style="fill: #cccccc;"></ng-md-icon>
@@ -59,21 +59,8 @@
                             </table>
                         </md-table-container>
                     </div>
-                    <md-divider></md-divider>
-                    <div style="height: 60px;" layout="row" layout-align="end center">
-                        <span flex></span>
-                        <span class="table-footer" layout="row" layout-align="end center" ng-if="(current.imported|filter:{statusSent:STATUS.INIT}).length">
-                            已选择
-                            <span class="num">{{nowChecked.length}}</span>
-                            条
-                        </span>
-                        <md-button ng-click="onSendAll();" class="md-raised md-primary" ng-disabled="!nowChecked.length" aria-label="全部发送" ng-if="(current.imported|filter:{statusSent:STATUS.INIT}).length">全部发送</md-button>
-                        <md-button ng-click="onFinish();" class="md-raised md-primary" aria-label="查看发送结果" ng-if="!(current.imported|filter:{statusSent:STATUS.INIT}).length">查看发送结果</md-button>
-                    </div>
-                </md-content>
-            </div>
-        </md-tab-body>
-    </md-tab>
+                </md-tab-body>
+            </md-tab>
 
 
 
@@ -81,12 +68,10 @@
 
 
 
-    <md-tab id="tab2" flex layout="column">
-        <md-tab-label>已发送（<span>{{(current.imported|filter:{statusSent:STATUS.SUCCESS}).length}}</span>）</md-tab-label>
-        <md-tab-body flex layout="column">
-            <div layout="column">
-                <md-content flex layout="column">
-                    <div flex layout="column">
+            <md-tab id="tab2" flex layout="column">
+                <md-tab-label>已发送（<span>{{(current.imported|filter:{statusSent:STATUS.SUCCESS}).length}}</span>）</md-tab-label>
+                <md-tab-body flex layout="column">
+                    <div layout="column">
                         <div flex layout="column" layout-align="center center" ng-if="!(current.imported|filter:{statusSent:STATUS.SUCCESS}).length">
                             <div>
                                 <ng-md-icon icon="error" size="40" style="fill: #cccccc;"></ng-md-icon>
@@ -129,15 +114,8 @@
                             </table>
                         </md-table-container>
                     </div>
-                    <md-divider></md-divider>
-                    <div style="height: 60px;" layout="row" layout-align="end center">
-                        <span flex></span>
-                        <md-button ng-click="onNext();" class="md-raised md-primary" ng-disabled="!(current.imported|filter:{statusSent:STATUS.SUCCESS}).length" aria-label="完成">完成</md-button>
-                    </div>
-                </md-content>
-            </div>
-        </md-tab-body>
-    </md-tab>
+                </md-tab-body>
+            </md-tab>
 
 
 
@@ -145,12 +123,10 @@
 
 
 
-    <md-tab id="tab3" flex layout="column">
-        <md-tab-label>发送失败（<span>{{(current.imported|filter:{statusSent:STATUS.FAIL}).length}}</span>）</md-tab-label>
-        <md-tab-body flex layout="column">
-            <div layout="column">
-                <md-content flex layout="column">
-                    <div flex layout="column">
+            <md-tab id="tab3" flex layout="column">
+                <md-tab-label>发送失败（<span>{{(current.imported|filter:{statusSent:STATUS.FAIL}).length}}</span>）</md-tab-label>
+                <md-tab-body flex layout="column">
+                    <div layout="column">
                         <div flex layout="column" layout-align="center center" ng-if="!(current.imported|filter:{statusSent:STATUS.FAIL}).length">
                             <div>
                                 <ng-md-icon icon="error" size="40" style="fill: #cccccc;"></ng-md-icon>
@@ -200,13 +176,25 @@
                             </table>
                         </md-table-container>
                     </div>
-                    <md-divider></md-divider>
-                    <div style="height: 60px;" layout="row" layout-align="end center">
-                        <span flex></span>
-                        <md-button ng-click="onNext();" class="md-raised md-primary" ng-disabled="!(current.imported|filter:{statusSent:STATUS.FAIL}).length" aria-label="完成">完成</md-button>
-                    </div>
-                </md-content>
-            </div>
-        </md-tab-body>
-    </md-tab>
-</md-tabs>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </div>
+
+
+
+
+
+
+    <md-divider></md-divider>
+
+    <div style="height: 60px;" layout="row" layout-align="end center">
+        <span class="table-footer" layout="row" layout-align="end center" ng-if="(current.imported|filter:{statusSent:STATUS.INIT}).length">
+            已选择
+            <span class="num">{{nowChecked.length}}</span>
+            条
+        </span>
+        <md-button ng-click="onSendAll();" class="md-raised md-primary" ng-disabled="!nowChecked.length" aria-label="发送已选" ng-if="(current.imported|filter:{statusSent:STATUS.INIT}).length">发送已选</md-button>
+        <md-button ng-click="onNext();" class="md-button" aria-label="完成">完成</md-button>
+    </div>
+</md-content>

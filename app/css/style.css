@@ -30,6 +30,21 @@ body {
   padding: 0 8px;
 }
 
+.num-success {
+  color: #2e7d32;
+  padding: 0 8px;
+}
+
+.num-error {
+  color: #e91e63;
+  padding: 0 8px;
+}
+
+.num-warn {
+  color: #f57f17;
+  padding: 0 8px;
+}
+
 .drop-container {
   text-align: center;
 }
