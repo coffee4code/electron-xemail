@@ -109,6 +109,10 @@ body {
   font-weight: bold;
 }
 
+.dialog-preview .preview-error {
+  color: #e91e63;
+}
+
 .dialog-preview .preview-success {
   color: #2e7d32;
 }

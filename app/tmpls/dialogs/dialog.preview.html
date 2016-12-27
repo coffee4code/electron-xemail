@@ -42,10 +42,13 @@
                 <span class="preview-title">
                     正&nbsp;&nbsp;&nbsp;&nbsp;文：
                 </span>
-                <span ng-if="email.data.statusSent" class="preview-success">
+                <span ng-if="email.data.statusSent === STATUS.FAIL" class="preview-error">
+                    发送失败
+                </span>
+                <span ng-if="email.data.statusSent === STATUS.SUCCESS" class="preview-success">
                     发送成功
                 </span>
-                <span ng-if="!email.data.statusSent" class="preview-warn">
+                <span ng-if="email.data.statusSent === STATUS.INIT" class="preview-warn">
                     未发送
                 </span>
             </div>

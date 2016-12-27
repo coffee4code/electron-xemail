@@ -78,6 +78,11 @@ angular
     }])
     .controller('sheetCtrl',['$scope', function($scope){
         var now = new Date();
+        $scope.STATUS = {
+            INIT: 'init',
+            SUCCESS: 'success',
+            FAIL: 'fail'
+        };
         $scope.current = {
             year: now.getFullYear(),
             month: now.getMonth() + 1,
@@ -193,7 +198,7 @@ angular
         }
 
     }])
-    .controller('sheetSendCtrl',['$scope', '$state', '$mdPanel', 'settingService', 'templateDetail', 'emailService', function($scope, $state, $mdPanel, settingService, templateDetail, emailService){
+    .controller('sheetSendCtrl',['$scope', '$state', '$mdPanel', 'settingService', 'templateDetail', 'emailService', 'deliveryService', function($scope, $state, $mdPanel, settingService, templateDetail, emailService, deliveryService){
         $scope.current.progress = 75;
         $scope.nowTab= 0;
         $scope.nowChecked= [];
@@ -210,7 +215,7 @@ angular
         function onPreCheck() {
             for(var i=0;i<$scope.current.imported.length;i++) {
                 $scope.current.imported[i].statusChecked = true;
-                $scope.current.imported[i].statusSent = false;
+                $scope.current.imported[i].statusSent = $scope.STATUS.INIT;
                 $scope.nowChecked.push($scope.current.imported[i]);
             }
         }
@@ -232,7 +237,6 @@ angular
         }
 
         function onViewItem(type, item) {
-            var email = emailService.generate(item, $scope.current.year, $scope.current.month);
             $mdPanel.open( {
                 animation:$mdPanel.newPanelAnimation().withAnimation($mdPanel.animation.FADE),
                 attachTo: angular.element(document.body),
@@ -247,10 +251,12 @@ angular
                 escapeToClose: true,
                 focusOnOpen: true,
                 locals: {
+                    STATUS: $scope.STATUS,
                     type: type,
-                    email:email
+                    email: emailService.generate(item, $scope.current.year, $scope.current.month)
                 },
-                controller: ['$scope', '$mdPanel', 'mdPanelRef', 'type', 'email', function ($scope, $mdPanel, mdPanelRef, type, email) {
+                controller: ['$scope', '$mdPanel', 'mdPanelRef', 'STATUS', 'type', 'email', function ($scope, $mdPanel, mdPanelRef, STATUS, type, email) {
+                    $scope.STATUS = STATUS;
                     $scope.type = type;
                     $scope.email = email;
                     $scope.onClose = function() {
@@ -261,10 +267,24 @@ angular
         }
 
         function onSendItem(item) {
+            // var email = emailService.generate(item, $scope.current.year, $scope.current.month);
+            // deliveryService
+            //     .send(email)
+            //     .then(function (info) {
+            //         console.info('success', info);
+            //     }, function (error) {
+            //         console.info('errow', info);
+            //     })
+            //     .finally(function () {
+            //         console.info('finally');
+            //     });
+
+
+
             var uuid = item.uuid;
             $scope.current.imported.map(function(val){
                 if(val.uuid === uuid) {
-                    val.statusSent = true;
+                    val.statusSent = Math.floor(Math.random() * 100) % 2 === 0 ? $scope.STATUS.SUCCESS : $scope.STATUS.FAIL;
                 }
             });
             $scope.nowChecked = $scope.nowChecked.filter(function(val){
@@ -279,7 +299,7 @@ angular
             $scope.nowChecked.length = 0;
             $scope.current.imported.map(function(val){
                 if(uuids.indexOf(val.uuid) > -1 ) {
-                    val.statusSent = true;
+                    val.statusSent = Math.floor(Math.random() * 100) % 2 === 0 ? $scope.STATUS.SUCCESS : $scope.STATUS.FAIL;
                 }
             });
         }
@@ -606,9 +626,45 @@ angular
     ]);
 
 ;var angular = require('angular'),
-    XLSX = require('xlsx');
+    XLSX = require('xlsx'),
+    NODE_MAILER = require('nodemailer');
 angular
     .module('app.service',[])
+    .service('deliveryService',['$q',function($q){
+        return {
+            send: send
+        };
+
+        function send(email) {
+            var deferred = $q.defer(),
+                smtpConfig = {
+                    host: email.setting.smtp_host,
+                    port: email.setting.smtp_port,
+                    secure: true,
+                    auth: {
+                        user: email.setting.sender_email,
+                        pass: email.setting.sender_password
+                    }
+                },
+                transporter = NODE_MAILER.createTransport(smtpConfig),
+                mailOptions = {
+                    from: email.setting.sender_email,
+                    to: email.data.employee_email,
+                    subject: email.subject,
+                    text: email.text,
+                    html: email.html
+                };
+
+            transporter.sendMail(mailOptions, function(error, info){
+                if(error){
+                    deferred.reject(error);
+                }else{
+                    deferred.resolve(info);
+                }
+            });
+            return deferred.promise;
+        }
+    }])
     .service('emailService',['$sce', 'settingService',function($sce, settingService){
         var TYPE = {
             html: 'html',

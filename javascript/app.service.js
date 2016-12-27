@@ -1,7 +1,43 @@
 var angular = require('angular'),
-    XLSX = require('xlsx');
+    XLSX = require('xlsx'),
+    NODE_MAILER = require('nodemailer');
 angular
     .module('app.service',[])
+    .service('deliveryService',['$q',function($q){
+        return {
+            send: send
+        };
+
+        function send(email) {
+            var deferred = $q.defer(),
+                smtpConfig = {
+                    host: email.setting.smtp_host,
+                    port: email.setting.smtp_port,
+                    secure: true,
+                    auth: {
+                        user: email.setting.sender_email,
+                        pass: email.setting.sender_password
+                    }
+                },
+                transporter = NODE_MAILER.createTransport(smtpConfig),
+                mailOptions = {
+                    from: email.setting.sender_email,
+                    to: email.data.employee_email,
+                    subject: email.subject,
+                    text: email.text,
+                    html: email.html
+                };
+
+            transporter.sendMail(mailOptions, function(error, info){
+                if(error){
+                    deferred.reject(error);
+                }else{
+                    deferred.resolve(info);
+                }
+            });
+            return deferred.promise;
+        }
+    }])
     .service('emailService',['$sce', 'settingService',function($sce, settingService){
         var TYPE = {
             html: 'html',
