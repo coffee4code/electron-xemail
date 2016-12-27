@@ -1,0 +1,64 @@
+<div role="dialog" aria-label="{{::type}}" flex layout="column" layout-align="center center" class="dialog-container">
+    <md-toolbar>
+        <div class="md-toolbar-tools" layout="row">
+            <p class="md-subhead">{{::type}}</p>
+            <span flex></span>
+            <md-button class="md-icon-button md-icon-button-mini" aria-label="关闭" ng-click="onClose();">
+                <md-tooltip>关闭</md-tooltip>
+                <ng-md-icon icon="close" style="fill: #fff;"></ng-md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <div class="dialog-content" flex layout="column">
+        <div layout="column" class="preview-header">
+            <div layout="row">
+                <span class="preview-title">
+                    收件人：
+                </span>
+                <span class="preview-name">
+                    {{email.data.employee_name}}
+                </span>
+                <span class="preview-email">
+                    &lt;{{email.data.employee_email}}&gt;
+                </span>
+                <span flex></span>
+                <span class="preview-title">
+                    发件人：
+                </span>
+                <span class="preview-email">
+                    &lt;{{email.setting.sender_email}}&gt;
+                </span>
+            </div>
+            <div layout="row">
+                <span class="preview-title">
+                    主&nbsp;&nbsp;&nbsp;&nbsp;题：
+                </span>
+                <span class="preview-subject">
+                    {{email.subject}}
+                </span>
+            </div>
+            <div layout="row">
+                <span class="preview-title">
+                    正&nbsp;&nbsp;&nbsp;&nbsp;文：
+                </span>
+                <span ng-if="email.data.statusSent" class="preview-success">
+                    发送成功
+                </span>
+                <span ng-if="!email.data.statusSent" class="preview-warn">
+                    未发送
+                </span>
+            </div>
+        </div>
+        <div flex layout="column" ng-bind-html="email.htmlIframe"></div>
+    </div>
+
+    <md-divider></md-divider>
+    <div layout="column" style="width: 100%;">
+        <div flex layout="row" layout-align="end center" style="height: 60px;">
+            <md-button class="md-raised md-primary" ng-click="onClose();" aria-label="确定">
+                确定
+            </md-button>
+        </div>
+    </div>
+</div>

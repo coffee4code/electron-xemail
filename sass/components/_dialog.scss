@@ -5,3 +5,59 @@
 .dialog-with-adder + .dialog-with-adder {
 	padding-top: 0;
 }
+
+.demo-md-panel {
+	min-height: 500px;
+}
+
+.dialog-preview {
+	background: white;
+	border-radius: 4px;
+	box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2),
+	0 13px 19px 2px rgba(0, 0, 0, 0.14),
+	0 5px 24px 4px rgba(0, 0, 0, 0.12);
+	width: 90%;
+	height: 90%;
+
+	>.dialog-container {
+		height: 100%;
+	}
+
+	.dialog-content {
+		padding: 20px;
+		width: 100%;
+	}
+
+	md-divider {
+		width: 100%;
+	}
+	.preview-header > div {
+		margin-bottom: 10px;
+	}
+
+	.preview-title {
+		width: 70px;
+		color: #777;
+		padding-right: 15px;
+		text-align: right;
+	}
+	.preview-name {
+		color: $primary-color;
+	}
+	.preview-email {
+		color: #acacac;
+		font-size: 14px;
+		line-height: 19px;
+	}
+	.preview-subject {
+		color: #777;
+		font-weight: bold;
+	}
+
+	.preview-success {
+		color: $color-green;
+	}
+	.preview-warn {
+		color: $color-orange;
+	}
+}

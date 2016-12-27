@@ -58,6 +58,65 @@ body {
   padding-top: 0;
 }
 
+.demo-md-panel {
+  min-height: 500px;
+}
+
+.dialog-preview {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 13px 19px 2px rgba(0, 0, 0, 0.14), 0 5px 24px 4px rgba(0, 0, 0, 0.12);
+  width: 90%;
+  height: 90%;
+}
+
+.dialog-preview > .dialog-container {
+  height: 100%;
+}
+
+.dialog-preview .dialog-content {
+  padding: 20px;
+  width: 100%;
+}
+
+.dialog-preview md-divider {
+  width: 100%;
+}
+
+.dialog-preview .preview-header > div {
+  margin-bottom: 10px;
+}
+
+.dialog-preview .preview-title {
+  width: 70px;
+  color: #777;
+  padding-right: 15px;
+  text-align: right;
+}
+
+.dialog-preview .preview-name {
+  color: #e91e63;
+}
+
+.dialog-preview .preview-email {
+  color: #acacac;
+  font-size: 14px;
+  line-height: 19px;
+}
+
+.dialog-preview .preview-subject {
+  color: #777;
+  font-weight: bold;
+}
+
+.dialog-preview .preview-success {
+  color: #2e7d32;
+}
+
+.dialog-preview .preview-warn {
+  color: #f57f17;
+}
+
 .md-button.md-icon-button.md-icon-button-mini {
   margin: 0;
   padding: 0;

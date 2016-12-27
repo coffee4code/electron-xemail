@@ -193,7 +193,7 @@ angular
         }
 
     }])
-    .controller('sheetSendCtrl',['$scope', '$state', 'templateDetail', function($scope, $state, templateDetail){
+    .controller('sheetSendCtrl',['$scope', '$state', '$mdPanel', 'settingService', 'templateDetail', 'emailService', function($scope, $state, $mdPanel, settingService, templateDetail, emailService){
         $scope.current.progress = 75;
         $scope.nowTab= 0;
         $scope.nowChecked= [];
@@ -231,8 +231,33 @@ angular
             });
         }
 
-        function onViewItem(item) {
-            console.info(item);
+        function onViewItem(type, item) {
+            var email = emailService.generate(item, $scope.current.year, $scope.current.month);
+            $mdPanel.open( {
+                animation:$mdPanel.newPanelAnimation().withAnimation($mdPanel.animation.FADE),
+                attachTo: angular.element(document.body),
+                disableParentScroll: this.disableParentScroll,
+                templateUrl: 'tmpls/dialogs/dialog.preview.html',
+                hasBackdrop: true,
+                panelClass: 'dialog-preview',
+                position: $mdPanel.newPanelPosition().absolute().center(),
+                trapFocus: true,
+                zIndex: 150,
+                clickOutsideToClose: true,
+                escapeToClose: true,
+                focusOnOpen: true,
+                locals: {
+                    type: type,
+                    email:email
+                },
+                controller: ['$scope', '$mdPanel', 'mdPanelRef', 'type', 'email', function ($scope, $mdPanel, mdPanelRef, type, email) {
+                    $scope.type = type;
+                    $scope.email = email;
+                    $scope.onClose = function() {
+                        mdPanelRef.close();
+                    };
+                }]
+            });
         }
 
         function onSendItem(item) {
