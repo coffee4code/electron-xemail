@@ -76,13 +76,9 @@ angular
     .controller('homeCtrl',['$scope',function($scope){
 
     }])
-    .controller('sheetCtrl',['$scope', function($scope){
+    .controller('sheetCtrl',['$scope', 'config', function($scope, config){
         var now = new Date();
-        $scope.STATUS = {
-            INIT: 'init',
-            SUCCESS: 'success',
-            FAIL: 'fail'
-        };
+        $scope.STATUS = config.get().STATUS;
         $scope.current = {
             year: now.getFullYear(),
             month: now.getMonth() + 1,
@@ -138,7 +134,7 @@ angular
             $state.go('app.sheet.list');
         }
     }])
-    .controller('sheetListCtrl',['$scope', '$state', '$mdDialog', 'xlsxService', 'templateDetail', function($scope, $state, $mdDialog, xlsxService, templateDetail){
+    .controller('sheetListCtrl',['$scope', '$state', '$mdDialog', 'xlsxService', 'historyService', 'templateDetail', function($scope, $state, $mdDialog, xlsxService, historyService, templateDetail){
         $scope.current.progress= 50;
         $scope.current.imported= [];
         $scope.templateDetail = templateDetail;
@@ -181,7 +177,7 @@ angular
                 })
             ;
         }
-        function onNext() {
+        function onNext(event) {
             var unchecked =$scope.rowList.length - $scope.current.imported.length,
                 uncheckStr = unchecked + '条数据未选择';
             if(!unchecked) {
@@ -201,7 +197,19 @@ angular
             });
         }
 
-        function _goNext() {
+        function _goNext(event) {
+            var save = historyService.save($scope.current.year, $scope.current.month, $scope.current.imported);
+            if(!save) {
+                $mdDialog.show(
+                    $mdDialog.alert()
+                        .title('导入数据')
+                        .textContent('导入数据发生错误，请重试')
+                        .ariaLabel('导入数据')
+                        .ok('确定')
+                        .targetEvent(event)
+                );
+                return false;
+            }
             $state.go('app.sheet.send');
         }
 

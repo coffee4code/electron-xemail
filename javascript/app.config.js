@@ -5,10 +5,12 @@ angular
     .provider("config",[function(){
         var options = {
             SETTINGS: {},
-            TEMPLATES: {}
+            TEMPLATES: {},
+            STATUS: {}
         };
         this.setSetting = setSetting;
         this.setTemplate = setTemplate;
+        this.setStatus = setStatus;
         this.$get=function(){
             return {
                 get:get
@@ -23,6 +25,9 @@ angular
         }
         function setTemplate(template) {
             options.TEMPLATES = template;
+        }
+        function setStatus(status) {
+            options.STATUS = status;
         }
     }])
     .config(['$mdThemingProvider',function($mdThemingProvider) {
@@ -75,8 +80,14 @@ angular
             deductions_personal_tax : 'Z',
             final_amount : 'AC'
         };
+        var status = {
+            INIT: 'init',
+            SUCCESS: 'success',
+            FAIL: 'fail'
+        };
         configProvider.setSetting(setting);
         configProvider.setTemplate(template);
+        configProvider.setStatus(status);
     }])
 
 ;

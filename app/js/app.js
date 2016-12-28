@@ -76,13 +76,9 @@ angular
     .controller('homeCtrl',['$scope',function($scope){
 
     }])
-    .controller('sheetCtrl',['$scope', function($scope){
+    .controller('sheetCtrl',['$scope', 'config', function($scope, config){
         var now = new Date();
-        $scope.STATUS = {
-            INIT: 'init',
-            SUCCESS: 'success',
-            FAIL: 'fail'
-        };
+        $scope.STATUS = config.get().STATUS;
         $scope.current = {
             year: now.getFullYear(),
             month: now.getMonth() + 1,
@@ -138,7 +134,7 @@ angular
             $state.go('app.sheet.list');
         }
     }])
-    .controller('sheetListCtrl',['$scope', '$state', '$mdDialog', 'xlsxService', 'templateDetail', function($scope, $state, $mdDialog, xlsxService, templateDetail){
+    .controller('sheetListCtrl',['$scope', '$state', '$mdDialog', 'xlsxService', 'historyService', 'templateDetail', function($scope, $state, $mdDialog, xlsxService, historyService, templateDetail){
         $scope.current.progress= 50;
         $scope.current.imported= [];
         $scope.templateDetail = templateDetail;
@@ -181,7 +177,7 @@ angular
                 })
             ;
         }
-        function onNext() {
+        function onNext(event) {
             var unchecked =$scope.rowList.length - $scope.current.imported.length,
                 uncheckStr = unchecked + '条数据未选择';
             if(!unchecked) {
@@ -201,7 +197,19 @@ angular
             });
         }
 
-        function _goNext() {
+        function _goNext(event) {
+            var save = historyService.save($scope.current.year, $scope.current.month, $scope.current.imported);
+            if(!save) {
+                $mdDialog.show(
+                    $mdDialog.alert()
+                        .title('导入数据')
+                        .textContent('导入数据发生错误，请重试')
+                        .ariaLabel('导入数据')
+                        .ok('确定')
+                        .targetEvent(event)
+                );
+                return false;
+            }
             $state.go('app.sheet.send');
         }
 
@@ -688,8 +696,93 @@ angular
     NODE_MAILER = require('nodemailer');
 angular
     .module('app.service',[])
-    .service('historyService',[function(){
+    .service('historyService',['config', 'databaseService', function(config,databaseService){
+        var dbPrefix = 'history',
+            nameSeparator = '_',
+            STATUS = config.get().STATUS;
+        return {
+            list: list,
+            save: save,
+            detail: detail
+        };
 
+        function list() {
+            var format= new RegExp("^"+dbPrefix+nameSeparator+"[\\d]{4}"+nameSeparator+"[\\d]{2}$");
+            return databaseService.databases(format);
+        }
+
+        function save(year,month,data) {
+            var dbName = _getDbName(year, month);
+            if(!databaseService.exist(dbName)){
+                _create(dbName);
+            }
+
+            var saveSql = [];
+            for(var i=0;i<data.length;i++) {
+                var row = data[i];
+                var sql = "INSERT INTO " + dbName + " VALUES ( " +
+                    "NULL" +
+                    ", '" + row.uuid +"'" +
+                    ", '" + STATUS.INIT +"'" +
+                    ", '" + row.employee_email +"'" +
+                    ", '" + row.employee_name +"'" +
+                    ", '" + row.employee_department +"'" +
+                    ", '" + row.employee_workday +"'" +
+                    ", '" + row.employee_attendance +"'" +
+                    ", '" + row.wage_base +"'" +
+                    ", '" + row.wage_allowance +"'" +
+                    ", '" + row.wage_reward +"'" +
+                    ", '" + row.wage_everyday +"'" +
+                    ", '" + row.wage_total +"'" +
+                    ", '" + row.deductions_absence +"'" +
+                    ", '" + row.deductions_sick_leave +"'" +
+                    ", '" + row.deductions_other +"'" +
+                    ", '" + row.deductions_social_security +"'" +
+                    ", '" + row.deductions_provident_fund +"'" +
+                    ", '" + row.deductions_personal_tax +"'" +
+                    ", '" + row.final_amount +"'" +
+                    " )";
+                saveSql.push(sql);
+            }
+            return databaseService.execute(dbName,saveSql.join(';'));
+        }
+
+        function detail(year, month) {
+            var dbName = _getDbName(year, month);
+            return databaseService.table(dbName);
+        }
+
+        function _create(dbName) {
+            var createSql = 'DROP TABLE IF EXISTS '+dbName+'; ' +
+                'CREATE TABLE ' + dbName + ' (' +
+                '  id INTEGER PRIMARY KEY AUTOINCREMENT' +
+                ', uuid STRING' +
+                ', statusSent STRING' +
+                ', employee_email STRING' +
+                ', employee_name STRING' +
+                ', employee_department STRING' +
+                ', employee_workday STRING' +
+                ', employee_attendance STRING' +
+                ', wage_base STRING' +
+                ', wage_allowance STRING' +
+                ', wage_reward STRING' +
+                ', wage_everyday STRING' +
+                ', wage_total STRING' +
+                ', deductions_absence STRING' +
+                ', deductions_sick_leave STRING' +
+                ', deductions_other STRING' +
+                ', deductions_social_security STRING' +
+                ', deductions_provident_fund STRING' +
+                ', deductions_personal_tax STRING' +
+                ', final_amount STRING' +
+                ');';
+            databaseService.create(dbName, createSql);
+        }
+
+        function _getDbName(year,month) {
+            month = String(month).replace(/^([\d])$/, '0$1');
+            return [dbPrefix,year,month].join(nameSeparator);
+        }
     }])
     .service('deliveryService',['$q',function($q){
         return {
@@ -1175,7 +1268,12 @@ angular
         };
 
         function init() {
-            var settingSql = 'DROP TABLE IF EXISTS '+dbName+'; CREATE TABLE ' + dbName + ' (id INTEGER PRIMARY KEY AUTOINCREMENT, cell STRING, cellColumn STRING);';
+            var settingSql = 'DROP TABLE IF EXISTS '+dbName+'; ' +
+                'CREATE TABLE ' + dbName + ' ( ' +
+                'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+                'cell STRING, ' +
+                'cellColumn STRING ' +
+                ');';
             var sqls = [];
             for(var key in TEMPLATES) {
                 sqls.push("INSERT INTO " + dbName + " VALUES (NULL, '" + key +"','"+ TEMPLATES[key] +"')");
@@ -1294,7 +1392,12 @@ angular
         };
 
         function init() {
-            var settingSql = 'DROP TABLE IF EXISTS '+dbName+'; CREATE TABLE ' + dbName + ' (id INTEGER PRIMARY KEY AUTOINCREMENT, itemKey STRING, itemValue STRING);';
+            var settingSql = 'DROP TABLE IF EXISTS '+dbName+'; ' +
+                'CREATE TABLE ' + dbName + ' ( ' +
+                'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+                'itemKey STRING, ' +
+                'itemValue STRING ' +
+                ');';
             var sqls = [];
             for(var key in SETTINGS) {
                 sqls.push("INSERT INTO " + dbName + " VALUES (NULL, '" + key +"','"+ SETTINGS[key] +"')");
@@ -1359,7 +1462,9 @@ angular
 
     }])
     .service('UtilService', [function () {
-        this.guid = guid;
+        return {
+            guid: guid
+        };
 
         function guid () {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -1376,10 +1481,12 @@ angular
     .provider("config",[function(){
         var options = {
             SETTINGS: {},
-            TEMPLATES: {}
+            TEMPLATES: {},
+            STATUS: {}
         };
         this.setSetting = setSetting;
         this.setTemplate = setTemplate;
+        this.setStatus = setStatus;
         this.$get=function(){
             return {
                 get:get
@@ -1394,6 +1501,9 @@ angular
         }
         function setTemplate(template) {
             options.TEMPLATES = template;
+        }
+        function setStatus(status) {
+            options.STATUS = status;
         }
     }])
     .config(['$mdThemingProvider',function($mdThemingProvider) {
@@ -1446,8 +1556,14 @@ angular
             deductions_personal_tax : 'Z',
             final_amount : 'AC'
         };
+        var status = {
+            INIT: 'init',
+            SUCCESS: 'success',
+            FAIL: 'fail'
+        };
         configProvider.setSetting(setting);
         configProvider.setTemplate(template);
+        configProvider.setStatus(status);
     }])
 
 ;;var angular = require('angular'),
@@ -1463,11 +1579,26 @@ angular
         var DB = [];
 
         return {
+            databases: databases,
             filter: filter,
             execute: execute,
             table: table,
-            create: create
+            create: create,
+            exist: exist
         };
+
+        function databases(format) {
+            var result = [],
+                path = _getDbPath(''),
+                files = fs.fs.readdirSync(path);
+            for (var i=0;i<files.length;i++) {
+                var fileName = files[i];
+                if(format.test(fileName)){
+                    result.push(fileName);
+                }
+            }
+            return result;
+        }
 
         /**
          * Create database with sql, by default table name will be database name
@@ -1480,7 +1611,7 @@ angular
             if(DB && DB[database]){
                 return ;
             }
-            if(!_exist(database)) {
+            if(!exist(database)) {
                 var db = new SQL.Database();
                 db.run(sql);
                 DB[database] = db;
@@ -1543,7 +1674,7 @@ angular
          * @returns {*}
          * @private
          */
-        function _exist(database) {
+        function exist(database) {
             return fs.existsSync(_getDbPath(database));
         }
 

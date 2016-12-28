@@ -11,11 +11,26 @@ angular
         var DB = [];
 
         return {
+            databases: databases,
             filter: filter,
             execute: execute,
             table: table,
-            create: create
+            create: create,
+            exist: exist
         };
+
+        function databases(format) {
+            var result = [],
+                path = _getDbPath(''),
+                files = fs.fs.readdirSync(path);
+            for (var i=0;i<files.length;i++) {
+                var fileName = files[i];
+                if(format.test(fileName)){
+                    result.push(fileName);
+                }
+            }
+            return result;
+        }
 
         /**
          * Create database with sql, by default table name will be database name
@@ -28,7 +43,7 @@ angular
             if(DB && DB[database]){
                 return ;
             }
-            if(!_exist(database)) {
+            if(!exist(database)) {
                 var db = new SQL.Database();
                 db.run(sql);
                 DB[database] = db;
@@ -91,7 +106,7 @@ angular
          * @returns {*}
          * @private
          */
-        function _exist(database) {
+        function exist(database) {
             return fs.existsSync(_getDbPath(database));
         }
 

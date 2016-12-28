@@ -3,8 +3,93 @@ var angular = require('angular'),
     NODE_MAILER = require('nodemailer');
 angular
     .module('app.service',[])
-    .service('historyService',[function(){
+    .service('historyService',['config', 'databaseService', function(config,databaseService){
+        var dbPrefix = 'history',
+            nameSeparator = '_',
+            STATUS = config.get().STATUS;
+        return {
+            list: list,
+            save: save,
+            detail: detail
+        };
 
+        function list() {
+            var format= new RegExp("^"+dbPrefix+nameSeparator+"[\\d]{4}"+nameSeparator+"[\\d]{2}$");
+            return databaseService.databases(format);
+        }
+
+        function save(year,month,data) {
+            var dbName = _getDbName(year, month);
+            if(!databaseService.exist(dbName)){
+                _create(dbName);
+            }
+
+            var saveSql = [];
+            for(var i=0;i<data.length;i++) {
+                var row = data[i];
+                var sql = "INSERT INTO " + dbName + " VALUES ( " +
+                    "NULL" +
+                    ", '" + row.uuid +"'" +
+                    ", '" + STATUS.INIT +"'" +
+                    ", '" + row.employee_email +"'" +
+                    ", '" + row.employee_name +"'" +
+                    ", '" + row.employee_department +"'" +
+                    ", '" + row.employee_workday +"'" +
+                    ", '" + row.employee_attendance +"'" +
+                    ", '" + row.wage_base +"'" +
+                    ", '" + row.wage_allowance +"'" +
+                    ", '" + row.wage_reward +"'" +
+                    ", '" + row.wage_everyday +"'" +
+                    ", '" + row.wage_total +"'" +
+                    ", '" + row.deductions_absence +"'" +
+                    ", '" + row.deductions_sick_leave +"'" +
+                    ", '" + row.deductions_other +"'" +
+                    ", '" + row.deductions_social_security +"'" +
+                    ", '" + row.deductions_provident_fund +"'" +
+                    ", '" + row.deductions_personal_tax +"'" +
+                    ", '" + row.final_amount +"'" +
+                    " )";
+                saveSql.push(sql);
+            }
+            return databaseService.execute(dbName,saveSql.join(';'));
+        }
+
+        function detail(year, month) {
+            var dbName = _getDbName(year, month);
+            return databaseService.table(dbName);
+        }
+
+        function _create(dbName) {
+            var createSql = 'DROP TABLE IF EXISTS '+dbName+'; ' +
+                'CREATE TABLE ' + dbName + ' (' +
+                '  id INTEGER PRIMARY KEY AUTOINCREMENT' +
+                ', uuid STRING' +
+                ', statusSent STRING' +
+                ', employee_email STRING' +
+                ', employee_name STRING' +
+                ', employee_department STRING' +
+                ', employee_workday STRING' +
+                ', employee_attendance STRING' +
+                ', wage_base STRING' +
+                ', wage_allowance STRING' +
+                ', wage_reward STRING' +
+                ', wage_everyday STRING' +
+                ', wage_total STRING' +
+                ', deductions_absence STRING' +
+                ', deductions_sick_leave STRING' +
+                ', deductions_other STRING' +
+                ', deductions_social_security STRING' +
+                ', deductions_provident_fund STRING' +
+                ', deductions_personal_tax STRING' +
+                ', final_amount STRING' +
+                ');';
+            databaseService.create(dbName, createSql);
+        }
+
+        function _getDbName(year,month) {
+            month = String(month).replace(/^([\d])$/, '0$1');
+            return [dbPrefix,year,month].join(nameSeparator);
+        }
     }])
     .service('deliveryService',['$q',function($q){
         return {
@@ -490,7 +575,12 @@ angular
         };
 
         function init() {
-            var settingSql = 'DROP TABLE IF EXISTS '+dbName+'; CREATE TABLE ' + dbName + ' (id INTEGER PRIMARY KEY AUTOINCREMENT, cell STRING, cellColumn STRING);';
+            var settingSql = 'DROP TABLE IF EXISTS '+dbName+'; ' +
+                'CREATE TABLE ' + dbName + ' ( ' +
+                'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+                'cell STRING, ' +
+                'cellColumn STRING ' +
+                ');';
             var sqls = [];
             for(var key in TEMPLATES) {
                 sqls.push("INSERT INTO " + dbName + " VALUES (NULL, '" + key +"','"+ TEMPLATES[key] +"')");
@@ -609,7 +699,12 @@ angular
         };
 
         function init() {
-            var settingSql = 'DROP TABLE IF EXISTS '+dbName+'; CREATE TABLE ' + dbName + ' (id INTEGER PRIMARY KEY AUTOINCREMENT, itemKey STRING, itemValue STRING);';
+            var settingSql = 'DROP TABLE IF EXISTS '+dbName+'; ' +
+                'CREATE TABLE ' + dbName + ' ( ' +
+                'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+                'itemKey STRING, ' +
+                'itemValue STRING ' +
+                ');';
             var sqls = [];
             for(var key in SETTINGS) {
                 sqls.push("INSERT INTO " + dbName + " VALUES (NULL, '" + key +"','"+ SETTINGS[key] +"')");
@@ -674,7 +769,9 @@ angular
 
     }])
     .service('UtilService', [function () {
-        this.guid = guid;
+        return {
+            guid: guid
+        };
 
         function guid () {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
