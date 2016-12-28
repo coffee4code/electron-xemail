@@ -13,10 +13,7 @@
         <md-dialog-content class="dialog-with-adder">
             <div class="md-dialog-content" layout="row" layout-wrap>
                 <div flex="33" ng-repeat="(key,tmpl) in templateDetail">
-                    <!--<md-switch ng-model="tmpl.show">-->
-                        <!--{{ tmpl.label }}-->
-                    <!--</md-switch>-->
-                    <md-checkbox ng-model="tmpl.show" aria-label="{{ tmpl.label }}">
+                    <md-checkbox ng-model="tmpl.show" ng-disabled="tmpl.disabled" aria-label="{{ tmpl.label }}">
                         {{ tmpl.label }}
                     </md-checkbox>
                 </div>

@@ -5,7 +5,8 @@
 	font-size: 13px;
 	color: #aaa !important;
 
-	> ng-md-icon {
+	> ng-md-icon,
+	.icon-fixed {
 		position: relative;
 		top: 5px;
 		padding: 0 4px;

@@ -48,7 +48,6 @@ angular
                 return false;
             }
             var updateSql = "UPDATE " + dbName + " SET " + field + "='" + value +"'" +"  WHERE " +" uuid='"+uuid+"'";
-            console.info(updateSql);
             return databaseService.execute(dbName,updateSql);
         }
 
@@ -89,8 +88,24 @@ angular
         }
 
         function detail(year, month) {
-            var dbName = _getDbName(year, month);
-            return databaseService.table(dbName);
+            var result = [],
+                dbName = _getDbName(year, month),
+                data = databaseService.table(dbName);
+            if(data && data.length) {
+                data = data[0];
+                if(data && data.columns && data.values) {
+                    var columns = data.columns,
+                        values = data.values;
+                    for(var k in values) {
+                        var item = {};
+                        for(var i in data.columns) {
+                            item[columns[i]] = values[k][i];
+                        }
+                        result.push(item);
+                    }
+                }
+            }
+            return result;
         }
 
         function _create(dbName) {
@@ -646,6 +661,7 @@ angular
                 data = getAll();
             for(var key in data) {
                 result[key] = {
+                    disabled: _getDisable(key),
                     value: data[key],
                     show: _getShow(key),
                     label: _getLabel(key)
@@ -654,11 +670,20 @@ angular
             return result;
         }
 
+        function _getDisable(key) {
+            var disables = [
+                'employee_email',
+                'employee_name',
+            ];
+            return (disables.indexOf(key)>-1);
+        }
+
         function _getShow(key) {
             var hiddens = [
                 'employee_department',
                 'employee_workday',
                 'wage_everyday',
+                'wage_reward',
                 'deductions_other',
                 'deductions_social_security',
                 'deductions_provident_fund',

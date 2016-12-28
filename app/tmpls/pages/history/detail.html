@@ -1,3 +1,48 @@
-<div flex layout="column" layout-align="center center">
-    history
+<div flex layout="column" class="animated zoomIn">
+    <div ng-if="!historyDetail.length" flex layout="column" layout-align="center center">
+        <div>
+            <ng-md-icon icon="error" size="40" style="fill: #cccccc;"></ng-md-icon>
+        </div>
+        <div style="color: #cccccc;">没有数据</div>
+    </div>
+    <div ng-if="historyDetail.length" flex layout="column">
+        <md-table-container>
+            <table md-table class="table-center">
+                <thead md-head>
+                <tr md-row>
+                    <th md-column>
+                        <span>序号</span>
+                    </th>
+                    <th md-column>
+                        <span>发送结果</span>
+                    </th>
+                    <th md-column ng-repeat="(key, tmpl) in templateDetail" ng-show="tmpl.show">
+                        <span>{{ tmpl.label }}</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row
+                    ng-repeat="row in historyDetail"
+                    ng-class="{even: $even, odd: $odd}">
+                    <td md-cell>{{::($index+1)}}</td>
+                    <td md-cell>
+                        <span ng-if="row.statusSent === STATUS.INIT" style="color: {{mdPrimaryColor}};">未发送</span>
+                        <md-button ng-if="row.statusSent === STATUS.SUCCESS" class="md-icon-button">
+                            <md-tooltip>发送成功</md-tooltip>
+                            <ng-md-icon icon="check" style="fill: #2e7d32;"></ng-md-icon>
+                        </md-button>
+                        <md-button ng-if="row.statusSent === STATUS.FAIL" class="md-icon-button">
+                            <md-tooltip>发送失败</md-tooltip>
+                            <ng-md-icon icon="close" style="fill: {{mdPrimaryColor}};"></ng-md-icon>
+                        </md-button>
+                    </td>
+                    <td md-cell ng-repeat="(key, tmpl) in templateDetail" ng-show="tmpl.show">
+                        {{ row[key] }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </div>
 </div>

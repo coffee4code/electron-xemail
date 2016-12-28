@@ -382,17 +382,46 @@ angular
     .controller('sheetDoneCtrl',['$scope', function($scope){
         $scope.current.progress = 100;
     }])
-    .controller('historyCtrl',['$scope', function($scope){
-
-    }])
-    .controller('historyListCtrl',['$scope', 'historyService', function($scope, historyService){
+    .controller('historyCtrl',['$scope', '$mdDialog', 'config', 'historyService', 'templateDetail', function($scope, $mdDialog, config, historyService, templateDetail){
+        $scope.templateDetail = templateDetail;
+        $scope.STATUS = config.get().STATUS;
         $scope.historyList = historyService.list();
-        $scope.now = new Date();
-        console.info($scope.historyList);
+        $scope.current = {
+            year: '',
+            month: ''
+        };
+        $scope.onDetailDialog = onDetailDialog;
+
+        function onDetailDialog(event) {
+            $mdDialog
+                .show({
+                    templateUrl: 'tmpls/dialogs/dialog.template.detail.html',
+                    parent: angular.element(document.body),
+                    targetEvent: event,
+                    clickOutsideToClose:true,
+                    fullscreen: false,
+                    locals: {
+                        templateDetail: $scope.templateDetail
+                    },
+                    controller: ['$scope','$mdDialog', 'templateDetail',function ($scope, $mdDialog, templateDetail) {
+                        $scope.templateDetail = templateDetail;
+                        $scope.onClose = function() {
+                            $mdDialog.hide();
+                        };
+                    }]
+                })
+            ;
+        }
     }])
-    .controller('historyDetailCtrl',['$scope', 'year', 'month', function($scope, year, month){
-        console.info(year);
-        console.info(month);
+    .controller('historyListCtrl',['$scope', function($scope){
+        $scope.now = new Date();
+        $scope.current.year= '';
+        $scope.current.month = '';
+    }])
+    .controller('historyDetailCtrl',['$scope', 'historyService', 'year', 'month', function($scope, historyService, year, month){
+        $scope.current.year= year;
+        $scope.current.month = month;
+        $scope.historyDetail = historyService.detail(year,month);
     }])
     .controller('settingCtrl',['$scope', function($scope){
     }])
@@ -654,7 +683,12 @@ angular
                 views: {
                     main: {
                         templateUrl:'tmpls/pages/history/history.html',
-                        controller: 'historyCtrl'
+                        controller: 'historyCtrl',
+                        resolve: {
+                            templateDetail: ['templateService', function (templateService){
+                                return templateService.getDetail();
+                            }]
+                        }
                     }
                 }
             })
@@ -779,7 +813,6 @@ angular
                 return false;
             }
             var updateSql = "UPDATE " + dbName + " SET " + field + "='" + value +"'" +"  WHERE " +" uuid='"+uuid+"'";
-            console.info(updateSql);
             return databaseService.execute(dbName,updateSql);
         }
 
@@ -820,8 +853,24 @@ angular
         }
 
         function detail(year, month) {
-            var dbName = _getDbName(year, month);
-            return databaseService.table(dbName);
+            var result = [],
+                dbName = _getDbName(year, month),
+                data = databaseService.table(dbName);
+            if(data && data.length) {
+                data = data[0];
+                if(data && data.columns && data.values) {
+                    var columns = data.columns,
+                        values = data.values;
+                    for(var k in values) {
+                        var item = {};
+                        for(var i in data.columns) {
+                            item[columns[i]] = values[k][i];
+                        }
+                        result.push(item);
+                    }
+                }
+            }
+            return result;
         }
 
         function _create(dbName) {
@@ -1377,6 +1426,7 @@ angular
                 data = getAll();
             for(var key in data) {
                 result[key] = {
+                    disabled: _getDisable(key),
                     value: data[key],
                     show: _getShow(key),
                     label: _getLabel(key)
@@ -1385,11 +1435,20 @@ angular
             return result;
         }
 
+        function _getDisable(key) {
+            var disables = [
+                'employee_email',
+                'employee_name',
+            ];
+            return (disables.indexOf(key)>-1);
+        }
+
         function _getShow(key) {
             var hiddens = [
                 'employee_department',
                 'employee_workday',
                 'wage_everyday',
+                'wage_reward',
                 'deductions_other',
                 'deductions_social_security',
                 'deductions_provident_fund',

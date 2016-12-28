@@ -107,7 +107,12 @@ angular
                 views: {
                     main: {
                         templateUrl:'tmpls/pages/history/history.html',
-                        controller: 'historyCtrl'
+                        controller: 'historyCtrl',
+                        resolve: {
+                            templateDetail: ['templateService', function (templateService){
+                                return templateService.getDetail();
+                            }]
+                        }
                     }
                 }
             })

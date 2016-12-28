@@ -2,6 +2,14 @@
     <div layout="row" class="table-header" md-colors="{'background':'grey-300'}">
         <ng-md-icon icon="history" size="18" style="fill: {{mdPrimaryColor}};"></ng-md-icon>
         <span>历史记录</span>
+        <span ng-if="current.year && current.month">
+            <ng-md-icon class="icon-fixed" icon="keyboard_arrow_right" size="18" style="fill: #aaa;"></ng-md-icon>
+            {{::current.year}}年{{::current.month}}月
+        </span>
+        <span flex></span>
+        <md-button ng-if="current.year && current.month" class="md-icon-button" aria-label="打开菜单" ng-click="onDetailDialog($event)">
+            <ng-md-icon md-menu-origin icon="more_vert" style="fill:{{mdPrimaryColor}}"></ng-md-icon>
+        </md-button>
     </div>
     <div flex layout="column">
         <md-content flex layout="column" layout-padding="10px">
@@ -10,6 +18,7 @@
     </div>
     <md-divider></md-divider>
     <div style="height: 60px;" layout="row" layout-align="end center">
-        <md-button ui-sref="app.home" class="md-raised md-primary" aria-label="返回首页">返回首页</md-button>
+        <md-button ng-if="current.year && current.month" ui-sref="app.history.list" class="md-raised md-primary" aria-label="返回">返回</md-button>
+        <md-button ui-sref="app.home" class="md-primary" aria-label="返回首页">返回首页</md-button>
     </div>
 </md-content>

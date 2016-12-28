@@ -1,4 +1,10 @@
-<div class="timeline-container">
+<div ng-if="!historyList.length" flex layout="column" layout-align="center center">
+    <div>
+        <ng-md-icon icon="error" size="40" style="fill: #cccccc;"></ng-md-icon>
+    </div>
+    <div style="color: #cccccc;">没有数据</div>
+</div>
+<div class="timeline-container" ng-if="historyList.length">
     <div class="timeline">
         <div class="timeline-edger">
             <span>

@@ -214,7 +214,8 @@ md-tab-content > div > div {
   color: #aaa !important;
 }
 
-.table-header > ng-md-icon {
+.table-header > ng-md-icon,
+.table-header .icon-fixed {
   position: relative;
   top: 5px;
   padding: 0 4px;
