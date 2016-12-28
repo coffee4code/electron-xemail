@@ -3,6 +3,9 @@ var angular = require('angular'),
     NODE_MAILER = require('nodemailer');
 angular
     .module('app.service',[])
+    .service('historyService',[function(){
+
+    }])
     .service('deliveryService',['$q',function($q){
         return {
             send: send

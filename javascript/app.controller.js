@@ -182,6 +182,26 @@ angular
             ;
         }
         function onNext() {
+            var unchecked =$scope.rowList.length - $scope.current.imported.length,
+                uncheckStr = unchecked + '条数据未选择';
+            if(!unchecked) {
+                _goNext();
+                return false;
+            }
+            $mdDialog.show($mdDialog.confirm()
+                .title('确定下一步')
+                .textContent('确定下一步('+uncheckStr+')？')
+                .ariaLabel('确定继续')
+                .targetEvent(event)
+                .ok('返回重新选择')
+                .cancel('确定下一步')
+            ).then(function() {
+            }, function() {
+                _goNext();
+            });
+        }
+
+        function _goNext() {
             $state.go('app.sheet.send');
         }
 
@@ -322,24 +342,31 @@ angular
                         break;
                 }
             });
+
+            if( !inited && !failed ) {
+                _goNext();
+                return false;
+            }
+
             initedStr += inited ? inited + '条未发送' : '';
             failedStr += (initedStr && failed) ? '，' + '' : '';
             failedStr += failed ? failed + '条发送失败' : '';
 
-            if( inited || failed ) {
-                $mdDialog.show($mdDialog.confirm()
-                    .title('完成发送')
-                    .textContent('确定完成发送('+initedStr+failedStr+')？')
-                    .ariaLabel('完成发送')
-                    .targetEvent(event)
-                    .ok('返回继续发送')
-                    .cancel('确定完成')
-                ).then(function() {
-                }, function() {
-                    $state.go('app.sheet.done');
-                });
-                return false;
-            }
+            $mdDialog.show($mdDialog.confirm()
+                .title('完成发送')
+                .textContent('确定完成发送('+initedStr+failedStr+')？')
+                .ariaLabel('完成发送')
+                .targetEvent(event)
+                .ok('返回继续发送')
+                .cancel('确定完成')
+            ).then(function() {
+            }, function() {
+                _goNext();
+            });
+            return false;
+        }
+
+        function _goNext() {
             $state.go('app.sheet.done');
         }
 
