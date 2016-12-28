@@ -103,10 +103,38 @@ angular
             })
             .state('app.history', {
                 url: '/history',
+                abstract: true,
                 views: {
                     main: {
-                        templateUrl:'tmpls/pages/history.html',
+                        templateUrl:'tmpls/pages/history/history.html',
                         controller: 'historyCtrl'
+                    }
+                }
+            })
+            .state('app.history.list', {
+                url: '/list',
+                views: {
+                    list: {
+                        templateUrl:'tmpls/pages/history/list.html',
+                        controller: 'historyListCtrl'
+                    }
+                }
+            })
+            .state('app.history.detail', {
+                url: '/detail?year&month',
+                views: {
+                    list: {
+                        templateUrl:'tmpls/pages/history/detail.html',
+                        controller: 'historyDetailCtrl',
+                        params: ["year", "month"],
+                        resolve:{
+                            year: ["$stateParams",function($stateParams){
+                                return $stateParams.year;
+                            }],
+                            month: ["$stateParams",function($stateParams){
+                                return $stateParams.month;
+                            }]
+                        }
                     }
                 }
             })

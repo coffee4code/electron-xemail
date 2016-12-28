@@ -1,0 +1,70 @@
+.timeline-container {
+	position: relative;
+	margin: 20px 0;
+	padding-left: 10%;
+
+	&:before {
+		position: absolute;
+		content: ' ';
+		height: 100%;
+		width: 1px;
+		background: #cecece;
+	}
+
+	.timeline-edger {
+		min-height: 60px;
+		span {
+			position: absolute;
+			z-index: 1;
+			left: -8px;
+			display: inline-block;
+			background: #ececec;
+			color: #bbb;
+			padding: 3px 10px;
+			border-radius: 5px;
+			font-size: 12px;
+		}
+	}
+
+	.timeline {
+		position: relative;
+
+		&:before {
+			content: ' ';
+			position: absolute;
+			top: -15px;
+			left: -15px;
+			height: 50px;
+			width: 30px;
+			background: #fafafa;
+		}
+
+		&:last-child:before {
+			height: 75px;
+		}
+	}
+
+	.timeline-item {
+		padding-left: 30px;
+		min-height: 200px;
+
+		&:after {
+			content: ' ';
+			position: absolute;
+			top: 0;
+			left: -8px;
+			width: 16px;
+			height: 16px;
+			border-radius: 50%;
+			background-color: #bdbdbd;
+		}
+
+		.year-content {
+			color: $primary-color;
+		}
+
+		.month-content {
+			margin-left: 20px;
+		}
+	}
+}

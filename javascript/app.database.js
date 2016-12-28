@@ -22,7 +22,7 @@ angular
         function databases(format) {
             var result = [],
                 path = _getDbPath(''),
-                files = fs.fs.readdirSync(path);
+                files = fs.readdirSync(path);
             for (var i=0;i<files.length;i++) {
                 var fileName = files[i];
                 if(format.test(fileName)){

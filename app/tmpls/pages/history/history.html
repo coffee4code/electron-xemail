@@ -1,0 +1,15 @@
+<md-content flex layout="column" class="animated zoomIn">
+    <div layout="row" class="table-header" md-colors="{'background':'grey-300'}">
+        <ng-md-icon icon="history" size="18" style="fill: {{mdPrimaryColor}};"></ng-md-icon>
+        <span>历史记录</span>
+    </div>
+    <div flex layout="column">
+        <md-content flex layout="column" layout-padding="10px">
+            <div flex layout="column" ui-view="list"></div>
+        </md-content>
+    </div>
+    <md-divider></md-divider>
+    <div style="height: 60px;" layout="row" layout-align="end center">
+        <md-button ui-sref="app.home" class="md-raised md-primary" aria-label="返回首页">返回首页</md-button>
+    </div>
+</md-content>

@@ -383,6 +383,16 @@ angular
         $scope.current.progress = 100;
     }])
     .controller('historyCtrl',['$scope', function($scope){
+
+    }])
+    .controller('historyListCtrl',['$scope', 'historyService', function($scope, historyService){
+        $scope.historyList = historyService.list();
+        $scope.now = new Date();
+        console.info($scope.historyList);
+    }])
+    .controller('historyDetailCtrl',['$scope', 'year', 'month', function($scope, year, month){
+        console.info(year);
+        console.info(month);
     }])
     .controller('settingCtrl',['$scope', function($scope){
     }])

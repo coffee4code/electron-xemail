@@ -15,8 +15,31 @@ angular
         };
 
         function list() {
-            var format= new RegExp("^"+dbPrefix+nameSeparator+"[\\d]{4}"+nameSeparator+"[\\d]{2}$");
-            return databaseService.databases(format);
+            var list= [],
+                format= new RegExp("^"+dbPrefix+nameSeparator+"[\\d]{4}"+nameSeparator+"[\\d]{2}$"),
+                dbs = databaseService.databases(format);
+            for(var i=0;i<dbs.length;i++) {
+                var matches = dbs[i].match(new RegExp("^"+dbPrefix+nameSeparator+"([\\d]{4})"+nameSeparator+"([\\d]{2})$")),
+                    year= matches[1],
+                    month = matches[2],
+                    isInList = false;
+                list.map(function(val){
+                    if(val && val.year && val.year === year) {
+                        isInList= true;
+                        if(!val.month){
+                            val.month = [];
+                        }
+                        val.month.push(month);
+                    }
+                });
+                if(!isInList) {
+                    list.push({
+                        year: year,
+                        month:[month]
+                    });
+                }
+            }
+            return list;
         }
 
         function updateRow(year, month, uuid, field, value) {

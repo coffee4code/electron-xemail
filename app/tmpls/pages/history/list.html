@@ -1,0 +1,22 @@
+<div class="timeline-container">
+    <div class="timeline">
+        <div class="timeline-edger">
+            <span>
+                当前时间: {{now | date: 'yyyy年MM月dd日'}}
+            </span>
+        </div>
+    </div>
+    <div class="timeline timeline-item" ng-repeat="item in historyList | orderBy: '-year' track by $index">
+        <h5 class="year-content">{{::item.year}}年</h5>
+        <div class="month-content">
+            <md-button class="md-raised" ng-repeat="month in item.month | orderBy: 'month' track by $index" ui-sref="app.history.detail({year:item.year,month:month})">{{::month}}月</md-button>
+        </div>
+    </div>
+    <div class="timeline">
+        <div class="timeline-edger">
+            <span>
+                最早历史记录从这里开始
+            </span>
+        </div>
+    </div>
+</div>

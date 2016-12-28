@@ -277,3 +277,75 @@ table.table-center td {
 .grid-container .grid-orange:hover {
   background: #f57f17;
 }
+
+.timeline-container {
+  position: relative;
+  margin: 20px 0;
+  padding-left: 10%;
+}
+
+.timeline-container:before {
+  position: absolute;
+  content: ' ';
+  height: 100%;
+  width: 1px;
+  background: #cecece;
+}
+
+.timeline-container .timeline-edger {
+  min-height: 60px;
+}
+
+.timeline-container .timeline-edger span {
+  position: absolute;
+  z-index: 1;
+  left: -8px;
+  display: inline-block;
+  background: #ececec;
+  color: #bbb;
+  padding: 3px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.timeline-container .timeline {
+  position: relative;
+}
+
+.timeline-container .timeline:before {
+  content: ' ';
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  height: 50px;
+  width: 30px;
+  background: #fafafa;
+}
+
+.timeline-container .timeline:last-child:before {
+  height: 75px;
+}
+
+.timeline-container .timeline-item {
+  padding-left: 30px;
+  min-height: 200px;
+}
+
+.timeline-container .timeline-item:after {
+  content: ' ';
+  position: absolute;
+  top: 0;
+  left: -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #bdbdbd;
+}
+
+.timeline-container .timeline-item .year-content {
+  color: #e91e63;
+}
+
+.timeline-container .timeline-item .month-content {
+  margin-left: 20px;
+}
