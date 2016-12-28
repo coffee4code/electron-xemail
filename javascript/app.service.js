@@ -10,12 +10,23 @@ angular
         return {
             list: list,
             save: save,
-            detail: detail
+            detail: detail,
+            updateRow: updateRow,
         };
 
         function list() {
             var format= new RegExp("^"+dbPrefix+nameSeparator+"[\\d]{4}"+nameSeparator+"[\\d]{2}$");
             return databaseService.databases(format);
+        }
+
+        function updateRow(year, month, uuid, field, value) {
+            var dbName = _getDbName(year, month);
+            if(!databaseService.exist(dbName)) {
+                return false;
+            }
+            var updateSql = "UPDATE " + dbName + " SET " + field + "='" + value +"'" +"  WHERE " +" uuid='"+uuid+"'";
+            console.info(updateSql);
+            return databaseService.execute(dbName,updateSql);
         }
 
         function save(year,month,data) {
@@ -91,7 +102,8 @@ angular
             return [dbPrefix,year,month].join(nameSeparator);
         }
     }])
-    .service('deliveryService',['$q',function($q){
+    .service('deliveryService',['$q', 'config', 'historyService', function($q, config, historyService){
+        var STATUS = config.get().STATUS;
         return {
             send: send
         };
@@ -118,8 +130,10 @@ angular
 
             transporter.sendMail(mailOptions, function(error, info){
                 if(error){
+                    historyService.updateRow(email.year,email.month, email.data.uuid, 'statusSent', STATUS.FAIL);
                     deferred.reject(error);
                 }else{
+                    historyService.updateRow(email.year,email.month, email.data.uuid, 'statusSent', STATUS.SUCCESS);
                     deferred.resolve(info);
                 }
             });

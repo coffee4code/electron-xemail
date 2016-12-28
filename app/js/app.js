@@ -295,29 +295,29 @@ angular
         }
 
         function onSendItem(item) {
-            // var email = emailService.generate(item, $scope.current.year, $scope.current.month);
-            // deliveryService
-            //     .send(email)
-            //     .then(function (info) {
-            //         console.info('success', info);
-            //     }, function (error) {
-            //         console.info('errow', info);
-            //     })
-            //     .finally(function () {
-            //         console.info('finally');
-            //     });
+            var email = emailService.generate(item, $scope.current.year, $scope.current.month);
+            deliveryService
+                .send(email)
+                .then(function (info) {
+                    console.info('success', info);
+                }, function (error) {
+                    console.info('errow', info);
+                })
+                .finally(function () {
+                    console.info('finally');
+                });
 
 
-
-            var uuid = item.uuid;
-            $scope.current.imported.map(function(val){
-                if(val.uuid === uuid) {
-                    val.statusSent = Math.floor(Math.random() * 100) % 2 === 0 ? $scope.STATUS.SUCCESS : $scope.STATUS.FAIL;
-                }
-            });
-            $scope.nowChecked = $scope.nowChecked.filter(function(val){
-                return val.uuid !== uuid;
-            });
+            //
+            // var uuid = item.uuid;
+            // $scope.current.imported.map(function(val){
+            //     if(val.uuid === uuid) {
+            //         val.statusSent = Math.floor(Math.random() * 100) % 2 === 0 ? $scope.STATUS.SUCCESS : $scope.STATUS.FAIL;
+            //     }
+            // });
+            // $scope.nowChecked = $scope.nowChecked.filter(function(val){
+            //     return val.uuid !== uuid;
+            // });
         }
 
         function onSendAll() {
@@ -703,12 +703,23 @@ angular
         return {
             list: list,
             save: save,
-            detail: detail
+            detail: detail,
+            updateRow: updateRow,
         };
 
         function list() {
             var format= new RegExp("^"+dbPrefix+nameSeparator+"[\\d]{4}"+nameSeparator+"[\\d]{2}$");
             return databaseService.databases(format);
+        }
+
+        function updateRow(year, month, uuid, field, value) {
+            var dbName = _getDbName(year, month);
+            if(!databaseService.exist(dbName)) {
+                return false;
+            }
+            var updateSql = "UPDATE " + dbName + " SET " + field + "='" + value +"'" +"  WHERE " +" uuid='"+uuid+"'";
+            console.info(updateSql);
+            return databaseService.execute(dbName,updateSql);
         }
 
         function save(year,month,data) {
@@ -784,7 +795,8 @@ angular
             return [dbPrefix,year,month].join(nameSeparator);
         }
     }])
-    .service('deliveryService',['$q',function($q){
+    .service('deliveryService',['$q', 'config', 'historyService', function($q, config, historyService){
+        var STATUS = config.get().STATUS;
         return {
             send: send
         };
@@ -811,8 +823,10 @@ angular
 
             transporter.sendMail(mailOptions, function(error, info){
                 if(error){
+                    historyService.updateRow(email.year,email.month, email.data.uuid, 'statusSent', STATUS.FAIL);
                     deferred.reject(error);
                 }else{
+                    historyService.updateRow(email.year,email.month, email.data.uuid, 'statusSent', STATUS.SUCCESS);
                     deferred.resolve(info);
                 }
             });

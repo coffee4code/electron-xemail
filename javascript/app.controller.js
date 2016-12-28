@@ -295,29 +295,29 @@ angular
         }
 
         function onSendItem(item) {
-            // var email = emailService.generate(item, $scope.current.year, $scope.current.month);
-            // deliveryService
-            //     .send(email)
-            //     .then(function (info) {
-            //         console.info('success', info);
-            //     }, function (error) {
-            //         console.info('errow', info);
-            //     })
-            //     .finally(function () {
-            //         console.info('finally');
-            //     });
+            var email = emailService.generate(item, $scope.current.year, $scope.current.month);
+            deliveryService
+                .send(email)
+                .then(function (info) {
+                    console.info('success', info);
+                }, function (error) {
+                    console.info('errow', info);
+                })
+                .finally(function () {
+                    console.info('finally');
+                });
 
 
-
-            var uuid = item.uuid;
-            $scope.current.imported.map(function(val){
-                if(val.uuid === uuid) {
-                    val.statusSent = Math.floor(Math.random() * 100) % 2 === 0 ? $scope.STATUS.SUCCESS : $scope.STATUS.FAIL;
-                }
-            });
-            $scope.nowChecked = $scope.nowChecked.filter(function(val){
-                return val.uuid !== uuid;
-            });
+            //
+            // var uuid = item.uuid;
+            // $scope.current.imported.map(function(val){
+            //     if(val.uuid === uuid) {
+            //         val.statusSent = Math.floor(Math.random() * 100) % 2 === 0 ? $scope.STATUS.SUCCESS : $scope.STATUS.FAIL;
+            //     }
+            // });
+            // $scope.nowChecked = $scope.nowChecked.filter(function(val){
+            //     return val.uuid !== uuid;
+            // });
         }
 
         function onSendAll() {
