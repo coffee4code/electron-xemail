@@ -4,7 +4,7 @@ var angular = require('angular'),
 
 angular
     .module('app.controller',[])
-    .controller('appCtrl',['$rootScope', '$scope', '$mdColors',function($rootScope, $scope, $mdColors){
+    .controller('appCtrl',['$rootScope', '$scope',function($rootScope, $scope){
 
     }])
     .controller('menuCtrl',['$scope', '$state', '$mdDialog',function($scope, $state, $mdDialog){
@@ -70,8 +70,30 @@ angular
         }
 
     }])
-    .controller('contentCtrl',['$scope',function($scope){
+    .controller('contentCtrl',['$scope', '$mdDialog', 'templateDetail',function($scope, $mdDialog, templateDetail){
+        $scope.templateDetail = templateDetail;
+        $scope.onDetailDialog = onDetailDialog;
 
+        function onDetailDialog(event) {
+            $mdDialog
+                .show({
+                    templateUrl: 'tmpls/dialogs/dialog.template.detail.html',
+                    parent: angular.element(document.body),
+                    targetEvent: event,
+                    clickOutsideToClose:true,
+                    fullscreen: false,
+                    locals: {
+                        templateDetail: $scope.templateDetail
+                    },
+                    controller: ['$scope','$mdDialog', 'templateDetail',function ($scope, $mdDialog, templateDetail) {
+                        $scope.templateDetail = templateDetail;
+                        $scope.onClose = function() {
+                            $mdDialog.hide();
+                        };
+                    }]
+                })
+            ;
+        }
     }])
     .controller('homeCtrl',['$scope',function($scope){
 
@@ -134,13 +156,11 @@ angular
             $state.go('app.sheet.list');
         }
     }])
-    .controller('sheetListCtrl',['$scope', '$state', '$mdDialog', 'xlsxService', 'historyService', 'templateDetail', function($scope, $state, $mdDialog, xlsxService, historyService, templateDetail){
+    .controller('sheetListCtrl',['$scope', '$state', '$mdDialog', 'xlsxService', 'historyService', function($scope, $state, $mdDialog, xlsxService, historyService){
         $scope.current.progress= 50;
         $scope.current.imported= [];
-        $scope.templateDetail = templateDetail;
         $scope.keyword = '';
         $scope.onNext = onNext;
-        $scope.onDetailDialog = onDetailDialog;
 
         onPreSelect();
         onWatchFilter();
@@ -156,26 +176,6 @@ angular
             for(var i=0;i<$scope.rowList.length;i++) {
                 $scope.current.imported.push($scope.rowList[i]);
             }
-        }
-        function onDetailDialog(event) {
-            $mdDialog
-                .show({
-                    templateUrl: 'tmpls/dialogs/dialog.template.detail.html',
-                    parent: angular.element(document.body),
-                    targetEvent: event,
-                    clickOutsideToClose:true,
-                    fullscreen: false,
-                    locals: {
-                        templateDetail: $scope.templateDetail
-                    },
-                    controller: ['$scope','$mdDialog', 'templateDetail',function ($scope, $mdDialog, templateDetail) {
-                        $scope.templateDetail = templateDetail;
-                        $scope.onClose = function() {
-                            $mdDialog.hide();
-                        };
-                    }]
-                })
-            ;
         }
         function onNext(event) {
             var unchecked =$scope.rowList.length - $scope.current.imported.length,
@@ -226,11 +226,10 @@ angular
         }
 
     }])
-    .controller('sheetSendCtrl',['$scope', '$state', '$mdDialog', '$mdPanel', 'settingService', 'templateDetail', 'emailService', 'deliveryService', function($scope, $state, $mdDialog, $mdPanel, settingService, templateDetail, emailService, deliveryService){
+    .controller('sheetSendCtrl',['$scope', '$state', '$mdDialog', '$mdPanel', 'settingService', 'emailService', 'deliveryService', function($scope, $state, $mdDialog, $mdPanel, settingService, emailService, deliveryService){
         $scope.current.progress = 75;
         $scope.nowTab= 0;
         $scope.nowChecked= [];
-        $scope.templateDetail = templateDetail;
         $scope.onDeselectItem = onDeselectItem;
         $scope.onSelectItem = onSelectItem;
         $scope.onViewItem = onViewItem;
@@ -382,36 +381,13 @@ angular
     .controller('sheetDoneCtrl',['$scope', function($scope){
         $scope.current.progress = 100;
     }])
-    .controller('historyCtrl',['$scope', '$mdDialog', 'config', 'historyService', 'templateDetail', function($scope, $mdDialog, config, historyService, templateDetail){
-        $scope.templateDetail = templateDetail;
+    .controller('historyCtrl',['$scope', '$mdDialog', 'config', 'historyService', function($scope, $mdDialog, config, historyService){
         $scope.STATUS = config.get().STATUS;
         $scope.historyList = historyService.list();
         $scope.current = {
             year: '',
             month: ''
         };
-        $scope.onDetailDialog = onDetailDialog;
-
-        function onDetailDialog(event) {
-            $mdDialog
-                .show({
-                    templateUrl: 'tmpls/dialogs/dialog.template.detail.html',
-                    parent: angular.element(document.body),
-                    targetEvent: event,
-                    clickOutsideToClose:true,
-                    fullscreen: false,
-                    locals: {
-                        templateDetail: $scope.templateDetail
-                    },
-                    controller: ['$scope','$mdDialog', 'templateDetail',function ($scope, $mdDialog, templateDetail) {
-                        $scope.templateDetail = templateDetail;
-                        $scope.onClose = function() {
-                            $mdDialog.hide();
-                        };
-                    }]
-                })
-            ;
-        }
     }])
     .controller('historyListCtrl',['$scope', function($scope){
         $scope.now = new Date();
@@ -448,9 +424,8 @@ angular
             );
         }
     }])
-    .controller('settingTemplateCtrl',['$scope', '$mdToast', 'templateService', 'template', 'templateDetail', function($scope, $mdToast, templateService, template, templateDetail){
+    .controller('settingTemplateCtrl',['$scope', '$mdToast', 'templateService', 'template', function($scope, $mdToast, templateService, template){
         $scope.template = template;
-        $scope.templateDetail = templateDetail;
         $scope.current = {
             status : 1
         };

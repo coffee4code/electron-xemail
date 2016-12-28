@@ -23,7 +23,12 @@ angular
                     },
                     content: {
                         templateUrl:'tmpls/content.html',
-                        controller: 'contentCtrl'
+                        controller: 'contentCtrl',
+                        resolve: {
+                            templateDetail: ['templateService', function (templateService){
+                                return templateService.getDetail();
+                            }]
+                        }
                     }
                 }
             })
@@ -69,12 +74,7 @@ angular
                 views: {
                     step: {
                         templateUrl:'tmpls/pages/sheet/list.html',
-                        controller: 'sheetListCtrl',
-                        resolve: {
-                            templateDetail: ['templateService', function (templateService){
-                                return templateService.getDetail();
-                            }]
-                        }
+                        controller: 'sheetListCtrl'
                     }
                 }
             })
@@ -83,12 +83,7 @@ angular
                 views: {
                     step: {
                         templateUrl:'tmpls/pages/sheet/send.html',
-                        controller: 'sheetSendCtrl',
-                        resolve: {
-                            templateDetail: ['templateService', function (templateService){
-                                return templateService.getDetail();
-                            }]
-                        }
+                        controller: 'sheetSendCtrl'
                     }
                 }
             })
@@ -107,12 +102,7 @@ angular
                 views: {
                     main: {
                         templateUrl:'tmpls/pages/history/history.html',
-                        controller: 'historyCtrl',
-                        resolve: {
-                            templateDetail: ['templateService', function (templateService){
-                                return templateService.getDetail();
-                            }]
-                        }
+                        controller: 'historyCtrl'
                     }
                 }
             })
@@ -176,9 +166,6 @@ angular
                         resolve: {
                             template: ['templateService', function (templateService){
                                 return templateService.getAll();
-                            }],
-                            templateDetail: ['templateService', function (templateService){
-                                return templateService.getDetail();
                             }]
                         }
                     }
