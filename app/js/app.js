@@ -294,36 +294,15 @@ angular
         }
 
         function onSendItem(item) {
-            var list = [emailService.generate(item, $scope.current.year, $scope.current.month)];
-            _sendList(list);
-
-            // var uuid = item.uuid;
-            // $scope.current.imported.map(function(val){
-            //     if(val.uuid === uuid) {
-            //         val.statusSent = Math.floor(Math.random() * 100) % 2 === 0 ? $scope.STATUS.SUCCESS : $scope.STATUS.FAIL;
-            //     }
-            // });
-            // $scope.nowChecked = $scope.nowChecked.filter(function(val){
-            //     return val.uuid !== uuid;
-            // });
+            _sendList([item]);
         }
 
         function onSendAll() {
             var list = [];
             $scope.nowChecked.map(function(val){
-                list.push(emailService.generate(val, $scope.current.year, $scope.current.month));
+                list.push(val);
             });
             _sendList(list);
-
-            // var uuids = $scope.nowChecked.map(function(val){
-            //     return val.uuid;
-            // });
-            // $scope.nowChecked.length = 0;
-            // $scope.current.imported.map(function(val){
-            //     if(uuids.indexOf(val.uuid) > -1 ) {
-            //         val.statusSent = Math.floor(Math.random() * 100) % 2 === 0 ? $scope.STATUS.SUCCESS : $scope.STATUS.FAIL;
-            //     }
-            // });
         }
 
         function onNext(event) {
@@ -373,14 +352,30 @@ angular
         }
 
         function _sendList(list) {
-            deliveryService.queue(list,_progress, _finish);
+            deliveryService.queue($scope.current.year, $scope.current.month, list, _progressCallback, _finishCallback);
         }
 
-        function _progress(status,data,index) {
-            console.info('第'+index+'封件发送结果：'+status+'|||数据：'+data);
+        function _progressCallback(status, data, list, index) {
+            var location = null,
+                item = list[index];
+            $scope.current.imported.map(function(val){
+                if(val.uuid === item.uuid) {
+                    val.statusSent = status ? $scope.STATUS.SUCCESS : $scope.STATUS.FAIL;
+                }
+            });
+
+            $scope.nowChecked.map(function(val,ind){
+                if(val.uuid === item.uuid) {
+                    location = ind;
+                    return false;
+                }
+            });
+            if(location !== null){
+                $scope.nowChecked.splice(location,1);
+            }
         }
 
-        function _finish() {
+        function _finishCallback(list) {
             console.info('finished');
         }
 
@@ -953,7 +948,7 @@ angular
             return [dbPrefix,year,month].join(nameSeparator);
         }
     }])
-    .service('deliveryService',['$q', 'config', '$timeout', 'historyService', function($q, config, $timeout, historyService){
+    .service('deliveryService',['$q', 'config', '$timeout', 'emailService', 'historyService', function($q, config, $timeout, emailService, historyService){
         var STATUS = config.get().STATUS;
         return {
             queue: queue
@@ -1005,24 +1000,25 @@ angular
             return deferred.promise;
         }
 
-        function queue(list, progress, finish, index) {
+        function queue(year, month, list, progress, finish, index) {
 
-            var total = list.length;
             index = index || 0;
+            var total = list.length,
+                email = emailService.generate(year, month, list[index]);
 
-            send(list[index])
+            send(email)
                 .then(function(info){
-                    progress(true, info, index);
+                    progress(true, info, list, index);
                 },function(error){
-                    progress(false, error, index);
+                    progress(false, error, list, index);
                 })
                 .finally(function () {
                     if(index < total - 1) {
                         index = index +1;
-                        queue(list, progress, finish, index);
+                        queue(year, month, list, progress, finish, index);
                         return false;
                     }
-                    finish();
+                    finish(list);
                 })
             ;
         }

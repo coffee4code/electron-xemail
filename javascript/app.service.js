@@ -149,7 +149,7 @@ angular
             return [dbPrefix,year,month].join(nameSeparator);
         }
     }])
-    .service('deliveryService',['$q', 'config', '$timeout', 'historyService', function($q, config, $timeout, historyService){
+    .service('deliveryService',['$q', 'config', '$timeout', 'emailService', 'historyService', function($q, config, $timeout, emailService, historyService){
         var STATUS = config.get().STATUS;
         return {
             queue: queue
@@ -201,24 +201,25 @@ angular
             return deferred.promise;
         }
 
-        function queue(list, progress, finish, index) {
+        function queue(year, month, list, progress, finish, index) {
 
-            var total = list.length;
             index = index || 0;
+            var total = list.length,
+                email = emailService.generate(year, month, list[index]);
 
-            send(list[index])
+            send(email)
                 .then(function(info){
-                    progress(true, info, index);
+                    progress(true, info, list, index);
                 },function(error){
-                    progress(false, error, index);
+                    progress(false, error, list, index);
                 })
                 .finally(function () {
                     if(index < total - 1) {
                         index = index +1;
-                        queue(list, progress, finish, index);
+                        queue(year, month, list, progress, finish, index);
                         return false;
                     }
-                    finish();
+                    finish(list);
                 })
             ;
         }
