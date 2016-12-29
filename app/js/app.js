@@ -298,11 +298,7 @@ angular
         }
 
         function onSendAll() {
-            var list = [];
-            $scope.nowChecked.map(function(val){
-                list.push(val);
-            });
-            _sendList(list);
+            _sendList(angular.copy($scope.nowChecked));
         }
 
         function onNext(event) {
