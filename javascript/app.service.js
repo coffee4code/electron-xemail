@@ -201,9 +201,9 @@ angular
             return deferred.promise;
         }
 
-        function queue(year, month, list, progress, finish, index) {
-
+        function queue(year, month, list, progress, finish, index, sleeper) {
             index = index || 0;
+            sleeper = sleeper || 2000;
             var total = list.length,
                 email = emailService.generate(year, month, list[index]);
 
@@ -216,7 +216,9 @@ angular
                 .finally(function () {
                     if(index < total - 1) {
                         index = index +1;
-                        queue(year, month, list, progress, finish, index);
+                        $timeout(function(){
+                            queue(year, month, list, progress, finish, index, sleeper);
+                        }, sleeper);
                         return false;
                     }
                     finish(list);

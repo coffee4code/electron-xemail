@@ -230,6 +230,11 @@ angular
         $scope.current.progress = 75;
         $scope.nowTab= 0;
         $scope.nowChecked= [];
+        $scope.progress = {
+            now: 0,
+            total: 0,
+            panel: null
+        };
         $scope.onDeselectItem = onDeselectItem;
         $scope.onSelectItem = onSelectItem;
         $scope.onViewItem = onViewItem;
@@ -281,7 +286,7 @@ angular
                     type: type,
                     email: emailService.generate(item, $scope.current.year, $scope.current.month)
                 },
-                controller: ['$scope', '$mdPanel', 'mdPanelRef', 'STATUS', 'type', 'email', function ($scope, $mdPanel, mdPanelRef, STATUS, type, email) {
+                controller: ['$scope', 'mdPanelRef', 'STATUS', 'type', 'email', function ($scope, mdPanelRef, STATUS, type, email) {
                     $scope.STATUS = STATUS;
                     $scope.type = type;
                     $scope.email = email;
@@ -348,12 +353,39 @@ angular
         }
 
         function _sendList(list) {
+            $scope.progress.now = 1;
+            $scope.progress.total = list.length;
             deliveryService.queue($scope.current.year, $scope.current.month, list, _progressCallback, _finishCallback);
+            $scope.progress.panel = $mdPanel.create( {
+                animation:$mdPanel.newPanelAnimation().withAnimation($mdPanel.animation.FADE),
+                attachTo: angular.element(document.body),
+                disableParentScroll: this.disableParentScroll,
+                templateUrl: 'tmpls/dialogs/dialog.progress.html',
+                hasBackdrop: true,
+                panelClass: 'dialog-progress',
+                position: $mdPanel.newPanelPosition().absolute().center(),
+                trapFocus: true,
+                zIndex: 150,
+                clickOutsideToClose: false,
+                escapeToClose: false,
+                focusOnOpen: true,
+                locals: {
+                    progress: $scope.progress
+                },
+                controller: ['$scope', 'mdPanelRef', 'progress', function ($scope, mdPanelRef, progress) {
+                    $scope.progress = progress;
+                }]
+            });
+            $scope.progress.panel.open();
         }
 
         function _progressCallback(status, data, list, index) {
             var location = null,
                 item = list[index];
+
+            $scope.progress.now = index + 1;
+            $scope.progress.total = list.length;
+
             $scope.current.imported.map(function(val){
                 if(val.uuid === item.uuid) {
                     val.statusSent = status;
@@ -372,7 +404,9 @@ angular
         }
 
         function _finishCallback(list) {
-            console.info('finished');
+            if ($scope.progress.panel) {
+                $scope.progress.panel.close();
+            }
         }
 
     }])

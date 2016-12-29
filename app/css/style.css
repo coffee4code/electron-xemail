@@ -149,6 +149,32 @@ body {
   color: #f57f17;
 }
 
+.dialog-progress {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 13px 19px 2px rgba(0, 0, 0, 0.14), 0 5px 24px 4px rgba(0, 0, 0, 0.12);
+  width: 400px;
+  height: 150px;
+}
+
+.dialog-progress > .dialog-container {
+  height: 100%;
+  width: 100%;
+}
+
+.dialog-progress .progress-circular {
+  margin-bottom: 20px;
+}
+
+.dialog-progress .progress-tip {
+  color: #aaa;
+  font-size: 13px;
+}
+
+.dialog-progress .progress-tip .num {
+  color: #e91e63;
+}
+
 .md-button.md-icon-button.md-icon-button-mini {
   margin: 0;
   padding: 0;

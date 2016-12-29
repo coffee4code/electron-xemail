@@ -1,0 +1,18 @@
+<div role="dialog" aria-label="进度" class="dialog-container" flex layout="column">
+    <div class="md-dialog-content" flex layout="column">
+        <div flex></div>
+        <div layout="row" layout-align="space-around" class="progress-circular">
+            <md-progress-circular class="md-primary" md-diameter="40"></md-progress-circular>
+        </div>
+        <div layout="row" layout-align="center center" class="progress-tip" ng-show="progress.now && progress.total">
+            <span>
+                正在发送第
+            </span>
+            <span class="num">{{ progress.now }}</span>
+            <span>/</span>
+            <span class="num">{{ progress.total }}</span>
+            <span>封邮件</span>
+        </div>
+        <div flex></div>
+    </div>
+</div>
