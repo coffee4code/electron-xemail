@@ -7,10 +7,22 @@
             {{::current.year}}年{{::current.month}}月
         </span>
         <span flex></span>
+        <md-button ng-if="current.historyDetail && current.historyDetail.length" class="md-icon-button" aria-label="删除本月记录" ng-click="onDelete($event);">
+            <md-tooltip>
+                删除本月记录
+            </md-tooltip>
+            <ng-md-icon icon="delete" style="fill:{{ mdPrimaryColor }};"></ng-md-icon>
+        </md-button>
         <md-button ng-if="current.historyDetail && current.historyDetail.length" class="md-icon-button" aria-label="筛选显示" ng-click="onSelectMenu($event);">
+            <md-tooltip>
+                筛选显示
+            </md-tooltip>
             <ng-md-icon icon="filter_list" style="fill:{{ mdPrimaryColor }};"></ng-md-icon>
         </md-button>
         <md-button ng-if="current.year && current.month" class="md-icon-button" aria-label="打开菜单" ng-click="onDetailDialog($event)">
+            <md-tooltip>
+                打开菜单
+            </md-tooltip>
             <ng-md-icon md-menu-origin icon="more_vert" style="fill:{{mdPrimaryColor}}"></ng-md-icon>
         </md-button>
     </div>

@@ -381,7 +381,7 @@ angular
     .controller('sheetDoneCtrl',['$scope', function($scope){
         $scope.current.progress = 100;
     }])
-    .controller('historyCtrl',['$scope', '$mdDialog', '$mdPanel', 'config', 'historyService', function($scope, $mdDialog, $mdPanel, config, historyService){
+    .controller('historyCtrl',['$scope', '$state', '$mdDialog', '$mdPanel', 'config', 'historyService', function($scope, $state, $mdDialog, $mdPanel, config, historyService){
 
         $scope.historyList = historyService.list();
         $scope.current = {
@@ -391,8 +391,34 @@ angular
             filter: {}
         };
 
+        $scope.onDelete = onDelete;
         $scope.onSelectMenu = onSelectMenu;
 
+        function onDelete(event) {
+            var confirm = $mdDialog.confirm()
+                .title('删除记录')
+                .textContent('确定删除'+$scope.current.year+'年'+$scope.current.month+'月记录（不可恢复）？')
+                .ariaLabel('删除记录')
+                .targetEvent(event)
+                .ok('取消')
+                .cancel('确定删除');
+
+            $mdDialog.show(confirm).then(function() {
+            }, function() {
+                var remove = historyService.remove($scope.current.year,$scope.current.month);
+                if(remove) {
+                    $scope.historyList.map(function(val){
+                        if(val.year === $scope.current.year) {
+                            val.month = val.month.filter(function(item){
+                                return item !== $scope.current.month;
+                            });
+                        }
+                    });
+                    $state.go('app.history.list');
+                    return false;
+                }
+            });
+        }
         function onSelectMenu(event) {
             $mdPanel.open({
                 attachTo: angular.element(document.body),

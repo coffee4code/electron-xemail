@@ -11,6 +11,7 @@ angular
             list: list,
             save: save,
             detail: detail,
+            remove: remove,
             updateRow: updateRow,
         };
 
@@ -85,6 +86,14 @@ angular
                 saveSql.push(sql);
             }
             return databaseService.execute(dbName,saveSql.join(';'));
+        }
+
+        function remove(year,month) {
+            var dbName = _getDbName(year, month);
+            if(!databaseService.exist(dbName)) {
+                return true;
+            }
+            return databaseService.clean(dbName);
         }
 
         function detail(year, month) {

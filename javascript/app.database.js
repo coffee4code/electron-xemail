@@ -16,9 +16,15 @@ angular
             execute: execute,
             table: table,
             create: create,
-            exist: exist
+            exist: exist,
+            clean: clean
         };
 
+        /**
+         * Get all databases by format from db files directory
+         * @param format
+         * @returns {Array}
+         */
         function databases(format) {
             var result = [],
                 path = _getDbPath(''),
@@ -30,6 +36,22 @@ angular
                 }
             }
             return result;
+        }
+
+        /**
+         * Clean a database by move db file unrecognized
+         * @param database
+         * @returns {boolean}
+         */
+        function clean(database) {
+            var path = _getDbPath(database),
+                newPath = path + '.backup';
+            try {
+                fs.renameSync(path, newPath);
+            }catch (e) {
+                return false;
+            }
+            return true;
         }
 
         /**

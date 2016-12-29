@@ -381,7 +381,7 @@ angular
     .controller('sheetDoneCtrl',['$scope', function($scope){
         $scope.current.progress = 100;
     }])
-    .controller('historyCtrl',['$scope', '$mdDialog', '$mdPanel', 'config', 'historyService', function($scope, $mdDialog, $mdPanel, config, historyService){
+    .controller('historyCtrl',['$scope', '$state', '$mdDialog', '$mdPanel', 'config', 'historyService', function($scope, $state, $mdDialog, $mdPanel, config, historyService){
 
         $scope.historyList = historyService.list();
         $scope.current = {
@@ -391,8 +391,34 @@ angular
             filter: {}
         };
 
+        $scope.onDelete = onDelete;
         $scope.onSelectMenu = onSelectMenu;
 
+        function onDelete(event) {
+            var confirm = $mdDialog.confirm()
+                .title('删除记录')
+                .textContent('确定删除'+$scope.current.year+'年'+$scope.current.month+'月记录（不可恢复）？')
+                .ariaLabel('删除记录')
+                .targetEvent(event)
+                .ok('取消')
+                .cancel('确定删除');
+
+            $mdDialog.show(confirm).then(function() {
+            }, function() {
+                var remove = historyService.remove($scope.current.year,$scope.current.month);
+                if(remove) {
+                    $scope.historyList.map(function(val){
+                        if(val.year === $scope.current.year) {
+                            val.month = val.month.filter(function(item){
+                                return item !== $scope.current.month;
+                            });
+                        }
+                    });
+                    $state.go('app.history.list');
+                    return false;
+                }
+            });
+        }
         function onSelectMenu(event) {
             $mdPanel.open({
                 attachTo: angular.element(document.body),
@@ -782,6 +808,7 @@ angular
             list: list,
             save: save,
             detail: detail,
+            remove: remove,
             updateRow: updateRow,
         };
 
@@ -856,6 +883,14 @@ angular
                 saveSql.push(sql);
             }
             return databaseService.execute(dbName,saveSql.join(';'));
+        }
+
+        function remove(year,month) {
+            var dbName = _getDbName(year, month);
+            if(!databaseService.exist(dbName)) {
+                return true;
+            }
+            return databaseService.clean(dbName);
         }
 
         function detail(year, month) {
@@ -1724,9 +1759,15 @@ angular
             execute: execute,
             table: table,
             create: create,
-            exist: exist
+            exist: exist,
+            clean: clean
         };
 
+        /**
+         * Get all databases by format from db files directory
+         * @param format
+         * @returns {Array}
+         */
         function databases(format) {
             var result = [],
                 path = _getDbPath(''),
@@ -1738,6 +1779,22 @@ angular
                 }
             }
             return result;
+        }
+
+        /**
+         * Clean a database by move db file unrecognized
+         * @param database
+         * @returns {boolean}
+         */
+        function clean(database) {
+            var path = _getDbPath(database),
+                newPath = path + '.backup';
+            try {
+                fs.renameSync(path, newPath);
+            }catch (e) {
+                return false;
+            }
+            return true;
         }
 
         /**
