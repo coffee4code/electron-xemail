@@ -356,7 +356,7 @@ angular
                 item = list[index];
             $scope.current.imported.map(function(val){
                 if(val.uuid === item.uuid) {
-                    val.statusSent = status ? $scope.STATUS.SUCCESS : $scope.STATUS.FAIL;
+                    val.statusSent = status;
                 }
             });
 

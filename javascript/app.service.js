@@ -209,9 +209,9 @@ angular
 
             send(email)
                 .then(function(info){
-                    progress(true, info, list, index);
+                    progress(STATUS.SUCCESS, info, list, index);
                 },function(error){
-                    progress(false, error, list, index);
+                    progress(STATUS.FAIL, error, list, index);
                 })
                 .finally(function () {
                     if(index < total - 1) {

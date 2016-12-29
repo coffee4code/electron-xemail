@@ -356,7 +356,7 @@ angular
                 item = list[index];
             $scope.current.imported.map(function(val){
                 if(val.uuid === item.uuid) {
-                    val.statusSent = status ? $scope.STATUS.SUCCESS : $scope.STATUS.FAIL;
+                    val.statusSent = status;
                 }
             });
 
@@ -1004,9 +1004,9 @@ angular
 
             send(email)
                 .then(function(info){
-                    progress(true, info, list, index);
+                    progress(STATUS.SUCCESS, info, list, index);
                 },function(error){
-                    progress(false, error, list, index);
+                    progress(STATUS.FAIL, error, list, index);
                 })
                 .finally(function () {
                     if(index < total - 1) {
