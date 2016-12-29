@@ -40,19 +40,6 @@ module.exports = function (grunt) {
                 dest: 'app/js/app.js'
             }
         },
-        uglify: {
-            options: {
-                // Use these options when debugging
-                // mangle: false,
-                // compress: false,
-                // beautify: true
-            },
-            core: {
-                files: {
-                    'app/js/app.min.js': ['app/js/app.js']
-                }
-            },
-        },
         watch: {
             watchSassStyle: {
                 files: ['sass/**/*.scss'],
@@ -151,7 +138,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-eslint');
 
-    grunt.registerTask('jsCoreCompile', ['concat:core', 'uglify:core', 'notify:jsCoreCompile']);
+    grunt.registerTask('jsCoreCompile', ['concat:core', 'notify:jsCoreCompile']);
     grunt.registerTask('sassCompile', ['sass:styleExpanded', 'sass:styleMin', 'notify:sassStyleCompile']);
 
     grunt.registerTask('develop', ['concurrent:monitor']);

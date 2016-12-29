@@ -45,7 +45,7 @@ angular
          */
         function clean(database) {
             var path = _getDbPath(database),
-                newPath = path + '.backup';
+                newPath = path + '.' + (new Date()).getTime() + '.backup' ;
             try {
                 fs.renameSync(path, newPath);
             }catch (e) {

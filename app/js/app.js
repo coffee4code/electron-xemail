@@ -294,20 +294,9 @@ angular
         }
 
         function onSendItem(item) {
-            var email = emailService.generate(item, $scope.current.year, $scope.current.month);
-            deliveryService
-                .send(email)
-                .then(function (info) {
-                    console.info('success', info);
-                }, function (error) {
-                    console.info('errow', info);
-                })
-                .finally(function () {
-                    console.info('finally');
-                });
+            var list = [emailService.generate(item, $scope.current.year, $scope.current.month)];
+            _sendList(list);
 
-
-            //
             // var uuid = item.uuid;
             // $scope.current.imported.map(function(val){
             //     if(val.uuid === uuid) {
@@ -320,15 +309,21 @@ angular
         }
 
         function onSendAll() {
-            var uuids = $scope.nowChecked.map(function(val){
-                return val.uuid;
+            var list = [];
+            $scope.nowChecked.map(function(val){
+                list.push(emailService.generate(val, $scope.current.year, $scope.current.month));
             });
-            $scope.nowChecked.length = 0;
-            $scope.current.imported.map(function(val){
-                if(uuids.indexOf(val.uuid) > -1 ) {
-                    val.statusSent = Math.floor(Math.random() * 100) % 2 === 0 ? $scope.STATUS.SUCCESS : $scope.STATUS.FAIL;
-                }
-            });
+            _sendList(list);
+
+            // var uuids = $scope.nowChecked.map(function(val){
+            //     return val.uuid;
+            // });
+            // $scope.nowChecked.length = 0;
+            // $scope.current.imported.map(function(val){
+            //     if(uuids.indexOf(val.uuid) > -1 ) {
+            //         val.statusSent = Math.floor(Math.random() * 100) % 2 === 0 ? $scope.STATUS.SUCCESS : $scope.STATUS.FAIL;
+            //     }
+            // });
         }
 
         function onNext(event) {
@@ -375,6 +370,18 @@ angular
 
         function _goNext() {
             $state.go('app.sheet.done');
+        }
+
+        function _sendList(list) {
+            deliveryService.queue(list,_progress, _finish);
+        }
+
+        function _progress(status,data,index) {
+            console.info('第'+index+'封件发送结果：'+status+'|||数据：'+data);
+        }
+
+        function _finish() {
+            console.info('finished');
         }
 
     }])
@@ -946,13 +953,13 @@ angular
             return [dbPrefix,year,month].join(nameSeparator);
         }
     }])
-    .service('deliveryService',['$q', 'config', 'historyService', function($q, config, historyService){
+    .service('deliveryService',['$q', 'config', '$timeout', 'historyService', function($q, config, $timeout, historyService){
         var STATUS = config.get().STATUS;
         return {
-            send: send
+            queue: queue
         };
 
-        function send(email) {
+        function _send(email) {
             var deferred = $q.defer(),
                 smtpConfig = {
                     host: email.setting.smtp_host,
@@ -982,6 +989,42 @@ angular
                 }
             });
             return deferred.promise;
+        }
+
+        function send(email) {
+            var deferred = $q.defer();
+
+            $timeout(function(){
+                var result = Math.floor(Math.random() * 100 ) %2 === 0;
+                if(result) {
+                    deferred.resolve(result);
+                }else {
+                    deferred.reject(result);
+                }
+            }, 1000);
+            return deferred.promise;
+        }
+
+        function queue(list, progress, finish, index) {
+
+            var total = list.length;
+            index = index || 0;
+
+            send(list[index])
+                .then(function(info){
+                    progress(true, info, index);
+                },function(error){
+                    progress(false, error, index);
+                })
+                .finally(function () {
+                    if(index < total - 1) {
+                        index = index +1;
+                        queue(list, progress, finish, index);
+                        return false;
+                    }
+                    finish();
+                })
+            ;
         }
     }])
     .service('emailService',['$sce', 'settingService',function($sce, settingService){
@@ -1788,7 +1831,7 @@ angular
          */
         function clean(database) {
             var path = _getDbPath(database),
-                newPath = path + '.backup';
+                newPath = path + '.' + (new Date()).getTime() + '.backup' ;
             try {
                 fs.renameSync(path, newPath);
             }catch (e) {

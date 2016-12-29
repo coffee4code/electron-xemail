@@ -294,20 +294,9 @@ angular
         }
 
         function onSendItem(item) {
-            var email = emailService.generate(item, $scope.current.year, $scope.current.month);
-            deliveryService
-                .send(email)
-                .then(function (info) {
-                    console.info('success', info);
-                }, function (error) {
-                    console.info('errow', info);
-                })
-                .finally(function () {
-                    console.info('finally');
-                });
+            var list = [emailService.generate(item, $scope.current.year, $scope.current.month)];
+            _sendList(list);
 
-
-            //
             // var uuid = item.uuid;
             // $scope.current.imported.map(function(val){
             //     if(val.uuid === uuid) {
@@ -320,15 +309,21 @@ angular
         }
 
         function onSendAll() {
-            var uuids = $scope.nowChecked.map(function(val){
-                return val.uuid;
+            var list = [];
+            $scope.nowChecked.map(function(val){
+                list.push(emailService.generate(val, $scope.current.year, $scope.current.month));
             });
-            $scope.nowChecked.length = 0;
-            $scope.current.imported.map(function(val){
-                if(uuids.indexOf(val.uuid) > -1 ) {
-                    val.statusSent = Math.floor(Math.random() * 100) % 2 === 0 ? $scope.STATUS.SUCCESS : $scope.STATUS.FAIL;
-                }
-            });
+            _sendList(list);
+
+            // var uuids = $scope.nowChecked.map(function(val){
+            //     return val.uuid;
+            // });
+            // $scope.nowChecked.length = 0;
+            // $scope.current.imported.map(function(val){
+            //     if(uuids.indexOf(val.uuid) > -1 ) {
+            //         val.statusSent = Math.floor(Math.random() * 100) % 2 === 0 ? $scope.STATUS.SUCCESS : $scope.STATUS.FAIL;
+            //     }
+            // });
         }
 
         function onNext(event) {
@@ -375,6 +370,18 @@ angular
 
         function _goNext() {
             $state.go('app.sheet.done');
+        }
+
+        function _sendList(list) {
+            deliveryService.queue(list,_progress, _finish);
+        }
+
+        function _progress(status,data,index) {
+            console.info('第'+index+'封件发送结果：'+status+'|||数据：'+data);
+        }
+
+        function _finish() {
+            console.info('finished');
         }
 
     }])

@@ -149,13 +149,13 @@ angular
             return [dbPrefix,year,month].join(nameSeparator);
         }
     }])
-    .service('deliveryService',['$q', 'config', 'historyService', function($q, config, historyService){
+    .service('deliveryService',['$q', 'config', '$timeout', 'historyService', function($q, config, $timeout, historyService){
         var STATUS = config.get().STATUS;
         return {
-            send: send
+            queue: queue
         };
 
-        function send(email) {
+        function _send(email) {
             var deferred = $q.defer(),
                 smtpConfig = {
                     host: email.setting.smtp_host,
@@ -185,6 +185,42 @@ angular
                 }
             });
             return deferred.promise;
+        }
+
+        function send(email) {
+            var deferred = $q.defer();
+
+            $timeout(function(){
+                var result = Math.floor(Math.random() * 100 ) %2 === 0;
+                if(result) {
+                    deferred.resolve(result);
+                }else {
+                    deferred.reject(result);
+                }
+            }, 1000);
+            return deferred.promise;
+        }
+
+        function queue(list, progress, finish, index) {
+
+            var total = list.length;
+            index = index || 0;
+
+            send(list[index])
+                .then(function(info){
+                    progress(true, info, index);
+                },function(error){
+                    progress(false, error, index);
+                })
+                .finally(function () {
+                    if(index < total - 1) {
+                        index = index +1;
+                        queue(list, progress, finish, index);
+                        return false;
+                    }
+                    finish();
+                })
+            ;
         }
     }])
     .service('emailService',['$sce', 'settingService',function($sce, settingService){
