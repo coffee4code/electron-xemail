@@ -353,9 +353,7 @@ angular
         }
 
         function _sendList(list) {
-            $scope.progress.now = 1;
-            $scope.progress.total = list.length;
-            deliveryService.queue($scope.current.year, $scope.current.month, list, _progressCallback, _finishCallback);
+            deliveryService.queue($scope.current.year, $scope.current.month, list, _onProgressBeforeCallback, _progressAfterCallback, _finishCallback);
             $scope.progress.panel = $mdPanel.create( {
                 animation:$mdPanel.newPanelAnimation().withAnimation($mdPanel.animation.FADE),
                 attachTo: angular.element(document.body),
@@ -379,13 +377,18 @@ angular
             $scope.progress.panel.open();
         }
 
-        function _progressCallback(status, data, list, index) {
+        function _onProgressBeforeCallback(list, index) {
+            $scope.progress.now = index + 1;
+            $scope.progress.total = list.length;
+        }
+
+        function _progressAfterCallback(status, data, list, index) {
             var location = null,
                 item = list[index];
 
-            $scope.progress.now = index + 1;
-            $scope.progress.total = list.length;
-
+            if(status === $scope.STATUS.INIT) {
+                return false;
+            }
             $scope.current.imported.map(function(val){
                 if(val.uuid === item.uuid) {
                     val.statusSent = status;
@@ -1030,29 +1033,29 @@ angular
             return deferred.promise;
         }
 
-        function queue(year, month, list, progress, finish, index, sleeper) {
+        function queue(year, month, list, onProgressBefore, onProgressAfter, onFinish, index) {
             index = index || 0;
-            sleeper = sleeper || 2000;
             var total = list.length,
                 email = emailService.generate(year, month, list[index]);
 
-            send(email)
-                .then(function(info){
-                    progress(STATUS.SUCCESS, info, list, index);
-                },function(error){
-                    progress(STATUS.FAIL, error, list, index);
-                })
-                .finally(function () {
-                    if(index < total - 1) {
-                        index = index +1;
-                        $timeout(function(){
-                            queue(year, month, list, progress, finish, index, sleeper);
-                        }, sleeper);
-                        return false;
-                    }
-                    finish(list);
-                })
-            ;
+            onProgressBefore(list, index);
+            $timeout(function () {
+                send(email)
+                    .then(function(info){
+                        onProgressAfter(STATUS.SUCCESS, info, list, index);
+                    },function(error){
+                        onProgressAfter(STATUS.FAIL, error, list, index);
+                    })
+                    .finally(function () {
+                        if(index < total - 1) {
+                            index = index +1;
+                            queue(year, month, list, onProgressBefore, onProgressAfter, onFinish, index);
+                            return false;
+                        }
+                        onFinish(list);
+                    })
+                ;
+            },3000);
         }
     }])
     .service('emailService',['$sce', 'settingService',function($sce, settingService){

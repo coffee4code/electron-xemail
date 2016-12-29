@@ -201,29 +201,29 @@ angular
             return deferred.promise;
         }
 
-        function queue(year, month, list, progress, finish, index, sleeper) {
+        function queue(year, month, list, onProgressBefore, onProgressAfter, onFinish, index) {
             index = index || 0;
-            sleeper = sleeper || 2000;
             var total = list.length,
                 email = emailService.generate(year, month, list[index]);
 
-            send(email)
-                .then(function(info){
-                    progress(STATUS.SUCCESS, info, list, index);
-                },function(error){
-                    progress(STATUS.FAIL, error, list, index);
-                })
-                .finally(function () {
-                    if(index < total - 1) {
-                        index = index +1;
-                        $timeout(function(){
-                            queue(year, month, list, progress, finish, index, sleeper);
-                        }, sleeper);
-                        return false;
-                    }
-                    finish(list);
-                })
-            ;
+            onProgressBefore(list, index);
+            $timeout(function () {
+                send(email)
+                    .then(function(info){
+                        onProgressAfter(STATUS.SUCCESS, info, list, index);
+                    },function(error){
+                        onProgressAfter(STATUS.FAIL, error, list, index);
+                    })
+                    .finally(function () {
+                        if(index < total - 1) {
+                            index = index +1;
+                            queue(year, month, list, onProgressBefore, onProgressAfter, onFinish, index);
+                            return false;
+                        }
+                        onFinish(list);
+                    })
+                ;
+            },3000);
         }
     }])
     .service('emailService',['$sce', 'settingService',function($sce, settingService){

@@ -353,9 +353,7 @@ angular
         }
 
         function _sendList(list) {
-            $scope.progress.now = 1;
-            $scope.progress.total = list.length;
-            deliveryService.queue($scope.current.year, $scope.current.month, list, _progressCallback, _finishCallback);
+            deliveryService.queue($scope.current.year, $scope.current.month, list, _onProgressBeforeCallback, _progressAfterCallback, _finishCallback);
             $scope.progress.panel = $mdPanel.create( {
                 animation:$mdPanel.newPanelAnimation().withAnimation($mdPanel.animation.FADE),
                 attachTo: angular.element(document.body),
@@ -379,13 +377,18 @@ angular
             $scope.progress.panel.open();
         }
 
-        function _progressCallback(status, data, list, index) {
+        function _onProgressBeforeCallback(list, index) {
+            $scope.progress.now = index + 1;
+            $scope.progress.total = list.length;
+        }
+
+        function _progressAfterCallback(status, data, list, index) {
             var location = null,
                 item = list[index];
 
-            $scope.progress.now = index + 1;
-            $scope.progress.total = list.length;
-
+            if(status === $scope.STATUS.INIT) {
+                return false;
+            }
             $scope.current.imported.map(function(val){
                 if(val.uuid === item.uuid) {
                     val.statusSent = status;
