@@ -7,17 +7,22 @@
             {{::current.year}}年{{::current.month}}月
         </span>
         <span flex></span>
+        <md-button ng-if="current.historyDetail && current.historyDetail.length" class="md-icon-button" aria-label="筛选显示" ng-click="onSelectMenu($event);">
+            <ng-md-icon icon="filter_list" style="fill:{{ mdPrimaryColor }};"></ng-md-icon>
+        </md-button>
         <md-button ng-if="current.year && current.month" class="md-icon-button" aria-label="打开菜单" ng-click="onDetailDialog($event)">
             <ng-md-icon md-menu-origin icon="more_vert" style="fill:{{mdPrimaryColor}}"></ng-md-icon>
         </md-button>
     </div>
-    <div flex layout="column">
-        <md-content flex layout="column" layout-padding="10px">
-            <div flex layout="column" ui-view="list"></div>
-        </md-content>
-    </div>
+    <div flex layout="column" ui-view="list"></div>
     <md-divider></md-divider>
-    <div style="height: 60px;" layout="row" layout-align="end center">
+    <div style="height: 60px;" layout="row" layout-align="end center" class="table-footer">
+        <div ng-if="current.historyDetail && current.historyDetail.length">
+            <span>共</span>
+            <span class="num">{{current.historyDetail.length}}</span>
+            <span>条数据</span>
+        </div>
+        <span flex></span>
         <md-button ng-if="current.year && current.month" ui-sref="app.history.list" class="md-raised md-primary" aria-label="返回">返回</md-button>
         <md-button ui-sref="app.home" class="md-primary" aria-label="返回首页">返回首页</md-button>
     </div>

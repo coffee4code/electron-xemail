@@ -381,23 +381,49 @@ angular
     .controller('sheetDoneCtrl',['$scope', function($scope){
         $scope.current.progress = 100;
     }])
-    .controller('historyCtrl',['$scope', '$mdDialog', 'config', 'historyService', function($scope, $mdDialog, config, historyService){
+    .controller('historyCtrl',['$scope', '$mdDialog', '$mdPanel', 'config', 'historyService', function($scope, $mdDialog, $mdPanel, config, historyService){
         $scope.STATUS = config.get().STATUS;
         $scope.historyList = historyService.list();
         $scope.current = {
             year: '',
-            month: ''
+            month: '',
+            historyDetail: null
         };
+
+        $scope.onSelectMenu = onSelectMenu;
+
+        function onSelectMenu(event) {
+            $mdPanel.open({
+                attachTo: angular.element(document.body),
+                controllerAs: 'ctrl',
+                templateUrl: 'tmpls/dialogs/dialog.menu.list.html',
+                panelClass: 'dropmenu',
+                position: $mdPanel.newPanelPosition().relativeTo(event.currentTarget).addPanelPosition($mdPanel.xPosition.ALIGN_END, $mdPanel.yPosition.BELOW),
+                openFrom: event,
+                clickOutsideToClose: true,
+                escapeToClose: true,
+                focusOnOpen: false,
+                zIndex: 2,
+                controller: ['$scope','mdPanelRef',function($scope,mdPanelRef) {
+                    $scope.onCheckMenu = onCheckMenu;
+
+                    function onCheckMenu(event) {
+                        mdPanelRef.close();
+                    }
+                }],
+            });
+        }
     }])
     .controller('historyListCtrl',['$scope', function($scope){
         $scope.now = new Date();
         $scope.current.year= '';
         $scope.current.month = '';
+        $scope.current.historyDetail = null;
     }])
     .controller('historyDetailCtrl',['$scope', 'historyService', 'year', 'month', function($scope, historyService, year, month){
         $scope.current.year= year;
         $scope.current.month = month;
-        $scope.historyDetail = historyService.detail(year,month);
+        $scope.current.historyDetail = historyService.detail(year,month);
     }])
     .controller('settingCtrl',['$scope', function($scope){
     }])
