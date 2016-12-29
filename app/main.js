@@ -13,6 +13,15 @@ let loadingScreen,
         minHeight: 700,
         frame: false,
         show: false
+    },
+    splashWindowParams = {
+        width: 600,
+        height: 480,
+        minWidth: 60,
+        minHeight: 480,
+        frame: false,
+        show: false,
+        parent: mainWin
     };
 
 app.on('ready', function () {
@@ -32,7 +41,7 @@ app.on('activate', function () {
 
 
 function createLoadingScreen() {
-    loadingScreen = new BrowserWindow(Object.assign(windowParams, {parent: mainWin}));
+    loadingScreen = new BrowserWindow(splashWindowParams);
     loadingScreen.loadURL(url.format({
         pathname: path.join(__dirname,'loading.html'),
         protocol: 'file:',
@@ -42,9 +51,11 @@ function createLoadingScreen() {
     loadingScreen.webContents.on('did-finish-load', () => {
         loadingScreen.show();
     });
+
+    // loadingScreen.webContents.openDevTools();
 }
 function createWindow () {
-    mainWin = new BrowserWindow();
+    mainWin = new BrowserWindow(windowParams);
     mainWin.setMenu(null);
     mainWin.loadURL(url.format({
         pathname: path.join(__dirname,'index.html'),
@@ -59,8 +70,6 @@ function createWindow () {
         mainWin.show();
 
         if (loadingScreen) {
-            let loadingScreenBounds = loadingScreen.getBounds();
-            mainWin.setBounds(loadingScreenBounds);
             loadingScreen.close();
         }
     });

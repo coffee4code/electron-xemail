@@ -1,1 +1,46 @@
-<div> loading</div>
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <title>加载中...</title>
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+        body {
+            margin: 0;
+        }
+        .flex-container {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .row {
+            color: #e91e63;
+            width: auto;
+        }
+        .flex-item {
+            line-height: 20px;
+            text-align: center;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body class="flex-container">
+    <div class="row">
+        <div class="flex-item">
+            <img src="images/48x48.png" alt="">
+        </div>
+        <div class="flex-item">加载中...</div>
+    </div>
+</body>
+</html>
