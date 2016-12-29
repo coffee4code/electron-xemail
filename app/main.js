@@ -15,10 +15,10 @@ let loadingScreen,
         show: false
     },
     splashWindowParams = {
-        width: 600,
-        height: 480,
-        minWidth: 60,
-        minHeight: 480,
+        width: 400,
+        height: 150,
+        minWidth: 400,
+        minHeight: 150,
         frame: false,
         show: false,
         parent: mainWin

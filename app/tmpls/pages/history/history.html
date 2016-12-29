@@ -18,8 +18,13 @@
     <md-divider></md-divider>
     <div style="height: 60px;" layout="row" layout-align="end center" class="table-footer">
         <div ng-if="current.historyDetail && current.historyDetail.length">
-            <span>共</span>
-            <span class="num">{{current.historyDetail.length}}</span>
+            <span style="margin-right: 5px;">
+                <span ng-if="!current.filter.statusSent">全部</span>
+                <span ng-if="(current.filter.statusSent && current.filter.statusSent==STATUS.SUCCESS)">发送成功</span>
+                <span ng-if="(current.filter.statusSent && current.filter.statusSent==STATUS.FAIL)">发送失败</span>
+                <span ng-if="(current.filter.statusSent && current.filter.statusSent==STATUS.INIT)">未发送</span>
+            </span>
+            <span class="num">{{(current.historyDetail | filter: current.filter).length}}</span>
             <span>条数据</span>
         </div>
         <span flex></span>

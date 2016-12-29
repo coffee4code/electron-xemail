@@ -1,14 +1,14 @@
 <div role="listbox" class="dropmenu">
-    <div class="dropmenu-item"  tabindex="-1" role="option" ng-click="onCheckMenu($event);">
+    <div class="dropmenu-item"  tabindex="-1" role="option" ng-click="onCheckMenu($event,null);" ng-class="{selected: !filter.statusSent }">
         全部
     </div>
-    <div class="dropmenu-item"  tabindex="-1" role="option" ng-click="onCheckMenu($event);">
+    <div class="dropmenu-item"  tabindex="-1" role="option" ng-click="onCheckMenu($event,STATUS.SUCCESS);" ng-class="{selected: (filter.statusSent && filter.statusSent==STATUS.SUCCESS) }">
         发送成功
     </div>
-    <div class="dropmenu-item"  tabindex="-1" role="option" ng-click="onCheckMenu($event);">
+    <div class="dropmenu-item"  tabindex="-1" role="option" ng-click="onCheckMenu($event,STATUS.FAIL);" ng-class="{selected: (filter.statusSent && filter.statusSent==STATUS.FAIL) }">
         发送失败
     </div>
-    <div class="dropmenu-item"  tabindex="-1" role="option" ng-click="onCheckMenu($event);">
+    <div class="dropmenu-item"  tabindex="-1" role="option" ng-click="onCheckMenu($event,STATUS.INIT);" ng-class="{selected: (filter.statusSent && filter.statusSent==STATUS.INIT) }">
         未发送
     </div>
 </div>

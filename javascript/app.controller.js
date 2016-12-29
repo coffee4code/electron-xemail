@@ -70,9 +70,10 @@ angular
         }
 
     }])
-    .controller('contentCtrl',['$scope', '$mdDialog', 'templateDetail',function($scope, $mdDialog, templateDetail){
+    .controller('contentCtrl',['$scope', '$mdDialog', 'config','templateDetail',function($scope, $mdDialog, config, templateDetail){
         $scope.templateDetail = templateDetail;
         $scope.onDetailDialog = onDetailDialog;
+        $scope.STATUS = config.get().STATUS;
 
         function onDetailDialog(event) {
             $mdDialog
@@ -98,9 +99,8 @@ angular
     .controller('homeCtrl',['$scope',function($scope){
 
     }])
-    .controller('sheetCtrl',['$scope', 'config', function($scope, config){
+    .controller('sheetCtrl',['$scope', function($scope){
         var now = new Date();
-        $scope.STATUS = config.get().STATUS;
         $scope.current = {
             year: now.getFullYear(),
             month: now.getMonth() + 1,
@@ -382,12 +382,13 @@ angular
         $scope.current.progress = 100;
     }])
     .controller('historyCtrl',['$scope', '$mdDialog', '$mdPanel', 'config', 'historyService', function($scope, $mdDialog, $mdPanel, config, historyService){
-        $scope.STATUS = config.get().STATUS;
+
         $scope.historyList = historyService.list();
         $scope.current = {
             year: '',
             month: '',
-            historyDetail: null
+            historyDetail: null,
+            filter: {}
         };
 
         $scope.onSelectMenu = onSelectMenu;
@@ -404,10 +405,27 @@ angular
                 escapeToClose: true,
                 focusOnOpen: false,
                 zIndex: 2,
-                controller: ['$scope','mdPanelRef',function($scope,mdPanelRef) {
+                locals: {
+                    STATUS: $scope.STATUS,
+                    filter: $scope.current.filter
+                },
+                controller: ['$scope','mdPanelRef', 'STATUS','filter',function($scope,mdPanelRef,STATUS,filter) {
+                    $scope.STATUS = STATUS;
+                    $scope.filter = filter;
                     $scope.onCheckMenu = onCheckMenu;
 
-                    function onCheckMenu(event) {
+                    function onCheckMenu(event, status) {
+                        switch(status) {
+                            case STATUS.SUCCESS:
+                            case STATUS.FAIL:
+                            case STATUS.INIT:
+                                $scope.filter.statusSent = status;
+                                break;
+                            case null:
+                            default:
+                                delete $scope.filter.statusSent;
+                                break;
+                        }
                         mdPanelRef.close();
                     }
                 }],

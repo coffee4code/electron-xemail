@@ -390,3 +390,7 @@ md-table-container {
 .dropmenu-item:hover, .dropmenu-item:focus {
   background-color: #eeeeee;
 }
+
+.dropmenu-item.selected {
+  color: #e91e63;
+}

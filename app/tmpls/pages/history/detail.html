@@ -23,7 +23,7 @@
                 </thead>
                 <tbody md-body>
                 <tr md-row
-                    ng-repeat="row in current.historyDetail"
+                    ng-repeat="row in current.historyDetail | filter: current.filter"
                     ng-class="{even: $even, odd: $odd}">
                     <td md-cell>{{::($index+1)}}</td>
                     <td md-cell>
