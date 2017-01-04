@@ -204,11 +204,11 @@ angular
         function queue(year, month, list, onProgressBefore, onProgressAfter, onFinish, index) {
             index = index || 0;
             var total = list.length,
-                email = emailService.generate(year, month, list[index]);
+                email = emailService.generate(list[index], year, month);
 
             onProgressBefore(list, index);
             $timeout(function () {
-                send(email)
+                _send(email)
                     .then(function(info){
                         onProgressAfter(STATUS.SUCCESS, info, list, index);
                     },function(error){
