@@ -22,10 +22,15 @@ var angular = require('angular'),
 app.run(['$rootScope', '$state', '$mdColors', 'settingService', 'templateService' ,function ($rootScope, $state,$mdColors, settingService, templateService) {
 
     $rootScope.mdPrimaryColor = $mdColors.getThemeColor('pink');
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        $rootScope.showIndicator = true;
+    });
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+        $rootScope.showIndicator = false;
+    });
 
     settingService.init();
     templateService.init();
-
 
 }])
 ;
